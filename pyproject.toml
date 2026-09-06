@@ -1,0 +1,10 @@
+[project]
+name = "marley"
+version = "0.1.0"
+dependencies = [
+    "typer",
+    "rich"
+]
+
+[project.scripts]
+marley = "marley.commander:app"

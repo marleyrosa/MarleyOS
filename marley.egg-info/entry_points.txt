@@ -1,0 +1,2 @@
+[console_scripts]
+marley = marley.commander:app
