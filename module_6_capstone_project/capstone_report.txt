@@ -1,6 +1,6 @@
 RELATORIO DE ENGENHARIA AUTOMOTIVA - AUTOMATED AI RELEASE
 ------------------------------------------------------------
-Status Telemetria: Corrente Maxima = 315.0 A | RPM Max = 5300.0
+Status Telemetria: Corrente Maxima = 350.0 A | RPM Max = 5800.0
 Analise RAG: MANUAL DE SERVICO TECNICO - ALTA TENSAO E TREM DE FORCA
 
 Procedimento P0A80:
