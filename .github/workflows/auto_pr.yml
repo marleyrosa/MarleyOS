@@ -1,0 +1,45 @@
+name: Automotive AI Automated Pull Request
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'patch/**'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-engineering-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar codigo do repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Executar Testes Unitarios
+        run: python test_pipeline.py
+
+      - name: Executar Esteira Capstone
+        run: python module_6_capstone_project/full_pipeline.py
+
+      - name: Abrir Pull Request com Parecer de Auditoria
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REPORT_BODY=$(cat module_6_capstone_project/capstone_report.txt)
+          gh pr create \
+            --base main \
+            --head ${{ github.ref_name }} \
+            --title "Auditoria Automotiva: Calibração de Trem de Força (${{ github.ref_name }})" \
+            --body "### Relatório de Engenharia Automotiva (ISO 26262 & MCP)
+\`\`\`text
+${REPORT_BODY}
+\`\`\`
+Este PR foi validado automaticamente pela esteira de CI/CD do MarleyOS." || echo "PR já aberto para esta branch."
