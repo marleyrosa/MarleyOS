@@ -2,16 +2,16 @@ name: Automotive AI Engine CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
 
 jobs:
   validate-ai-pipeline:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Baixar codigo do repositorio
+    - name: Checkout do repositorio
       uses: actions/checkout@v4
 
     - name: Configurar Python 3.11
