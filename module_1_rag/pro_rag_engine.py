@@ -1,88 +1,55 @@
+import json
 import os
 import re
-import math
-from collections import Counter
 
-class AutomotiveEngineeringAI:
-    def __init__(self, kb_path):
-        self.kb_path = kb_path
-        self.chunks = []
-        self.tokenized_chunks = []
-        self.load_knowledge_base()
+class ProfessionalAutomotiveRAG:
+    def __init__(self, json_path, standards_path):
+        self.json_path = json_path
+        self.standards_path = standards_path
+        self.systems = {}
+        self.load_data()
 
-    def tokenize(self, text):
-        return re.findall(r'\w+', text.lower())
+    def load_data(self):
+        if os.path.exists(self.json_path):
+            with open(self.json_path, 'r', encoding='utf-8') as f:
+                self.systems = json.load(f)
 
-    def load_knowledge_base(self):
-        if not os.path.exists(self.kb_path):
-            return
-        with open(self.kb_path, 'r', encoding='utf-8', errors='ignore') as f:
-            content = f.read()
-        
-        # Divide o repositório em blocos lógicos por seções
-        raw_blocks = content.split("\n\n")
-        self.chunks = [b.strip() for b in raw_blocks if len(b.strip()) > 30]
-        self.tokenized_chunks = [self.tokenize(c) for c in self.chunks]
+    def query(self, text):
+        t = text.lower()
+        matched_key = None
+        highest_score = 0
 
-    def retrieve_context(self, query):
-        q_tokens = self.tokenize(query)
-        scores = []
-        for idx, doc_tokens in enumerate(self.tokenized_chunks):
-            common = set(q_tokens).intersection(set(doc_tokens))
-            score = sum(doc_tokens.count(t) for t in common)
-            scores.append((score, self.chunks[idx]))
-        scores.sort(key=lambda x: x[0], reverse=True)
-        return [c for s, c in scores[:2] if s > 0]
+        # Identificar o sistema técnico exato
+        for key, item in self.systems.items():
+            score = 0
+            for kw in item.get("keywords", []):
+                if kw in t:
+                    score += len(kw)
+            if score > highest_score:
+                highest_score = score
+                matched_key = key
 
-    def answer_query(self, user_query):
-        query_lower = user_query.lower()
-        context = self.retrieve_context(user_query)
+        if matched_key and highest_score > 0:
+            sys_data = self.systems[matched_key]
+            blocks_table = "| Bloco Simulink | Caminho na Biblioteca | Parâmetro Crítico |\n| :--- | :--- | :--- |\n"
+            for b in sys_data.get("blocks", []):
+                blocks_table += f"| **{b['name']}** | `{b['path']}` | {b['param']} |\n"
 
-        # 1. Se o usuário pedir para gerar, modelar ou explicar simulação/Simulink
-        if any(w in query_lower for w in ["modelo", "modelar", "simulink", "script", "matlab", "codigo"]):
-            return (
-                "🎯 **Síntese de Engenharia: Modelo Simulink & Padrão MCP**\n\n"
-                "Para modelar e simular sistemas automotivos (ex: Inversor ou BPCM) utilizando agentes modernos sem erros de execução, "
-                "aplica-se a classe `Simulink.SimulationInput` compatível com o **MATLAB MCP Core Server**:\n\n"
-                "```matlab\n"
-                "% 1. Definir o modelo de trem de força\n"
-                "modelName = 'EV_Powertrain_Control';\n"
-                "\n"
-                "% 2. Inicializar objeto de simulação isolado\n"
-                "simIn = Simulink.SimulationInput(modelName);\n"
-                "simIn = simIn.setModelParameter('StopTime', '10.0');\n"
-                "simIn = simIn.setModelParameter('SaveFormat', 'Dataset');\n"
-                "\n"
-                "% 3. Injetar limites físicos e calibração de bancada\n"
-                "simIn = simIn.setVariable('MaxPhaseCurrent', 285.0);\n"
-                "simIn = simIn.setVariable('R_Isolation_Min', 100); % Ohm/V (UN ECE R100)\n"
-                "\n"
-                "% 4. Executar e extrair telemetria\n"
-                "simOut = sim(simIn);\n"
-                "loggedSignals = simOut.logsout;\n"
-                "```\n\n"
-                "💡 **Boas Práticas de Engenharia:**\n"
-                "- Nunca utilize strings concatenadas legadas para o comando `sim()`.\n"
-                "- O uso de `SimulationInput` protege o workspace do MATLAB contra poluição de variáveis durante testes em lote."
-            )
+            return {
+                "title": sys_data["title"],
+                "summary": sys_data["summary"],
+                "blocks_table": blocks_table,
+                "logic": sys_data["logic"],
+                "svg": sys_data["svg"],
+                "script": sys_data["script"]
+            }
 
-        # 2. Se houver contexto normativo / científico recuperado
-        if context:
-            ctx_text = "\n\n".join(context)
-            return (
-                f"🔬 **Parecer Técnico Baseado em Evidências Científicas & Normas**\n\n"
-                f"**Fundamentação Teórica e Normativa Recuperada:**\n{ctx_text}\n\n"
-                f"📋 **Diretrizes de Implementação no Sistema:**\n"
-                f"- **Critério de Aceitação:** Validar os dados de telemetria CAN contra as equações nominais de dissipação e isolamento.\n"
-                f"- **Mitigação de Risco:** Caso um sinal ultrapasse o limiar operacional, acionar a rotina ASIL de isolamento galvânico e registrar a ocorrência para auditoria."
-            )
-
-        # 3. Resposta técnica analítica aberta para qualquer outro termo
-        return (
-            f"⚙️ **Análise de Engenharia para:** *'{user_query}'*\n\n"
-            "O repositório científico do **MarleyOS** está monitorando os seguintes eixos:\n"
-            "- **UN ECE R100:** Limiares de isolamento elétrico (100 Ω/V DC, 500 Ω/V AC).\n"
-            "- **ISO 26262:** Metas de segurança funcional e tempo de contenção FTTI (<20ms) para ASIL-D.\n"
-            "- **Simulink & MCP:** Geração de rotinas modernas com `Simulink.SimulationInput`.\n\n"
-            "Para uma resposta detalhada, pergunte sobre isolamento de bateria, sobrecorrente do inversor ou solicite um modelo de simulação."
-        )
+        # Fallback para normas e conceitos teóricos
+        return {
+            "title": f"Consulta Normativa & Científica: '{text}'",
+            "summary": "O sistema analisou os requisitos normativos da UN ECE R100 (Alta Tensão) e ISO 26262 (Segurança Funcional).",
+            "blocks_table": "| Parâmetro | Norma | Limite Técnico |\n| :--- | :--- | :--- |\n| Resistência Isolamento | UN ECE R100 | ≥ 100 Ω/V (DC) e ≥ 500 Ω/V (AC) |\n| Tempo de Contenção (FTTI) | ISO 26262 | ≤ 20 ms para estado seguro em ASIL-D |\n| Isolamento Galvânico | BPCM | Abertura obrigatória de contatores HV |",
+            "logic": "Para simulações no Simulink, utilize o padrão Simulink.SimulationInput integrado ao MATLAB MCP Core Server.",
+            "svg": "",
+            "script": "% Padrão de Simulação Moderna no Simulink (MCP Core)\nsimIn = Simulink.SimulationInput('Powertrain_Control');\nsimIn = simIn.setModelParameter('SaveFormat', 'Dataset');\nsimOut = sim(simIn);"
+        }
