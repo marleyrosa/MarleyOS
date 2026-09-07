@@ -3,3 +3,11 @@ MANUAL DE SERVICO TECNICO - ALTA TENSAO E TREM DE FORCA
 Procedimento P0A80:
 O sistema BMS dispara P0A80 quando ha desbalanceamento termico ou de carga superior a 350 mV entre os modulos do pack de tracao.
 Acao: Realizar ciclo de carga lenta controlada. Persistindo o delta de tensao, isolar o modulo defeituoso utilizando luvas de protecao classe 0 (1000V).
+
+3. Sistema de Controle de Frenagem Dinâmica (ABS / Regeneração):
+- O código C0035 desabilita o desacoplamento de frenagem regenerativa via motor elétrico por motivos de estabilidade direcional.
+- Ação: Forçar frenagem puramente hidráulica por atrito e reportar alerta de manutenção de freios no cluster.
+
+4. Sistema de Direção Assistida Elétrica (EPS):
+- O código C1555 aciona o modo de degradação suave (Soft Degradation) para evitar travamento da coluna de direção.
+- Ação: O atuador elétrico do EPS deve chavear para malha de corrente com rampa suave de desativação de assistência.

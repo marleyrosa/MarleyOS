@@ -2,3 +2,5 @@ dtc_code,componente,descricao_falha,limiar_de_acionamento,procedimento_correcao
 P0300,Cilindros Multiplos,Detecção de falha de ignicao aleatoria,Variacao angular do virabrequim > 3.5%,Verificar velas cabos e bicos injetores.
 P0A80,Bateria de Tracao EV,Substituicao de pacote EV necessaria,Delta de tensao entre modulos > 0.35V,Rodar ciclo de balanceamento e equalizacao via scanner.
 P0730,Transmissao Automatica,Relacao incorreta de marchas,Escorregamento de embreagem detectado,Conferir pressao da linha de oleo ATF e corpo de valvulas.
+C0035,ABS / Freio Eletro-Hidraulico,Falha no sensor de velocidade da roda dianteira esquerda,Sinal do sensor ausente sob velocidade > 15 km/h,Inspecionar chicote do sensor indutivo/Hall e anel fônico da roda dianteira esquerda.
+C1555,EPS (Direção Elétrica),Sobrecarga térmica no motor brushless da coluna de direção,Temperatura do estator EPS > 90C por mais de 5s,Limitar assistência de torque a 50% e verificar atrito mecânico na caixa de direção.

@@ -26,18 +26,19 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
 
             if any(k in prompt for k in ["corrente", "pico", "telemetria", "status"]):
                 s = handle_rpc({"method": "tools/call", "params": {"name": "get_telemetry_summary"}})
-                ans = f"Pico de corrente registrado: {s.get('corrente_max_a')} A | Temperatura pico: {s.get('temp_max_c')} °C | RPM max: {s.get('rpm_max')}."
-            elif any(k in prompt for k in ["falha", "critico", "alarme"]):
-                c = handle_rpc({"method": "tools/call", "params": {"name": "get_critical_events"}}).get("eventos_criticos", [])
-                ans = f"Eventos criticos encontrados ({len(c)}): " + ", ".join([e.get("status_falha", "") for e in c])
-            elif any(k in prompt for k in ["p0a80", "bateria", "manual"]):
+                ans = f"Telemetria CAN: Corrente {s.get('corrente_max_a')} A | Temp {s.get('temp_max_c')} °C | RPM {s.get('rpm_max')}."
+            elif any(k in prompt for k in ["freio", "abs", "c0035"]):
                 docs = load_documents()
-                res = retrieve(prompt, docs, k=1)
-                ans = f"Base RAG: {res[0]}" if res else "Sem dados tecnicos catalogados."
+                res = retrieve("C0035", docs, k=1)
+                ans = f"Diagnostico ABS (RAG): {res[0]}" if res else "Sem dados de freios."
+            elif any(k in prompt for k in ["direcao", "eps", "c1555"]):
+                docs = load_documents()
+                res = retrieve("C1555", docs, k=1)
+                ans = f"Diagnostico EPS (RAG): {res[0]}" if res else "Sem dados de direcao."
             elif any(k in prompt for k in ["iso", "asil", "seguranca"]):
-                ans = evaluate_functional_safety("Falha: Corrente do pack atingiu 315A excedendo limiar de 300A.")
+                ans = evaluate_functional_safety("Falha: C0035 Falha no sensor de velocidade da roda com frenagem regenerativa ativa.")
             else:
-                ans = "Comando nao reconhecido. Consulte 'telemetria', 'alarmes', 'ISO 26262' ou 'P0A80'."
+                ans = "Copilot Automotivo: Consulte sobre 'telemetria', 'freio ABS (C0035)', 'direção EPS (C1555)' ou 'segurança ISO'."
 
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
@@ -57,7 +58,7 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
                     rows = list(csv.DictReader(f))
 
             table_rows = "".join([
-                f"<tr><td>{r.get('timestamp_s')}</td><td>{r.get('rpm_motor')}</td><td>{r.get('corrente_pack_a')} A</td><td>{r.get('temp_inversor_c')} °C</td><td style='color:{'#ff4d4d' if r.get('status_falha')!='NORMAL' else '#00ff88'}'>{r.get('status_falha')}</td></tr>"
+                f"<tr><td>{r.get('timestamp_s')}</td><td>{r.get('rpm_motor')}</td><td>{r.get('corrente_pack_a')} A</td><td>{r.get('pressao_freio_bar')} bar</td><td>{r.get('torque_eps_nm')} Nm</td><td style='color:{'#ff4d4d' if r.get('status_falha')!='NORMAL' else '#00ff88'}'>{r.get('status_falha')}</td></tr>"
                 for r in rows
             ])
 
@@ -65,15 +66,15 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarleyOS - Copilot Automotivo</title>
+    <title>MarleyOS - Multi-Component Copilot</title>
     <style>
         body {{ font-family: monospace; background: #0b0f17; color: #d1d7e0; margin: 0; padding: 15px; }}
-        h2 {{ color: #00d2ff; margin-bottom: 8px; }}
+        h2 {{ color: #00d2ff; }}
         .card {{ background: #161c26; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #232d3d; }}
-        table {{ width: 100%; border-collapse: collapse; font-size: 12px; }}
-        th, td {{ border: 1px solid #2a3649; padding: 6px; text-align: left; }}
+        table {{ width: 100%; border-collapse: collapse; font-size: 11px; }}
+        th, td {{ border: 1px solid #2a3649; padding: 5px; text-align: left; }}
         th {{ background: #1e2837; }}
-        #chat-window {{ height: 180px; overflow-y: auto; background: #0d121a; padding: 10px; border-radius: 6px; border: 1px solid #232d3d; font-size: 13px; margin-bottom: 10px; }}
+        #chat-window {{ height: 180px; overflow-y: auto; background: #0d121a; padding: 10px; border-radius: 6px; border: 1px solid #232d3d; font-size: 12px; margin-bottom: 10px; }}
         .msg-user {{ color: #00d2ff; margin-bottom: 6px; }}
         .msg-bot {{ color: #38ef7d; margin-bottom: 10px; }}
         .input-row {{ display: flex; gap: 8px; }}
@@ -82,27 +83,24 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
     </style>
 </head>
 <body>
-    <h2>MarleyOS | Automotive AI Copilot</h2>
-
+    <h2>MarleyOS | Sistema Multi-Componente (Inversor + Freio + EPS)</h2>
     <div class="card">
-        <strong>Terminal de Chat com a IA</strong>
+        <strong>Copilot de Engenharia Automotiva</strong>
         <div id="chat-window">
-            <div class="msg-bot"><b>Copilot:</b> Telemetria CAN conectada via MCP. Pode consultar os parametros ou normas de seguranca.</div>
+            <div class="msg-bot"><b>Copilot:</b> Monitorando Inversor de Tração, Freio Regenerativo (ABS) e Direção Elétrica (EPS). Envie sua pergunta.</div>
         </div>
         <div class="input-row">
-            <input id="prompt-input" type="text" placeholder="Ex: Qual o pico de corrente da telemetria?" onkeydown="if(event.key==='Enter') send()">
+            <input id="prompt-input" type="text" placeholder="Ex: Procedimento para falha no freio ABS?" onkeydown="if(event.key==='Enter') send()">
             <button onclick="send()">Enviar</button>
         </div>
     </div>
-
     <div class="card">
-        <strong>Telemetria de Rodagem (CAN Bus - MCP)</strong>
+        <strong>Telemetria CAN Completa</strong>
         <table>
-            <tr><th>Tempo</th><th>RPM</th><th>Corrente</th><th>Temp</th><th>Status</th></tr>
+            <tr><th>Tempo</th><th>RPM</th><th>Corrente</th><th>Freio</th><th>EPS</th><th>Status</th></tr>
             {table_rows}
         </table>
     </div>
-
     <script>
         async function send() {{
             const input = document.getElementById('prompt-input');
@@ -112,7 +110,6 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
             win.innerHTML += `<div class="msg-user"><b>Voce:</b> ${{text}}</div>`;
             input.value = '';
             win.scrollTop = win.scrollHeight;
-
             const res = await fetch('/api/chat', {{
                 method: 'POST',
                 headers: {{'Content-Type': 'application/json'}},
@@ -130,6 +127,6 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
             super().do_GET()
 
 if __name__ == "__main__":
-    print(f"[+] Interface Interativa rodando em http://localhost:{PORT}")
+    print(f"[+] Multi-Component Dashboard ativo em http://localhost:{PORT}")
     with ReusableTCPServer(("", PORT), DashboardHandler) as httpd:
         httpd.serve_forever()
