@@ -1,0 +1,18 @@
+======================================================================
+RELATÓRIO TÉCNICO DE AUDITORIA VEICULAR - MARLEYOS
+======================================================================
+
+Timestamp: 0.0s | RPM: 850 | Corrente: 0.0 A | BPCM: 500.0 kOhm
+--------------------------------------------------
+Timestamp: 0.5s | RPM: 1600 | Corrente: 45.0 A | BPCM: 500.0 kOhm
+--------------------------------------------------
+Timestamp: 1.0s | RPM: 3200 | Corrente: 120.0 A | BPCM: 480.0 kOhm
+--------------------------------------------------
+Timestamp: 1.5s | RPM: 4800 | Corrente: 210.0 A | BPCM: 450.0 kOhm
+--------------------------------------------------
+Timestamp: 2.0s | RPM: 5400 | Corrente: 285.0 A | BPCM: 320.0 kOhm
+--------------------------------------------------
+Timestamp: 2.5s | RPM: 5400 | Corrente: 290.0 A | BPCM: 45.0 kOhm
+ -> ALERTA REGISTRADO: BPCM_INSULATION_FAULT
+ -> METAS DE SEGURANÇA: NIVEL_ASIL: QM (Qualidade Padrao) | Parametros sob limites nominais de controle.
+--------------------------------------------------
