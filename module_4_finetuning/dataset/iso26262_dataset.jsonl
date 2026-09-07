@@ -1,0 +1,1 @@
+{"instruction": "Classifique o evento sob ISO 26262.", "input": "Falha: Corrente do pack atingiu 315A excedendo limiar de 300A.", "output": "NIVEL_ASIL: ASIL-D | HAZARD: Curto-circuito ou saturacao descontrolada da ponte H | SAFETY_GOAL: SG-01 (Prevenir torque residual no eixo motriz) | SAFE_STATE: Desativar pulsos PWM em menos de 10 microssegundos."}

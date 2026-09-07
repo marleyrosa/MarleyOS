@@ -1,0 +1,12 @@
+RELATORIO DE ENGENHARIA AUTOMOTIVA - AUTOMATED AI RELEASE
+------------------------------------------------------------
+Status Telemetria: Corrente Maxima = 315.0 A | RPM Max = 5300.0
+Analise RAG: MANUAL DE SERVICO TECNICO - ALTA TENSAO E TREM DE FORCA
+
+Procedimento P0A80:
+O sistema BMS dispara P0A80 quando ha desbalanceamento termico ou de carga superior a 350 mV entre os modulos do pack de tracao.
+Acao: Realizar ciclo de carga lenta controlada. Persistindo o delta de tensao, isolar o modulo defeituoso utilizando luvas de protecao classe 0 (1000V).
+Ajuste de Controle: Script calibrated_control.m gerado com corte de saturacao a 300.0 A.
+Norma ISO 26262: NIVEL_ASIL: ASIL-D | HAZARD: Curto-circuito ou saturacao descontrolada da ponte H | SAFETY_GOAL: SG-01 (Prevenir torque residual no eixo motriz) | SAFE_STATE: Desativar pulsos PWM em menos de 10 microssegundos.
+Aprovacao CI/CD: REQUISITOS DE ASIL ATENDIDOS. LIBERADO PARA BANCADA.
+------------------------------------------------------------
