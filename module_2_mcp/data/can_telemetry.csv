@@ -1,6 +1,7 @@
-timestamp_s,rpm_motor,corrente_pack_a,tensao_pack_v,temp_inversor_c,pressao_freio_bar,torque_eps_nm,status_falha
-0.0,0,0.0,400.1,28.5,0.0,0.0,NORMAL
-0.5,1500,45.0,398.2,30.0,12.5,2.1,NORMAL
-1.0,3000,120.0,392.5,35.0,35.0,5.8,NORMAL
-1.5,4500,210.0,385.0,46.0,85.0,8.2,WHEEL_SLIP_DETECTED
-2.0,5200,285.0,379.0,58.2,110.0,12.5,EPS_THERMAL_OVERLOAD
+timestamp_s,rpm_motor,corrente_pack_a,temp_inversor_c,bcm_tensao_v,tcm_pressao_bar,bpcm_isolamento_kohm,status_falha
+0.0,850,0.0,28.5,13.8,4.5,500.0,NORMAL
+0.5,1600,45.0,30.0,13.7,6.2,500.0,NORMAL
+1.0,3200,120.0,35.0,13.5,8.0,480.0,NORMAL
+1.5,4800,210.0,46.0,12.8,11.5,450.0,NORMAL
+2.0,5400,285.0,58.2,12.2,14.0,320.0,NORMAL
+2.5,5400,290.0,60.0,12.0,14.2,45.0,BPCM_INSULATION_FAULT

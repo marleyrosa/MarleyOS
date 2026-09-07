@@ -11,3 +11,17 @@ Acao: Realizar ciclo de carga lenta controlada. Persistindo o delta de tensao, i
 4. Sistema de Direção Assistida Elétrica (EPS):
 - O código C1555 aciona o modo de degradação suave (Soft Degradation) para evitar travamento da coluna de direção.
 - Ação: O atuador elétrico do EPS deve chavear para malha de corrente com rampa suave de desativação de assistência.
+
+5. Unidade de Controle do Motor (ECM / Central de Injeção e Ignição):
+- Diagnóstico de Integridade de Hardware ECM (P0606):
+  Ao detectar divergência no watchdog ou falha de processamento de ponto flutuante na ECM, o microcontrolador deve isolar o controle da borboleta eletrônica (Drive-by-Wire).
+  Ação: Entrar em modo 'Torque Cut' imediato, cortando os pulsos de injeção direta para evitar aceleração descontrolada.
+
+6. Sistema de Controle de Carroceria (BCM):
+- Diagnóstico B1000: O BCM opera como nó central de chaveamento. Se ocorrer queda severa de tensão nos atuadores de carroceria, o módulo desliga cargas secundárias (infotainment e iluminação ambiente) para manter alimentados os nós de comunicação crítica de gateway CAN.
+
+7. Sistema de Transmissão Automática (TCM):
+- Diagnóstico P0700: Ao registrar deslizamento de marcha ou travamento de válvula solenoide, o TCM requisita à ECU a limitação de torque para proteger os conjuntos de embreagem e engrenagens planetárias.
+
+8. Gerenciamento do Pack de Baterias (BPCM / HV BMS):
+- Diagnóstico P0AA6: Detecção de fuga de corrente para o chassi veicular. O BPCM abre imediatamente os contatores principais positivo e negativo (Pyro-Fuse / Relés Principais) para eliminar risco de choque elétrico em manutenção ou colisão.
