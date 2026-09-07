@@ -1,0 +1,10 @@
+[NORMA: UN ECE R100 - SEGURANÇA ELÉTRICA VEICULAR]
+Requisito de Isolamento Elétrico: Para barramentos de tração em corrente contínua (DC) com tensões nominais de classe B (>60V e <=1500V), a resistência de isolamento mínima absoluta entre o circuito de alta tensão e o chassi elétrico deve ser de pelo menos 100 ohms/Volt para circuitos DC e 500 ohms/Volt para circuitos AC.
+Falha de Isolamento: Quedas abaixo desse patamar indicam contaminação por umidade no pack, degradação do isolamento cerâmico de semicondutores (IGBT/SiC) ou rompimento dielétrico em chicotes blindados. Medições abaixo de 50 kOhm em barramentos de 400V violam a conformidade normativa e exigem isolamento galvânico instantâneo por meio da abertura forçada dos contatores mestre positivo (Main+) e negativo (Main-).
+
+[NORMA: ISO 26262 - FUNCTIONAL SAFETY (PARTS 4 & 5)]
+Classificação ASIL-D para Sistemas de Potência: Falhas que combinem alto potencial de severidade (S3 - risco de choque fatal ou incêndio catastrófico), alta exposição operacional (E4) e baixa controlabilidade pelo condutor (C3) são categorizadas como ASIL-D.
+Metas de Segurança (Safety Goals): SG-BPCM-01 exige que, após a confirmação persistente do alarme de baixa isolação durante mais de 100ms, o sistema transite para o 'Safe State' dentro do Fault Tolerant Time Interval (FTTI) de no máximo 20ms, acionando a descarga ativa do circuito DC-Link (<60V residual).
+
+[CIÊNCIA: DEGRADAÇÃO TÉRMICA E CORRENTE DE FUGA EM SEMICONDUTORES]
+Em sistemas de acionamento de potência (inversores baseados em Si/SiC MOSFETs), o stress térmico cíclico gera microfissuras térmicas no substrato DBC (Direct Bonded Copper). Isso reduz a rigidez dielétrica do gel de silicone encapsulante, provocando correntes de fuga parasitas entre as fases U/V/W e a carcaça de alumínio do estator/chassi. O BPCM e o sensor de isolamento a bordo utilizam pontes de medição por injeção de sinal simétrico de baixa frequência (0.5 Hz - 10 Hz) para determinar o vetor de impedância de isolamento sem interferência do ripple PWM de comutação.

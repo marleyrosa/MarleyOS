@@ -1,0 +1,15 @@
+[NORMA: UN ECE R100 - SEGURANÇA ELÉTRICA VEICULAR E ALTA TENSÃO]
+Requisitos de Isolamento: Em veículos elétricos classe B (>60V DC / >30V AC rms), a resistência de isolamento mínima absoluta entre os condutores ativos de alta tensão e a massa metálica (chassi) é de 100 ohms/Volt para barramentos DC e 500 ohms/Volt para barramentos AC.
+Diagnóstico BPCM: Se a medição contínua cair abaixo do patamar de conformidade (por exemplo, <50 kOhm em barramentos de 400V), o BPCM deve abrir os contatores mestre (Pyro-Fuse e relés principais positivo/negativo) no tempo FTTI e descarregar o circuito intermediário (DC-Link) para menos de 60V residuais.
+
+[NORMA: ISO 26262 - SEGURANÇA FUNCIONAL VEICULAR (ROAD VEHICLES)]
+Classificação ASIL-D: Designada a eventos com Severidade máxima (S3 - risco de choque elétrico fatal ou incêndio severo), Exposição prolongada (E4) e Baixa controlabilidade humana (C3).
+Metas de Segurança (Safety Goals): Exige que sistemas elétricos atinjam o 'Safe State' em menos de 20ms a partir da detecção confirmada de sobrecorrente ou ruptura dielétrica, aplicando isolamento galvânico total.
+
+[FÍSICA DE POTÊNCIA: SEMICONDUTORES E TRANSIENTES TÉRMICOS]
+Inversores de Tração (IGBT / SiC MOSFET): O estresse termomecânico cíclico em alta potência gera delaminação no substrato cerâmico DBC (Direct Bonded Copper) e microfraturas nos bondwires. Isso aumenta a resistência térmica junção-carcaça e provoca correntes de fuga parasitas entre as fases U/V/W e a carcaça do motor elétrico.
+Controle e Proteção: Para mitigar sobrecarga, as malhas de controle de corrente (d-q frame) devem impor saturação dinâmica da referência de torque e desligar a modulação PWM (Pulse Width Modulation) caso a temperatura da junção ultrapasse o limiar seguro.
+
+[MATLAB & SIMULINK: ARQUITETURA MODERNA DE SIMULAÇÃO VIA MCP]
+Padronização Simulink.SimulationInput: A automação de modelos no Simulink por agentes inteligentes descarta o comando legado sim() com strings de chave-valor. Em vez disso, utiliza-se a classe Simulink.SimulationInput para encapsular variáveis no workspace da simulação sem poluir o workspace base.
+Entradas e Logs: Entradas dinâmicas devem ser formatadas com a classe Simulink.SimulationData.Dataset ativando LoadExternalInput. Os resultados devem ser extraídos de simOut.logsout ou simOut.yout.
