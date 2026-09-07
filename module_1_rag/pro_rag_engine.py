@@ -1,11 +1,10 @@
 import json
 import os
-import re
 
 class ProfessionalAutomotiveRAG:
-    def __init__(self, json_path, standards_path):
+    def __init__(self, json_path, std_path=None):
         self.json_path = json_path
-        self.standards_path = standards_path
+        self.std_path = std_path
         self.systems = {}
         self.load_data()
 
@@ -15,22 +14,21 @@ class ProfessionalAutomotiveRAG:
                 self.systems = json.load(f)
 
     def query(self, text):
-        t = text.lower()
-        matched_key = None
-        highest_score = 0
+        t = text.lower().strip()
+        best_match = None
+        max_score = 0
 
-        # Identificar o sistema técnico exato
         for key, item in self.systems.items():
             score = 0
             for kw in item.get("keywords", []):
                 if kw in t:
-                    score += len(kw)
-            if score > highest_score:
-                highest_score = score
-                matched_key = key
+                    score += len(kw) ** 2
+            if score > max_score:
+                max_score = score
+                best_match = key
 
-        if matched_key and highest_score > 0:
-            sys_data = self.systems[matched_key]
+        if best_match and max_score > 0:
+            sys_data = self.systems[best_match]
             blocks_table = "| Bloco Simulink | Caminho na Biblioteca | Parâmetro Crítico |\n| :--- | :--- | :--- |\n"
             for b in sys_data.get("blocks", []):
                 blocks_table += f"| **{b['name']}** | `{b['path']}` | {b['param']} |\n"
@@ -44,12 +42,11 @@ class ProfessionalAutomotiveRAG:
                 "script": sys_data["script"]
             }
 
-        # Fallback para normas e conceitos teóricos
         return {
-            "title": f"Consulta Normativa & Científica: '{text}'",
+            "title": f"Consulta Normativa & Sistemas: '{text}'",
             "summary": "O sistema analisou os requisitos normativos da UN ECE R100 (Alta Tensão) e ISO 26262 (Segurança Funcional).",
-            "blocks_table": "| Parâmetro | Norma | Limite Técnico |\n| :--- | :--- | :--- |\n| Resistência Isolamento | UN ECE R100 | ≥ 100 Ω/V (DC) e ≥ 500 Ω/V (AC) |\n| Tempo de Contenção (FTTI) | ISO 26262 | ≤ 20 ms para estado seguro em ASIL-D |\n| Isolamento Galvânico | BPCM | Abertura obrigatória de contatores HV |",
-            "logic": "Para simulações no Simulink, utilize o padrão Simulink.SimulationInput integrado ao MATLAB MCP Core Server.",
+            "blocks_table": "| Parâmetro | Norma | Limite |\n| :--- | :--- | :--- |\n| Isolamento HV | UN ECE R100 | >= 100 Ohm/V (DC) |\n| Tempo FTTI | ISO 26262 | <= 20 ms em ASIL-D |",
+            "logic": "Topologias indexadas: 'conversor abaixador (buck)', 'elevador boost', 'controle em malha fechada' ou 'pid'.",
             "svg": "",
-            "script": "% Padrão de Simulação Moderna no Simulink (MCP Core)\nsimIn = Simulink.SimulationInput('Powertrain_Control');\nsimIn = simIn.setModelParameter('SaveFormat', 'Dataset');\nsimOut = sim(simIn);"
+            "script": "% Padrão SimulationInput (MCP Core)\nsimIn = Simulink.SimulationInput('Powertrain_Model');\nsimIn = simIn.setModelParameter('SaveFormat', 'Dataset');"
         }
