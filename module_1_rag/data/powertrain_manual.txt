@@ -1,0 +1,5 @@
+MANUAL DE SERVICO TECNICO - ALTA TENSAO E TREM DE FORCA
+
+Procedimento P0A80:
+O sistema BMS dispara P0A80 quando ha desbalanceamento termico ou de carga superior a 350 mV entre os modulos do pack de tracao.
+Acao: Realizar ciclo de carga lenta controlada. Persistindo o delta de tensao, isolar o modulo defeituoso utilizando luvas de protecao classe 0 (1000V).

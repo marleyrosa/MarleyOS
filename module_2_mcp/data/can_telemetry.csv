@@ -1,0 +1,7 @@
+timestamp_s,rpm_motor,corrente_pack_a,tensao_pack_v,temp_inversor_c,status_falha
+0.0,0,0.0,400.1,28.5,NORMAL
+0.5,1200,45.2,398.2,30.1,NORMAL
+1.0,2500,110.8,394.0,34.2,NORMAL
+1.5,4100,230.5,386.4,45.0,NORMAL
+2.0,5200,310.2,378.1,62.8,OVERTEMP_WARNING
+2.5,5300,315.0,375.0,78.4,OVERTEMP_SHUTDOWN

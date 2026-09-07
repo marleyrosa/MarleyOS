@@ -1,0 +1,4 @@
+dtc_code,componente,descricao_falha,limiar_de_acionamento,procedimento_correcao
+P0300,Cilindros Multiplos,Detecção de falha de ignicao aleatoria,Variacao angular do virabrequim > 3.5%,Verificar velas cabos e bicos injetores.
+P0A80,Bateria de Tracao EV,Substituicao de pacote EV necessaria,Delta de tensao entre modulos > 0.35V,Rodar ciclo de balanceamento e equalizacao via scanner.
+P0730,Transmissao Automatica,Relacao incorreta de marchas,Escorregamento de embreagem detectado,Conferir pressao da linha de oleo ATF e corpo de valvulas.
