@@ -29,7 +29,6 @@ HTML_PAGE = """<!DOCTYPE html>
         .stat-title { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; }
         .stat-val { font-size: 1.15rem; font-weight: 700; margin-top: 3px; }
         
-        /* Icone da Bateria SVG */
         .battery-widget { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
         .battery-icon { width: 32px; height: 16px; border: 2px solid var(--green); border-radius: 3px; padding: 1px; position: relative; display: flex; align-items: center; }
         .battery-icon::after { content: ''; position: absolute; right: -5px; width: 3px; height: 7px; background: var(--green); border-radius: 0 2px 2px 0; }
@@ -40,7 +39,7 @@ HTML_PAGE = """<!DOCTYPE html>
         th { background: rgba(15, 22, 36, 0.9); color: var(--text-dim); text-transform: uppercase; }
         .topology-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px; margin-top: 14px; }
         .topology-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
-        .topology-container { width: 100%; height: 165px; display: flex; justify-content: center; }
+        .topology-container { width: 100%; height: 175px; display: flex; justify-content: center; }
         object { width: 100%; height: 100%; border: none; }
     </style>
 </head>
@@ -51,11 +50,11 @@ HTML_PAGE = """<!DOCTYPE html>
     </div>
     <div class="grid-stats">
         <div class="stat-card"><div class="stat-title">Velocidade</div><div class="stat-val" style="color:var(--cyan);"><span id="val-speed">0.0</span> <span style="font-size:0.6rem; color:var(--text-dim);">km/h</span></div></div>
+        <div class="stat-card"><div class="stat-title">Marcha / Câmbio</div><div class="stat-val" style="color:var(--cyan);"><span id="val-gear">G1</span> <span style="font-size:0.6rem; color:var(--orange);" id="val-active-clutch">[K1]</span></div></div>
         <div class="stat-card"><div class="stat-title">Tacômetro EM</div><div class="stat-val" style="color:var(--cyan);"><span id="val-rpm-em">0</span> <span style="font-size:0.6rem; color:var(--text-dim);">RPM</span></div></div>
-        <div class="stat-card"><div class="stat-title">Tacômetro ICE</div><div class="stat-val"><span id="val-rpm-ice">0</span> <span style="font-size:0.6rem; color:var(--text-dim);">RPM</span></div></div>
+        <div class="stat-card"><div class="stat-title">Tacômetro ICE</div><div class="stat-val" style="color:var(--text);"><span id="val-rpm-ice">0</span> <span style="font-size:0.6rem; color:var(--text-dim);">RPM</span></div></div>
         <div class="stat-card"><div class="stat-title">Embreagem K0</div><div class="stat-val" style="color:var(--orange);"><span id="val-k0-press">0.0</span> <span style="font-size:0.6rem; color:var(--text-dim);">bar</span></div><div id="val-k0-state" style="font-size:0.6rem; color:var(--text-dim);">OPEN</div></div>
         
-        <!-- Bloco de Bateria com Icone e Range -->
         <div class="stat-card">
             <div class="stat-title">Bateria Pack</div>
             <div class="battery-widget">
@@ -66,18 +65,16 @@ HTML_PAGE = """<!DOCTYPE html>
             </div>
             <div style="font-size:0.6rem; color:var(--text-dim); margin-top:2px;">Autonomia: <span id="val-range" style="color:var(--green); font-weight:700;">0.0</span> km</div>
         </div>
-
-        <div class="stat-card"><div class="stat-title">BSFC / Calor</div><div class="stat-val" style="color:var(--yellow); font-size:1.0rem;"><span id="val-bsfc">0</span> <span style="font-size:0.6rem; color:var(--text-dim);">g/kWh</span></div><div style="font-size:0.6rem; color:var(--text-dim);">Inv: <span id="val-temp">0.0</span>°C</div></div>
     </div>
 
     <table>
-        <thead><tr><th>Tempo (s)</th><th>km/h</th><th>EM (RPM)</th><th>ICE (RPM)</th><th>K0</th><th>Torque</th><th>SoC (%)</th><th>Modo</th></tr></thead>
+        <thead><tr><th>Tempo (s)</th><th>km/h</th><th>Marcha</th><th>Embreagem</th><th>EM (RPM)</th><th>ICE (RPM)</th><th>Torque</th><th>Modo</th></tr></thead>
         <tbody id="table-body"></tbody>
     </table>
 
     <div class="topology-card">
         <div class="topology-header">
-            <span>Topologia Mecânica P2 & Acoplamento K0</span>
+            <span>Esquemático DCT: K0, K1, K2 & K3</span>
             <span id="topology-status" style="color: var(--green); font-size: 0.68rem;">MODO: EV_MODE</span>
         </div>
         <div class="topology-container">
@@ -86,7 +83,7 @@ HTML_PAGE = """<!DOCTYPE html>
     </div>
 
     <script>
-        function updateSvgClasses(mode, k0State) {
+        function updateSvgClasses(mode, k0State, activeClutch) {
             const obj = document.getElementById('svg-obj');
             if (!obj || !obj.contentDocument) return;
             const svgDoc = obj.contentDocument;
@@ -94,18 +91,30 @@ HTML_PAGE = """<!DOCTYPE html>
             const ice = svgDoc.getElementById('svg-ice');
             const k0 = svgDoc.getElementById('svg-k0');
             const em = svgDoc.getElementById('svg-em');
+            const k1 = svgDoc.getElementById('svg-k1');
+            const k2 = svgDoc.getElementById('svg-k2');
+            const k3 = svgDoc.getElementById('svg-k3');
             const flowIceK0 = svgDoc.getElementById('svg-flow-ice-k0');
             const flowK0Em = svgDoc.getElementById('svg-flow-k0-em');
             const topStatus = document.getElementById('topology-status');
             if (!ice || !k0 || !em) return;
 
+            // Reset geral
             ice.classList.remove('active-ice');
             k0.classList.remove('active-k0-engaged');
             em.classList.remove('active-em-drive', 'active-em-regen');
+            if (k1) k1.classList.remove('active-clutch-gear');
+            if (k2) k2.classList.remove('active-clutch-gear');
+            if (k3) k3.classList.remove('active-clutch-gear');
             if (flowIceK0) flowIceK0.classList.remove('active-flow');
             if (flowK0Em) flowK0Em.classList.remove('active-flow');
 
-            if (topStatus) topStatus.innerText = 'MODO: ' + mode + ' [K0: ' + k0State + ']';
+            // Ativação da embreagem de marcha específica
+            if (activeClutch === 'K1' && k1) k1.classList.add('active-clutch-gear');
+            else if (activeClutch === 'K2' && k2) k2.classList.add('active-clutch-gear');
+            else if (activeClutch === 'K3' && k3) k3.classList.add('active-clutch-gear');
+
+            if (topStatus) topStatus.innerText = 'MODO: ' + mode + ' [K0: ' + k0State + ' | ' + activeClutch + ' ATIVA]';
 
             if (mode === 'EV_MODE') {
                 em.classList.add('active-em-drive');
@@ -134,11 +143,11 @@ HTML_PAGE = """<!DOCTYPE html>
 
                 const last = data.rows[data.rows.length - 1];
                 document.getElementById('val-speed').innerText = last.speed_kmh || '0.0';
+                document.getElementById('val-gear').innerText = last.gear || 'G1';
+                document.getElementById('val-active-clutch').innerText = '[' + (last.k_clutch_active || 'K1') + ']';
                 document.getElementById('val-rpm-em').innerText = last.rpm_em || '0';
                 document.getElementById('val-rpm-ice').innerText = last.rpm_ice || '0';
                 document.getElementById('val-k0-press').innerText = last.k0_press_bar || '0.0';
-                document.getElementById('val-bsfc').innerText = last.bsfc_g_kwh || '0';
-                document.getElementById('val-temp').innerText = last.temp_inv_c || '0.0';
                 document.getElementById('val-range').innerText = last.ev_range_km || '0.0';
 
                 const k0StateElem = document.getElementById('val-k0-state');
@@ -165,11 +174,12 @@ HTML_PAGE = """<!DOCTYPE html>
                 socWrap.style.color = batColor;
 
                 const mode = last.modo_propulsao || 'NOMINAL';
-                updateSvgClasses(mode, k0State);
+                const activeClutch = last.k_clutch_active || 'K1';
+                updateSvgClasses(mode, k0State, activeClutch);
 
                 let rowsHtml = '';
                 for (let r of data.rows) {
-                    rowsHtml += `<tr><td>${r.timestamp_s}</td><td>${r.speed_kmh}</td><td>${r.rpm_em}</td><td>${r.rpm_ice}</td><td>${r.k0_state}</td><td>${r.torque_nm}</td><td>${r.soc_pct}%</td><td>${r.modo_propulsao}</td></tr>`;
+                    rowsHtml += `<tr><td>${r.timestamp_s}</td><td>${r.speed_kmh}</td><td>${r.gear}</td><td>${r.k_clutch_active}</td><td>${r.rpm_em}</td><td>${r.rpm_ice}</td><td>${r.torque_nm}</td><td>${r.modo_propulsao}</td></tr>`;
                 }
                 document.getElementById('table-body').innerHTML = rowsHtml;
             } catch (err) {

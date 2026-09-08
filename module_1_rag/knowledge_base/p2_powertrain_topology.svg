@@ -1,47 +1,87 @@
-<svg id="p2-svg-root" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 220" width="100%" height="100%">
+<svg id="p2-svg-root" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 230" width="100%" height="100%">
   <style>
     .component-box { fill: #121826; stroke: #00d2ff; stroke-width: 2; rx: 8; transition: all 0.3s ease; }
     .box-em { fill: #121826; stroke: #00e676; stroke-width: 2; rx: 8; transition: all 0.3s ease; }
     .clutch-box { fill: #20152b; stroke: #ff9900; stroke-width: 2; stroke-dasharray: 4; rx: 4; transition: all 0.3s ease; }
-    .text { fill: #e6edf3; font-family: monospace; font-size: 13px; font-weight: bold; text-anchor: middle; }
-    .subtext { fill: #8b949e; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
-    .flow { stroke: #00d2ff; stroke-width: 2; marker-end: url(#arrow); opacity: 0.4; transition: all 0.3s ease; }
+    .clutch-trans { fill: #181e2e; stroke: #8b949e; stroke-width: 1.8; stroke-dasharray: 3; rx: 3; transition: all 0.3s ease; }
+    .trans-housing { fill: #0b0f19; stroke: rgba(0, 210, 255, 0.4); stroke-width: 1.5; stroke-dasharray: 2; rx: 8; }
+    .text { fill: #e6edf3; font-family: monospace; font-size: 12px; font-weight: bold; text-anchor: middle; }
+    .subtext { fill: #8b949e; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
+    .flow { stroke: #00d2ff; stroke-width: 2; marker-end: url(#arrow); opacity: 0.3; transition: all 0.3s ease; }
 
-    /* Classes Ativas Dinâmicas */
+    /* Estados Ativos com Animação de Pulso */
     .active-ice { fill: rgba(0, 210, 255, 0.25) !important; stroke: #00d2ff !important; stroke-width: 3.5 !important; filter: drop-shadow(0 0 8px #00d2ff); }
     .active-em-drive { fill: rgba(0, 230, 118, 0.25) !important; stroke: #00e676 !important; stroke-width: 3.5 !important; filter: drop-shadow(0 0 8px #00e676); }
     .active-em-regen { fill: rgba(255, 51, 102, 0.25) !important; stroke: #ff3366 !important; stroke-width: 3.5 !important; filter: drop-shadow(0 0 8px #ff3366); }
     .active-k0-engaged { fill: rgba(255, 153, 0, 0.4) !important; stroke: #ff9900 !important; stroke-dasharray: none !important; stroke-width: 3.5 !important; filter: drop-shadow(0 0 8px #ff9900); }
+    
+    /* Ativação das Embreagens da Transmissão K1, K2, K3 */
+    .active-clutch-gear {
+      fill: rgba(0, 210, 255, 0.35) !important;
+      stroke: #00d2ff !important;
+      stroke-dasharray: none !important;
+      stroke-width: 2.5 !important;
+      filter: drop-shadow(0 0 6px #00d2ff);
+      animation: pulse-glow 1.2s infinite alternate;
+    }
+    @keyframes pulse-glow {
+      0% { filter: drop-shadow(0 0 3px #00d2ff); }
+      100% { filter: drop-shadow(0 0 9px #00e676); stroke: #00e676; }
+    }
     .active-flow { opacity: 1.0 !important; stroke-width: 3.5 !important; }
   </style>
+
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
       <path d="M 0 1 L 8 5 L 0 9 z" fill="#00d2ff" />
     </marker>
   </defs>
 
-  <!-- ICE Block -->
-  <rect id="svg-ice" x="20" y="50" width="140" height="90" class="component-box" />
-  <text x="90" y="90" class="text">MOTOR ICE</text>
-  <text x="90" y="112" class="subtext">1.5L Ciclo Miller</text>
+  <!-- MOTOR ICE -->
+  <rect id="svg-ice" x="15" y="60" width="130" height="85" class="component-box" />
+  <text x="80" y="98" class="text">MOTOR ICE</text>
+  <text x="80" y="118" class="subtext">1.5L Miller</text>
 
-  <!-- Clutch K0 -->
-  <rect id="svg-k0" x="200" y="65" width="70" height="60" class="clutch-box" />
-  <text x="235" y="95" class="text" fill="#ff9900">K0</text>
-  <text x="235" y="112" class="subtext">Embreagem</text>
+  <!-- EMBREAGEM K0 -->
+  <rect id="svg-k0" x="175" y="72" width="65" height="60" class="clutch-box" />
+  <text x="207" y="102" class="text" fill="#ff9900">K0</text>
+  <text x="207" y="119" class="subtext">Desacopl.</text>
 
-  <!-- Electric Motor PMSM -->
-  <rect id="svg-em" x="310" y="45" width="160" height="100" class="box-em" />
-  <text id="svg-em-text" x="390" y="90" class="text" fill="#00e676">PMSM (EM)</text>
-  <text x="390" y="112" class="subtext">Controle FOC (Iq)</text>
+  <!-- PMSM MOTOR ELÉTRICO -->
+  <rect id="svg-em" x="270" y="52" width="145" height="100" class="box-em" />
+  <text x="342" y="98" class="text" fill="#00e676">PMSM (EM)</text>
+  <text x="342" y="118" class="subtext">FOC / 4 Pares</text>
 
-  <!-- Transmission & Differential -->
-  <rect id="svg-trans" x="520" y="50" width="150" height="90" class="component-box" />
-  <text x="595" y="90" class="text">TRANSMISSÃO</text>
-  <text x="595" y="112" class="subtext">Diferencial / Rodas</text>
+  <!-- SUBSISTEMA TRANSMISSÃO DCT/EPICÍCLICA -->
+  <rect x="445" y="30" width="375" height="145" class="trans-housing" />
+  <text x="632" y="48" class="text" fill="#00d2ff" style="font-size:11px;">CAIXA DE TRANSMISSÃO DUAL-CLUTCH (DCT)</text>
 
-  <!-- Fluxos Mecanicos -->
-  <line id="svg-flow-ice-k0" x1="160" y1="95" x2="200" y2="95" class="flow" />
-  <line id="svg-flow-k0-em" x1="270" y1="95" x2="310" y2="95" class="flow" />
-  <line id="svg-flow-em-trans" x1="470" y1="95" x2="520" y2="95" class="flow active-flow" />
+  <!-- Embreagens Internas K1, K2, K3 -->
+  <rect id="svg-k1" x="465" y="65" width="60" height="42" class="clutch-trans" />
+  <text x="495" y="88" class="text">K1</text>
+  <text x="495" y="101" class="subtext">1ª/3ª/5ª</text>
+
+  <rect id="svg-k2" x="545" y="65" width="60" height="42" class="clutch-trans" />
+  <text x="575" y="88" class="text">K2</text>
+  <text x="575" y="101" class="subtext">2ª/4ª/6ª</text>
+
+  <rect id="svg-k3" x="625" y="65" width="60" height="42" class="clutch-trans" />
+  <text x="655" y="88" class="text">K3</text>
+  <text x="655" y="101" class="subtext">Overdrive</text>
+
+  <!-- Engrenagens / Eixo de Saída -->
+  <rect x="705" y="60" width="95" height="52" class="component-box" />
+  <text x="752" y="88" class="text">DIFERENCIAL</text>
+  <text x="752" y="103" class="subtext">Eixo Final</text>
+
+  <!-- RODAS -->
+  <rect id="svg-wheels" x="850" y="60" width="105" height="85" class="component-box" />
+  <text x="902" y="98" class="text">RODAS</text>
+  <text x="902" y="118" class="subtext">Tração P2</text>
+
+  <!-- Linhas Mecânicas de Fluxo -->
+  <line id="svg-flow-ice-k0" x1="145" y1="102" x2="175" y2="102" class="flow" />
+  <line id="svg-flow-k0-em" x1="240" y1="102" x2="270" y2="102" class="flow" />
+  <line id="svg-flow-em-trans" x1="415" y1="102" x2="465" y2="102" class="flow active-flow" />
+  <line id="svg-flow-trans-wheel" x1="800" y1="102" x2="850" y2="102" class="flow active-flow" />
 </svg>
