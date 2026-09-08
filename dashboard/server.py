@@ -32,8 +32,8 @@ HTML_PAGE = """<!DOCTYPE html>
         .soc-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 6px; overflow: hidden; }
         .soc-bar-fill { height: 100%; width: 50%; background: var(--green); transition: width 0.3s ease; }
 
-        table { width: 100%; border-collapse: collapse; font-size: 0.70rem; margin-top: 14px; }
-        th, td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 5px 6px; text-align: left; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.65rem; margin-top: 14px; }
+        th, td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 4px 4px; text-align: left; }
         th { background: rgba(15, 22, 36, 0.9); color: var(--text-dim); text-transform: uppercase; }
         .topology-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-top: 16px; }
         .topology-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
