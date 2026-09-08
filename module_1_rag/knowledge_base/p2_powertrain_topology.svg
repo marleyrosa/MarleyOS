@@ -1,34 +1,49 @@
-<svg id="p2-svg-root" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 230" width="100%" height="100%">
+<svg id="p2-svg-root" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 310" width="100%" height="100%">
   <style>
-    .component-box { fill: #121826; stroke: #00d2ff; stroke-width: 2; rx: 8; transition: all 0.3s ease; }
-    .box-em { fill: #121826; stroke: #00e676; stroke-width: 2; rx: 8; transition: all 0.3s ease; }
-    .clutch-box { fill: #20152b; stroke: #ff9900; stroke-width: 2; stroke-dasharray: 4; rx: 4; transition: all 0.3s ease; }
-    .clutch-trans { fill: #181e2e; stroke: #8b949e; stroke-width: 1.8; stroke-dasharray: 3; rx: 3; transition: all 0.3s ease; }
-    .trans-housing { fill: #0b0f19; stroke: rgba(0, 210, 255, 0.4); stroke-width: 1.5; stroke-dasharray: 2; rx: 8; }
-    .text { fill: #e6edf3; font-family: monospace; font-size: 12px; font-weight: bold; text-anchor: middle; }
-    .subtext { fill: #8b949e; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
-    .flow { stroke: #00d2ff; stroke-width: 2; marker-end: url(#arrow); opacity: 0.3; transition: all 0.3s ease; }
-
-    /* Estados Ativos com Animação de Pulso */
-    .active-ice { fill: rgba(0, 210, 255, 0.25) !important; stroke: #00d2ff !important; stroke-width: 3.5 !important; filter: drop-shadow(0 0 8px #00d2ff); }
-    .active-em-drive { fill: rgba(0, 230, 118, 0.25) !important; stroke: #00e676 !important; stroke-width: 3.5 !important; filter: drop-shadow(0 0 8px #00e676); }
-    .active-em-regen { fill: rgba(255, 51, 102, 0.25) !important; stroke: #ff3366 !important; stroke-width: 3.5 !important; filter: drop-shadow(0 0 8px #ff3366); }
-    .active-k0-engaged { fill: rgba(255, 153, 0, 0.4) !important; stroke: #ff9900 !important; stroke-dasharray: none !important; stroke-width: 3.5 !important; filter: drop-shadow(0 0 8px #ff9900); }
+    .component-box { fill: #101624; stroke: #00d2ff; stroke-width: 2; rx: 6; }
+    .box-em { fill: #101624; stroke: #00e676; stroke-width: 2; rx: 6; }
+    .clutch-k0 { fill: #20152b; stroke: #ff9900; stroke-width: 2; stroke-dasharray: 4; rx: 4; }
+    .text { fill: #e6edf3; font-family: monospace; font-size: 11px; font-weight: bold; text-anchor: middle; }
+    .subtext { fill: #8b949e; font-family: sans-serif; font-size: 9px; text-anchor: middle; }
+    .flow { stroke: #00d2ff; stroke-width: 2; marker-end: url(#arrow); opacity: 0.35; }
     
-    /* Ativação das Embreagens da Transmissão K1, K2, K3 */
-    .active-clutch-gear {
-      fill: rgba(0, 210, 255, 0.35) !important;
-      stroke: #00d2ff !important;
-      stroke-dasharray: none !important;
-      stroke-width: 2.5 !important;
-      filter: drop-shadow(0 0 6px #00d2ff);
-      animation: pulse-glow 1.2s infinite alternate;
+    /* Eixos Coaxiais e Engrenagens */
+    .shaft-outer { stroke: #2e7d32; stroke-width: 14; stroke-linecap: round; opacity: 0.85; }
+    .shaft-inner { stroke: #c62828; stroke-width: 7; stroke-linecap: round; }
+    .gear-odd { fill: #b71c1c; stroke: #ef5350; stroke-width: 1.5; rx: 2; }
+    .gear-even { fill: #1b5e20; stroke: #66bb6a; stroke-width: 1.5; rx: 2; }
+    .selector { fill: #37474f; stroke: #cfd8dc; stroke-width: 1.5; rx: 2; }
+    
+    /* Embreagens Concêntricas DCT */
+    .clutch-pack { fill: #1e2638; stroke: #78909c; stroke-width: 2; rx: 3; transition: all 0.25s ease; }
+    
+    /* Estados Reativos Dinâmicos */
+    .active-ice { fill: rgba(0, 210, 255, 0.28) !important; stroke: #00d2ff !important; stroke-width: 3 !important; }
+    .active-k0 { fill: rgba(255, 153, 0, 0.45) !important; stroke: #ff9900 !important; stroke-dasharray: none !important; stroke-width: 3 !important; }
+    .active-em { fill: rgba(0, 230, 118, 0.28) !important; stroke: #00e676 !important; stroke-width: 3 !important; }
+    .active-em-regen { fill: rgba(255, 23, 68, 0.28) !important; stroke: #ff1744 !important; stroke-width: 3 !important; }
+
+    /* Animação de Fechamento de Pacote de Embreagem (Clutch 1 e 2) */
+    .active-clutch1 {
+      fill: rgba(239, 83, 80, 0.45) !important;
+      stroke: #ff1744 !important;
+      stroke-width: 3.5 !important;
+      animation: pulse-c1 0.9s infinite alternate ease-in-out;
     }
-    @keyframes pulse-glow {
-      0% { filter: drop-shadow(0 0 3px #00d2ff); }
-      100% { filter: drop-shadow(0 0 9px #00e676); stroke: #00e676; }
+    .active-clutch2 {
+      fill: rgba(102, 187, 106, 0.45) !important;
+      stroke: #00e676 !important;
+      stroke-width: 3.5 !important;
+      animation: pulse-c2 0.9s infinite alternate ease-in-out;
     }
-    .active-flow { opacity: 1.0 !important; stroke-width: 3.5 !important; }
+    @keyframes pulse-c1 {
+      0% { filter: drop-shadow(0 0 4px #ff1744); }
+      100% { filter: drop-shadow(0 0 12px #ff5252); }
+    }
+    @keyframes pulse-c2 {
+      0% { filter: drop-shadow(0 0 4px #00e676); }
+      100% { filter: drop-shadow(0 0 12px #69f0ae); }
+    }
   </style>
 
   <defs>
@@ -37,51 +52,99 @@
     </marker>
   </defs>
 
-  <!-- MOTOR ICE -->
-  <rect id="svg-ice" x="15" y="60" width="130" height="85" class="component-box" />
-  <text x="80" y="98" class="text">MOTOR ICE</text>
-  <text x="80" y="118" class="subtext">1.5L Miller</text>
+  <!-- SEÇÃO P2: ICE + K0 + PMSM -->
+  <rect id="svg-ice" x="12" y="110" width="115" height="90" class="component-box" />
+  <text x="69" y="152" class="text">MOTOR ICE</text>
+  <text x="69" y="172" class="subtext">1.5L Miller</text>
 
-  <!-- EMBREAGEM K0 -->
-  <rect id="svg-k0" x="175" y="72" width="65" height="60" class="clutch-box" />
-  <text x="207" y="102" class="text" fill="#ff9900">K0</text>
-  <text x="207" y="119" class="subtext">Desacopl.</text>
+  <rect id="svg-k0" x="150" y="125" width="55" height="60" class="clutch-k0" />
+  <text x="177" y="155" class="text" fill="#ff9900">K0</text>
+  <text x="177" y="170" class="subtext">Clutch</text>
 
-  <!-- PMSM MOTOR ELÉTRICO -->
-  <rect id="svg-em" x="270" y="52" width="145" height="100" class="box-em" />
-  <text x="342" y="98" class="text" fill="#00e676">PMSM (EM)</text>
-  <text x="342" y="118" class="subtext">FOC / 4 Pares</text>
+  <rect id="svg-em" x="228" y="100" width="135" height="110" class="box-em" />
+  <text id="svg-em-title" x="295" y="152" class="text" fill="#00e676">PMSM (EM)</text>
+  <text x="295" y="172" class="subtext">Rotor P2</text>
 
-  <!-- SUBSISTEMA TRANSMISSÃO DCT/EPICÍCLICA -->
-  <rect x="445" y="30" width="375" height="145" class="trans-housing" />
-  <text x="632" y="48" class="text" fill="#00d2ff" style="font-size:11px;">CAIXA DE TRANSMISSÃO DUAL-CLUTCH (DCT)</text>
+  <!-- LINHAS DE ENTRADA P2 -->
+  <line x1="127" y1="155" x2="150" y2="155" class="flow" />
+  <line x1="205" y1="155" x2="228" y2="155" class="flow" />
+  <line x1="363" y1="155" x2="400" y2="155" class="flow" style="stroke-width: 3.5; opacity: 0.9;" />
 
-  <!-- Embreagens Internas K1, K2, K3 -->
-  <rect id="svg-k1" x="465" y="65" width="60" height="42" class="clutch-trans" />
-  <text x="495" y="88" class="text">K1</text>
-  <text x="495" y="101" class="subtext">1ª/3ª/5ª</text>
+  <!-- CARCAÇA DA TRANSMISSÃO e-DCT -->
+  <rect x="400" y="25" width="605" height="260" rx="8" fill="#0b0f19" stroke="rgba(0, 210, 255, 0.4)" stroke-width="1.8" stroke-dasharray="3 3" />
+  <text x="702" y="45" class="text" fill="#00d2ff">CAIXA e-DCT // ARQUITETURA COAXIAL DUAL-SHAFT</text>
 
-  <rect id="svg-k2" x="545" y="65" width="60" height="42" class="clutch-trans" />
-  <text x="575" y="88" class="text">K2</text>
-  <text x="575" y="101" class="subtext">2ª/4ª/6ª</text>
+  <!-- MULTIDISCOS CONCÊNTRICOS DCT (CLUTCH 1 E CLUTCH 2) -->
+  <!-- Carcaça do Tambor de Embreagem -->
+  <path d="M 400 95 L 430 95 L 430 215 L 400 215" fill="none" stroke="#cfd8dc" stroke-width="3" />
+  
+  <!-- Clutch 1 (Externa / Marchas Ímpares) -->
+  <rect id="svg-clutch1-top" x="432" y="70" width="40" height="32" class="clutch-pack" />
+  <rect id="svg-clutch1-bot" x="432" y="208" width="40" height="32" class="clutch-pack" />
+  <text x="452" y="89" class="text" fill="#ef5350" style="font-size: 9px;">C1</text>
+  <text x="452" y="227" class="text" fill="#ef5350" style="font-size: 9px;">C1</text>
 
-  <rect id="svg-k3" x="625" y="65" width="60" height="42" class="clutch-trans" />
-  <text x="655" y="88" class="text">K3</text>
-  <text x="655" y="101" class="subtext">Overdrive</text>
+  <!-- Clutch 2 (Interna / Marchas Pares e Ré) -->
+  <rect id="svg-clutch2-top" x="438" y="108" width="34" height="26" class="clutch-pack" />
+  <rect id="svg-clutch2-bot" x="438" y="176" width="34" height="26" class="clutch-pack" />
+  <text x="455" y="124" class="text" fill="#66bb6a" style="font-size: 9px;">C2</text>
+  <text x="455" y="192" class="text" fill="#66bb6a" style="font-size: 9px;">C2</text>
 
-  <!-- Engrenagens / Eixo de Saída -->
-  <rect x="705" y="60" width="95" height="52" class="component-box" />
-  <text x="752" y="88" class="text">DIFERENCIAL</text>
-  <text x="752" y="103" class="subtext">Eixo Final</text>
+  <!-- EIXO VERDE (OUTER SHAFT - OCO - PARES) -->
+  <line x1="472" y1="155" x2="685" y2="155" class="shaft-outer" />
+  <!-- EIXO VERMELHO (INNER SHAFT - SÓLIDO - ÍMPARES) -->
+  <line x1="472" y1="155" x2="945" y2="155" class="shaft-inner" />
 
-  <!-- RODAS -->
-  <rect id="svg-wheels" x="850" y="60" width="105" height="85" class="component-box" />
-  <text x="902" y="98" class="text">RODAS</text>
-  <text x="902" y="118" class="subtext">Tração P2</text>
+  <!-- EIXO SECUNDÁRIO SUPERIOR (OUTPUT SHAFT 1) -->
+  <line x1="530" y1="80" x2="945" y2="80" stroke="#78909c" stroke-width="5" stroke-linecap="round" />
+  <!-- EIXO SECUNDÁRIO INFERIOR (OUTPUT SHAFT 2) -->
+  <line x1="530" y1="230" x2="945" y2="230" stroke="#78909c" stroke-width="5" stroke-linecap="round" />
 
-  <!-- Linhas Mecânicas de Fluxo -->
-  <line id="svg-flow-ice-k0" x1="145" y1="102" x2="175" y2="102" class="flow" />
-  <line id="svg-flow-k0-em" x1="240" y1="102" x2="270" y2="102" class="flow" />
-  <line id="svg-flow-em-trans" x1="415" y1="102" x2="465" y2="102" class="flow active-flow" />
-  <line id="svg-flow-trans-wheel" x1="800" y1="102" x2="850" y2="102" class="flow active-flow" />
+  <!-- ENGRENAGENS E SINCRONIZADORES (CONFORME DIAGRAMA) -->
+  <!-- Marcha Ré (R) -->
+  <rect id="gear-r" x="550" y="58" width="28" height="44" class="gear-even" />
+  <text x="564" y="84" class="text" style="font-size:10px;">R</text>
+
+  <!-- 6ª Marcha -->
+  <rect id="gear-6" x="625" y="52" width="28" height="56" class="gear-even" />
+  <text x="639" y="84" class="text" style="font-size:10px;">6</text>
+
+  <!-- Seletor Superior 1 -->
+  <rect id="sel-top-1" x="590" y="70" width="22" height="20" class="selector" />
+
+  <!-- 5ª Marcha -->
+  <rect id="gear-5" x="880" y="48" width="30" height="64" class="gear-odd" />
+  <text x="895" y="84" class="text" style="font-size:10px;">5</text>
+
+  <!-- Seletor Superior 2 -->
+  <rect id="sel-top-2" x="835" y="70" width="24" height="20" class="selector" />
+
+  <!-- 2ª Marcha -->
+  <rect id="gear-2" x="550" y="208" width="28" height="44" class="gear-even" />
+  <text x="564" y="234" class="text" style="font-size:10px;">2</text>
+
+  <!-- 4ª Marcha -->
+  <rect id="gear-4" x="625" y="202" width="28" height="56" class="gear-even" />
+  <text x="639" y="234" class="text" style="font-size:10px;">4</text>
+
+  <!-- Seletor Inferior 1 -->
+  <rect id="sel-bot-1" x="590" y="220" width="22" height="20" class="selector" />
+
+  <!-- 3ª Marcha -->
+  <rect id="gear-3" x="715" y="196" width="30" height="68" class="gear-odd" />
+  <text x="730" y="234" class="text" style="font-size:10px;">3</text>
+
+  <!-- 1ª Marcha -->
+  <rect id="gear-1" x="875" y="188" width="34" height="84" class="gear-odd" />
+  <text x="892" y="234" class="text" style="font-size:10px;">1</text>
+
+  <!-- Seletor Inferior 2 -->
+  <rect id="sel-bot-2" x="795" y="220" width="24" height="20" class="selector" />
+
+  <!-- LEGENDA DE IDENTIFICAÇÃO -->
+  <rect x="420" y="268" width="12" height="12" fill="#c62828" rx="2" />
+  <text x="480" y="278" class="subtext" fill="#ef5350">Eixo Sólido (C1: 1ª/3ª/5ª)</text>
+
+  <rect x="560" y="268" width="12" height="12" fill="#2e7d32" rx="2" />
+  <text x="618" y="278" class="subtext" fill="#66bb6a">Eixo Oco (C2: 2ª/4ª/6ª/R)</text>
 </svg>

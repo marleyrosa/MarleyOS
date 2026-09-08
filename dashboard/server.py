@@ -30,63 +30,53 @@ HTML_PAGE = """<!DOCTYPE html>
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'SF Pro Display', -apple-system, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'SF Pro Display', -apple-system, sans-serif;
             background: radial-gradient(circle at 50% 20%, #151b28 0%, var(--carbon) 80%);
             color: var(--text);
-            padding: 12px;
+            padding: 10px;
             min-height: 100vh;
         }
-        .header {
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid rgba(0, 210, 255, 0.2); padding-bottom: 8px; margin-bottom: 12px;
-        }
-        .brand { font-family: monospace; font-weight: 900; font-size: 1.15rem; letter-spacing: 1px; color: var(--cyan); text-shadow: 0 0 10px rgba(0,210,255,0.4); }
-        .live-tag { font-family: monospace; font-size: 0.72rem; font-weight: bold; background: rgba(0,230,118,0.12); color: var(--green); border: 1px solid var(--green); border-radius: 4px; padding: 2px 6px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(0, 210, 255, 0.2); padding-bottom: 6px; margin-bottom: 10px; }
+        .brand { font-family: monospace; font-weight: 900; font-size: 1.1rem; color: var(--cyan); }
+        .live-tag { font-family: monospace; font-size: 0.7rem; font-weight: bold; background: rgba(0,230,118,0.12); color: var(--green); border: 1px solid var(--green); border-radius: 4px; padding: 2px 6px; }
 
-        .cluster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin-bottom: 12px; }
-        .telemetry-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; position: relative; overflow: hidden; }
+        .cluster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 6px; margin-bottom: 10px; }
+        .telemetry-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; position: relative; overflow: hidden; }
         .telemetry-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--cyan); opacity: 0.7; }
-        .card-title { font-size: 0.62rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
-        .card-val { font-size: 1.25rem; font-family: monospace; font-weight: 800; margin-top: 2px; }
+        .card-title { font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; }
+        .card-val { font-size: 1.15rem; font-family: monospace; font-weight: 800; margin-top: 2px; }
 
-        /* PEDALEIRA ESPORTIVA DE COMPETIÇÃO */
-        .pedal-box {
-            background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
-            padding: 10px; margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
-        }
-        .pedal-unit { display: flex; flex-direction: column; overflow: hidden; align-items: center; perspective: 600px; }
-        .pedal-header { display: flex; justify-content: space-between; width: 100%; font-size: 0.7rem; font-weight: 800; font-family: monospace; margin-bottom: 6px; }
-        .pedal-stage { width: 100%; height: 80px; background: #07090e; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        /* PEDALEIRA */
+        .pedal-box { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 8px; margin-bottom: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .pedal-unit { display: flex; flex-direction: column; align-items: center; perspective: 600px; }
+        .pedal-header { display: flex; justify-content: space-between; width: 100%; font-size: 0.68rem; font-weight: 800; font-family: monospace; margin-bottom: 4px; }
+        .pedal-stage { width: 100%; height: 68px; background: #07090e; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; position: relative; display: flex; justify-content: center; align-items: center; }
         
-        /* Chapa de Alumínio do Pedal */
         .pedal-plate {
-            width: 58px; height: 68px; border-radius: 6px; position: relative;
-            transform-origin: bottom center; transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
-            display: flex; flex-direction: column; overflow: hidden; justify-content: space-evenly; align-items: center;
+            width: 52px; height: 58px; border-radius: 6px; position: relative;
+            transform-origin: bottom center; transition: transform 0.1s ease-out;
+            display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;
             border: 2px solid #a0aec0; background: linear-gradient(145deg, #2d3748, #1a202c);
-            box-shadow: 0 6px 10px rgba(0,0,0,0.8);
         }
-        .pedal-grip { width: 40px; height: 5px; background: #111; border-radius: 2px; }
+        .pedal-grip { width: 34px; height: 4px; background: #111; border-radius: 2px; }
         .brake-plate { border-color: var(--red); }
         .throttle-plate { border-color: var(--green); }
-
-        /* Barra de Curso Lateral do Pedal */
-        .pedal-gauge { width: 100%; height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; margin-top: 6px; overflow: hidden; }
+        .pedal-gauge { width: 100%; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-top: 4px; overflow: hidden; }
         .pedal-gauge-fill { height: 100%; width: 0%; transition: width 0.1s ease; }
 
-        /* ÍCONE DE BATERIA */
-        .battery-widget { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
-        .battery-icon { width: 34px; height: 16px; border: 2px solid var(--green); border-radius: 3px; padding: 1px; position: relative; display: flex; align-items: center; }
-        .battery-icon::after { content: ''; position: absolute; right: -5px; width: 3px; height: 7px; background: var(--green); border-radius: 0 2px 2px 0; }
-        .battery-level { height: 100%; width: 75%; background: var(--green); border-radius: 1px; transition: width 0.3s ease, background 0.3s ease; }
+        /* BATERIA */
+        .battery-widget { display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+        .battery-icon { width: 30px; height: 14px; border: 2px solid var(--green); border-radius: 3px; padding: 1px; position: relative; display: flex; align-items: center; }
+        .battery-icon::after { content: ''; position: absolute; right: -4px; width: 2px; height: 6px; background: var(--green); }
+        .battery-level { height: 100%; width: 75%; background: var(--green); transition: width 0.3s ease; }
 
-        table { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 0.65rem; margin-top: 10px; }
-        th, td { border: 1px solid rgba(255, 255, 255, 0.07); padding: 4px 5px; text-align: left; }
+        table { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 0.62rem; margin-top: 8px; }
+        th, td { border: 1px solid rgba(255, 255, 255, 0.07); padding: 3px 4px; text-align: left; }
         th { background: rgba(14, 19, 29, 0.95); color: var(--text-dim); text-transform: uppercase; }
 
-        .topology-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 10px; margin-top: 12px; }
-        .topology-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; color: var(--cyan); font-weight: 800; text-transform: uppercase; font-family: monospace; margin-bottom: 6px; }
-        .topology-container { width: 100%; height: 195px; display: flex; justify-content: center; }
+        .topology-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 8px; margin-top: 10px; }
+        .topology-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.68rem; color: var(--cyan); font-weight: 800; font-family: monospace; margin-bottom: 4px; }
+        .topology-container { width: 100%; height: 230px; display: flex; justify-content: center; }
         object { width: 100%; height: 100%; border: none; }
     </style>
 </head>
@@ -96,59 +86,51 @@ HTML_PAGE = """<!DOCTYPE html>
         <div class="live-tag">LIVE CAN BUS</div>
     </div>
 
-    <!-- MOSTRADORES SUPERIORES ESTILO INSTRUMENTAÇÃO DIGITAL -->
     <div class="cluster-grid">
-        <div class="telemetry-card"><div class="card-title">Velocidade</div><div class="card-val" style="color:var(--cyan);"><span id="val-speed">0.0</span> <span style="font-size:0.6rem; color:var(--text-dim);">km/h</span></div></div>
-        <div class="telemetry-card"><div class="card-title">Câmbio DCT</div><div class="card-val" style="color:var(--cyan);"><span id="val-gear">G1</span> <span style="font-size:0.65rem; color:var(--orange);" id="val-clutch">[K1]</span></div></div>
+        <div class="telemetry-card"><div class="card-title">Velocidade</div><div class="card-val" style="color:var(--cyan);"><span id="val-speed">0.0</span> <span style="font-size:0.55rem; color:var(--text-dim);">km/h</span></div></div>
+        <div class="telemetry-card"><div class="card-title">Câmbio e-DCT</div><div class="card-val" style="color:var(--cyan);"><span id="val-gear">1</span> <span style="font-size:0.6rem; color:var(--red);" id="val-clutch">[C1]</span></div></div>
         <div class="telemetry-card"><div class="card-title">Rotor EM</div><div class="card-val" style="color:var(--green);"><span id="val-rpm-em">0</span> <span style="font-size:0.55rem; color:var(--text-dim);">RPM</span></div></div>
-        <div class="telemetry-card"><div class="card-title">Virabrequim ICE</div><div class="card-val"><span id="val-rpm-ice">0</span> <span style="font-size:0.55rem; color:var(--text-dim);">RPM</span></div></div>
-        <div class="telemetry-card"><div class="card-title">K0 Linha</div><div class="card-val" style="color:var(--orange);"><span id="val-k0-press">0.0</span> <span style="font-size:0.55rem; color:var(--text-dim);">bar</span></div><div id="val-k0-state" style="font-size:0.58rem; color:var(--text-dim);">OPEN</div></div>
+        <div class="telemetry-card"><div class="card-title">ICE RPM</div><div class="card-val"><span id="val-rpm-ice">0</span> <span style="font-size:0.55rem; color:var(--text-dim);">RPM</span></div></div>
+        <div class="telemetry-card"><div class="card-title">K0 Linha</div><div class="card-val" style="color:var(--orange);"><span id="val-k0-press">0.0</span> <span style="font-size:0.55rem; color:var(--text-dim);">bar</span></div><div id="val-k0-state" style="font-size:0.55rem; color:var(--text-dim);">OPEN</div></div>
         
         <div class="telemetry-card">
             <div class="card-title">Bateria HV</div>
             <div class="battery-widget">
                 <div class="battery-icon" id="bat-box"><div id="bat-level" class="battery-level"></div></div>
-                <div class="card-val" style="margin-top:0; font-size:1.0rem;" id="soc-text-wrap"><span id="val-soc">0.0</span>%</div>
+                <div class="card-val" style="margin-top:0; font-size:0.95rem;" id="soc-text-wrap"><span id="val-soc">0.0</span>%</div>
             </div>
-            <div style="font-size:0.55rem; color:var(--text-dim); margin-top:2px;">Autonomia: <span id="val-range" style="color:var(--green); font-weight:bold;">0.0</span> km</div>
+            <div style="font-size:0.55rem; color:var(--text-dim); margin-top:2px;">Range: <span id="val-range" style="color:var(--green); font-weight:bold;">0.0</span> km</div>
         </div>
     </div>
 
-    <!-- PEDALEIRA FÍSICA ANIMADA (ACELERADOR & FREIO/REGEN) -->
+    <!-- PEDALEIRA FÍSICA -->
     <div class="pedal-box">
-        <!-- Pedal de Freio -->
         <div class="pedal-unit">
             <div class="pedal-header"><span style="color:var(--red);">[ FREIO / REGEN ]</span><span id="brake-pct-txt" style="color:var(--red);">0.0%</span></div>
             <div class="pedal-stage">
-                <div id="pedal-brake" class="pedal-plate brake-plate">
-                    <div class="pedal-grip"></div><div class="pedal-grip"></div><div class="pedal-grip"></div>
-                </div>
+                <div id="pedal-brake" class="pedal-plate brake-plate"><div class="pedal-grip"></div><div class="pedal-grip"></div><div class="pedal-grip"></div></div>
             </div>
             <div class="pedal-gauge"><div id="brake-gauge" class="pedal-gauge-fill" style="background:var(--red);"></div></div>
         </div>
-
-        <!-- Pedal de Acelerador -->
         <div class="pedal-unit">
-            <div class="pedal-header"><span style="color:var(--green);">[ ACELERADOR TPS ]</span><span id="throttle-pct-txt" style="color:var(--green);">0.0%</span></div>
+            <div class="pedal-header"><span style="color:var(--green);">[ ACELERADOR ]</span><span id="throttle-pct-txt" style="color:var(--green);">0.0%</span></div>
             <div class="pedal-stage">
-                <div id="pedal-throttle" class="pedal-plate throttle-plate">
-                    <div class="pedal-grip"></div><div class="pedal-grip"></div><div class="pedal-grip"></div>
-                </div>
+                <div id="pedal-throttle" class="pedal-plate throttle-plate"><div class="pedal-grip"></div><div class="pedal-grip"></div><div class="pedal-grip"></div></div>
             </div>
             <div class="pedal-gauge"><div id="throttle-gauge" class="pedal-gauge-fill" style="background:var(--green);"></div></div>
         </div>
     </div>
 
-    <!-- HISTÓRICO CAN -->
+    <!-- TABELA CAN -->
     <table>
-        <thead><tr><th>s</th><th>km/h</th><th>Marcha</th><th>EM (RPM)</th><th>ICE (RPM)</th><th>Torque</th><th>TPS</th><th>Brake</th><th>Modo</th></tr></thead>
+        <thead><tr><th>s</th><th>km/h</th><th>Marcha</th><th>Embr</th><th>EM(RPM)</th><th>ICE(RPM)</th><th>TPS</th><th>Freio</th><th>Modo</th></tr></thead>
         <tbody id="table-body"></tbody>
     </table>
 
-    <!-- ESQUEMÁTICO DCT E K0 -->
+    <!-- ESQUEMÁTICO e-DCT INTEGRADO -->
     <div class="topology-card">
         <div class="topology-header">
-            <span>Esquemático DCT: K0, K1, K2 & K3</span>
+            <span>Esquemático e-DCT Dual-Shaft</span>
             <span id="topology-status" style="color: var(--green); font-size: 0.65rem;">MODO: EV_MODE</span>
         </div>
         <div class="topology-container">
@@ -157,7 +139,7 @@ HTML_PAGE = """<!DOCTYPE html>
     </div>
 
     <script>
-        function updateSvgClasses(mode, k0State, activeClutch) {
+        function updateSvgClasses(mode, k0State, activeClutch, gear) {
             const obj = document.getElementById('svg-obj');
             if (!obj || !obj.contentDocument) return;
             const svgDoc = obj.contentDocument;
@@ -165,40 +147,52 @@ HTML_PAGE = """<!DOCTYPE html>
             const ice = svgDoc.getElementById('svg-ice');
             const k0 = svgDoc.getElementById('svg-k0');
             const em = svgDoc.getElementById('svg-em');
-            const k1 = svgDoc.getElementById('svg-k1');
-            const k2 = svgDoc.getElementById('svg-k2');
-            const k3 = svgDoc.getElementById('svg-k3');
-            const flowIceK0 = svgDoc.getElementById('svg-flow-ice-k0');
-            const flowK0Em = svgDoc.getElementById('svg-flow-k0-em');
+            const c1Top = svgDoc.getElementById('svg-clutch1-top');
+            const c1Bot = svgDoc.getElementById('svg-clutch1-bot');
+            const c2Top = svgDoc.getElementById('svg-clutch2-top');
+            const c2Bot = svgDoc.getElementById('svg-clutch2-bot');
             const topStatus = document.getElementById('topology-status');
             if (!ice || !k0 || !em) return;
 
+            // Reset
             ice.classList.remove('active-ice');
-            k0.classList.remove('active-k0-engaged');
-            em.classList.remove('active-em-drive', 'active-em-regen');
-            if (k1) k1.classList.remove('active-clutch-gear');
-            if (k2) k2.classList.remove('active-clutch-gear');
-            if (k3) k3.classList.remove('active-clutch-gear');
-            if (flowIceK0) flowIceK0.classList.remove('active-flow');
-            if (flowK0Em) flowK0Em.classList.remove('active-flow');
+            k0.classList.remove('active-k0');
+            em.classList.remove('active-em', 'active-em-regen');
+            if (c1Top) c1Top.classList.remove('active-clutch1');
+            if (c1Bot) c1Bot.classList.remove('active-clutch1');
+            if (c2Top) c2Top.classList.remove('active-clutch2');
+            if (c2Bot) c2Bot.classList.remove('active-clutch2');
 
-            if (activeClutch === 'K1' && k1) k1.classList.add('active-clutch-gear');
-            else if (activeClutch === 'K2' && k2) k2.classList.add('active-clutch-gear');
-            else if (activeClutch === 'K3' && k3) k3.classList.add('active-clutch-gear');
+            // Reset engrenagens
+            for (let g = 1; g <= 6; g++) {
+                const el = svgDoc.getElementById('gear-' + g);
+                if (el) el.style.filter = 'none';
+            }
 
-            if (topStatus) topStatus.innerText = 'MODO: ' + mode + ' [K0: ' + k0State + ' | ' + activeClutch + ' ATIVA]';
+            // Ativação da Clutch 1 ou 2
+            if (activeClutch === 'CLUTCH_1') {
+                if (c1Top) c1Top.classList.add('active-clutch1');
+                if (c1Bot) c1Bot.classList.add('active-clutch1');
+            } else if (activeClutch === 'CLUTCH_2') {
+                if (c2Top) c2Top.classList.add('active-clutch2');
+                if (c2Bot) c2Bot.classList.add('active-clutch2');
+            }
+
+            // Realce da engrenagem da marcha ativa
+            const activeGearEl = svgDoc.getElementById('gear-' + gear);
+            if (activeGearEl) {
+                activeGearEl.style.filter = 'drop-shadow(0 0 8px #00d2ff)';
+            }
+
+            if (topStatus) topStatus.innerText = 'MODO: ' + mode + ' [K0: ' + k0State + ' | ' + activeClutch + ' MARCH: ' + gear + ']';
 
             if (mode === 'EV_MODE') {
-                em.classList.add('active-em-drive');
+                em.classList.add('active-em');
                 if (topStatus) topStatus.style.color = 'var(--green)';
             } else if (mode === 'P2_HYBRID_BOOST') {
                 ice.classList.add('active-ice');
-                em.classList.add('active-em-drive');
-                if (k0State === 'LOCKED' || k0State === 'SLIP') {
-                    k0.classList.add('active-k0-engaged');
-                    if (flowIceK0) flowIceK0.classList.add('active-flow');
-                    if (flowK0Em) flowK0Em.classList.add('active-flow');
-                }
+                em.classList.add('active-em');
+                if (k0State === 'LOCKED' || k0State === 'SLIP') k0.classList.add('active-k0');
                 if (topStatus) topStatus.style.color = 'var(--cyan)';
             } else if (mode === 'REGEN_BRAKE') {
                 em.classList.add('active-em-regen');
@@ -215,71 +209,53 @@ HTML_PAGE = """<!DOCTYPE html>
 
                 const last = data.rows[data.rows.length - 1];
                 document.getElementById('val-speed').innerText = last.speed_kmh || '0.0';
-                document.getElementById('val-gear').innerText = last.gear || 'G1';
-                document.getElementById('val-clutch').innerText = '[' + (last.k_clutch_active || 'K1') + ']';
+                document.getElementById('val-gear').innerText = last.gear || '1';
+
+                const activeClutch = last.active_clutch || 'CLUTCH_1';
+                const clutchLabel = activeClutch === 'CLUTCH_1' ? '[C1]' : '[C2]';
+                const clutchColor = activeClutch === 'CLUTCH_1' ? 'var(--red)' : 'var(--green)';
+                const clutchElem = document.getElementById('val-clutch');
+                clutchElem.innerText = clutchLabel;
+                clutchElem.style.color = clutchColor;
+
                 document.getElementById('val-rpm-em').innerText = last.rpm_em || '0';
                 document.getElementById('val-rpm-ice').innerText = last.rpm_ice || '0';
                 document.getElementById('val-k0-press').innerText = last.k0_press_bar || '0.0';
                 document.getElementById('val-range').innerText = last.ev_range_km || '0.0';
 
-                // Dinâmica dos Pedais de Acelerador e Freio
+                // Pedais
                 const throttleVal = parseFloat(last.throttle_pct || '0');
                 const brakeVal = parseFloat(last.brake_pct || '0');
-
                 document.getElementById('throttle-pct-txt').innerText = throttleVal.toFixed(1) + '%';
                 document.getElementById('brake-pct-txt').innerText = brakeVal.toFixed(1) + '%';
-
                 document.getElementById('throttle-gauge').style.width = throttleVal + '%';
                 document.getElementById('brake-gauge').style.width = brakeVal + '%';
 
-                // Deformação angular 3D simulando o pedal sendo pressionado
-                const throttleAngle = (throttleVal / 100.0) * 32.0; // Até 32 graus
-                const brakeAngle = (brakeVal / 100.0) * 32.0;
+                document.getElementById('pedal-throttle').style.transform = `rotateX(${(throttleVal/100)*30}deg)`;
+                document.getElementById('pedal-brake').style.transform = `rotateX(${(brakeVal/100)*30}deg)`;
 
-                const throttlePedal = document.getElementById('pedal-throttle');
-                const brakePedal = document.getElementById('pedal-brake');
-
-                throttlePedal.style.transform = `rotateX(${throttleAngle}deg) translateZ(-${throttleVal * 0.15}px)`;
-                brakePedal.style.transform = `rotateX(${brakeAngle}deg) translateZ(-${brakeVal * 0.15}px)`;
-
-                if (throttleVal > 5) throttlePedal.style.boxShadow = '0 0 14px rgba(0, 230, 118, 0.4)';
-                else throttlePedal.style.boxShadow = '0 6px 10px rgba(0,0,0,0.8)';
-
-                if (brakeVal > 5) brakePedal.style.boxShadow = '0 0 14px rgba(255, 23, 68, 0.4)';
-                else brakePedal.style.boxShadow = '0 6px 10px rgba(0,0,0,0.8)';
-
-                // Status de K0
+                // K0
                 const k0StateElem = document.getElementById('val-k0-state');
                 const k0State = last.k0_state || 'OPEN';
                 k0StateElem.innerText = k0State;
-                if (k0State === 'LOCKED') k0StateElem.style.color = 'var(--green)';
-                else if (k0State === 'SLIP') k0StateElem.style.color = 'var(--yellow)';
-                else k0StateElem.style.color = 'var(--text-dim)';
+                k0StateElem.style.color = k0State === 'LOCKED' ? 'var(--green)' : (k0State === 'SLIP' ? 'var(--yellow)' : 'var(--text-dim)');
 
-                // Bateria HV
+                // Bateria
                 const socVal = parseFloat(last.soc_pct || '0');
                 document.getElementById('val-soc').innerText = socVal.toFixed(1);
-                
                 const batLevel = document.getElementById('bat-level');
-                const batBox = document.getElementById('bat-box');
-                const socWrap = document.getElementById('soc-text-wrap');
-                
                 batLevel.style.width = Math.max(5, Math.min(100, socVal)) + '%';
-                let batColor = 'var(--green)';
-                if (socVal < 20) batColor = 'var(--red)';
-                else if (socVal < 50) batColor = 'var(--yellow)';
-                
+                let batColor = socVal < 20 ? 'var(--red)' : (socVal < 50 ? 'var(--yellow)' : 'var(--green)');
                 batLevel.style.background = batColor;
-                batBox.style.borderColor = batColor;
-                socWrap.style.color = batColor;
+                document.getElementById('bat-box').style.borderColor = batColor;
+                document.getElementById('soc-text-wrap').style.color = batColor;
 
                 const mode = last.modo_propulsao || 'NOMINAL';
-                const activeClutch = last.k_clutch_active || 'K1';
-                updateSvgClasses(mode, k0State, activeClutch);
+                updateSvgClasses(mode, k0State, activeClutch, last.gear || '1');
 
                 let rowsHtml = '';
                 for (let r of data.rows) {
-                    rowsHtml += `<tr><td>${r.timestamp_s}</td><td>${r.speed_kmh}</td><td>${r.gear}</td><td>${r.rpm_em}</td><td>${r.rpm_ice}</td><td>${r.torque_nm}</td><td>${r.throttle_pct}%</td><td>${r.brake_pct}%</td><td>${r.modo_propulsao}</td></tr>`;
+                    rowsHtml += `<tr><td>${r.timestamp_s}</td><td>${r.speed_kmh}</td><td>${r.gear}</td><td>${r.active_clutch === 'CLUTCH_1' ? 'C1' : 'C2'}</td><td>${r.rpm_em}</td><td>${r.rpm_ice}</td><td>${r.throttle_pct}%</td><td>${r.brake_pct}%</td><td>${r.modo_propulsao}</td></tr>`;
                 }
                 document.getElementById('table-body').innerHTML = rowsHtml;
             } catch (err) {
