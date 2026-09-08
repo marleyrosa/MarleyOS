@@ -129,7 +129,8 @@ def run_telemetry_loop():
         if len(history) > 6:
             history.pop(0)
 
-        with open(CSV_PATH, "w", newline="", encoding="utf-8") as f:
+        temp_path = CSV_PATH + ".tmp"
+        with open(temp_path, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             writer.writerow([
                 "timestamp_s", "speed_kmh", "gear", "active_clutch", "rpm_em", 
@@ -138,6 +139,14 @@ def run_telemetry_loop():
                 "temp_inv_c", "modo_propulsao", "status_motor"
             ])
             writer.writerows(history)
+        for attempt in range(10):
+            try:
+                os.replace(temp_path, CSV_PATH)
+                break
+            except PermissionError:
+                if attempt == 9:
+                    raise
+                time.sleep(0.01)
 
         t = round(t + dt, 1)
         time.sleep(dt)

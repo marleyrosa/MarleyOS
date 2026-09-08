@@ -3,6 +3,8 @@ import socketserver
 import os
 import csv
 import json
+import threading
+import time
 
 PORT = 8080
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -229,7 +231,11 @@ HTML_PAGE = """<!DOCTYPE html>
             }
         }
 
+        let telemetryRequestInFlight = false;
+
         async function fetchTelemetry() {
+            if (telemetryRequestInFlight) return;
+            telemetryRequestInFlight = true;
             try {
                 const res = await fetch('/api/telemetry');
                 if (!res.ok) return;
@@ -304,24 +310,33 @@ HTML_PAGE = """<!DOCTYPE html>
                 document.getElementById('table-body').innerHTML = rowsHtml;
             } catch (err) {
                 console.error('Falha CAN:', err);
+            } finally {
+                telemetryRequestInFlight = false;
             }
         }
-        setInterval(fetchTelemetry, 300);
+        setInterval(fetchTelemetry, 500);
         fetchTelemetry();
     </script>
 </body>
 </html>"""
 
+class ThreadingTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+    allow_reuse_address = True
+    daemon_threads = True
+
 class ClusterHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/api/telemetry":
             rows = []
-            if os.path.exists(CSV_PATH):
+            for _ in range(3):
+                if not os.path.exists(CSV_PATH):
+                    break
                 try:
                     with open(CSV_PATH, "r", encoding="utf-8") as f:
                         rows = list(csv.DictReader(f))
-                except Exception:
-                    rows = []
+                    break
+                except (OSError, UnicodeDecodeError):
+                    time.sleep(0.005)
 
             payload = json.dumps({"rows": rows}).encode("utf-8")
             self.send_response(200)
@@ -365,7 +380,6 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
         pass
 
 if __name__ == "__main__":
-    socketserver.TCPServer.allow_reuse_address = True
-    with socketserver.TCPServer(("", PORT), ClusterHandler) as httpd:
+    with ThreadingTCPServer(("", PORT), ClusterHandler) as httpd:
         print(f"Servidor ativo em http://localhost:{PORT}")
         httpd.serve_forever()
