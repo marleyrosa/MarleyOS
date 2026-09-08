@@ -18,9 +18,10 @@ def run_telemetry_loop():
         cycle_time = t % 18.0
 
         if cycle_time < 5.0:
-            # EV_MODE: Marcha 1 ou 2 (K1 ativa)
+            # EV_MODE: Aceleração leve/moderada, freio zerado
             progress = cycle_time / 5.0
-            throttle = round(15.0 + 15.0 * math.sin(progress * math.pi), 1)
+            throttle = round(20.0 + 25.0 * math.sin(progress * math.pi), 1)
+            brake = 0.0
             rpm_em = int(800 * progress + 400)
             rpm_ice = 0
             k0_press = 0.0
@@ -34,9 +35,10 @@ def run_telemetry_loop():
             k_clutch_active = "K1"
 
         elif cycle_time < 12.0:
-            # P2_HYBRID_BOOST: Aceleração alta, progressão G2 -> G3 -> G4 (K1 e K2 alternando)
+            # P2_HYBRID_BOOST: Aceleração intensa, trocas de marcha, freio zerado
             progress = (cycle_time - 5.0) / 7.0
-            throttle = round(65.0 + 30.0 * math.sin(progress * math.pi), 1)
+            throttle = round(70.0 + 28.0 * math.sin(progress * math.pi), 1)
+            brake = 0.0
             rpm_em = int(1800 + 3200 * progress)
             
             if progress < 0.25:
@@ -67,9 +69,10 @@ def run_telemetry_loop():
             temp_inv = min(95.0, temp_inv + 0.12)
 
         else:
-            # REGEN_BRAKE: Marcha alta/desaceleração, freio K3 ou K2 ativo
+            # REGEN_BRAKE: Acelerador solto, pedal de freio pressionado proporcionalmente
             progress = (cycle_time - 12.0) / 6.0
             throttle = 0.0
+            brake = round(65.0 * (1.0 - progress), 1)
             rpm_em = max(0, int(3500 * (1.0 - progress)))
             rpm_ice = 0
             k0_press = 0.0
@@ -92,6 +95,8 @@ def run_telemetry_loop():
             k_clutch_active,
             str(rpm_em),
             str(rpm_ice),
+            f"{throttle:.1f}",
+            f"{brake:.1f}",
             f"{torque:.1f}",
             f"{k0_press:.1f}",
             k0_state,
@@ -111,8 +116,9 @@ def run_telemetry_loop():
             writer = csv.writer(f)
             writer.writerow([
                 "timestamp_s", "speed_kmh", "gear", "k_clutch_active", "rpm_em", 
-                "rpm_ice", "torque_nm", "k0_press_bar", "k0_state", "soc_pct", 
-                "ev_range_km", "bsfc_g_kwh", "temp_inv_c", "modo_propulsao", "status_motor"
+                "rpm_ice", "throttle_pct", "brake_pct", "torque_nm", "k0_press_bar", 
+                "k0_state", "soc_pct", "ev_range_km", "bsfc_g_kwh", "temp_inv_c", 
+                "modo_propulsao", "status_motor"
             ])
             writer.writerows(history)
 
