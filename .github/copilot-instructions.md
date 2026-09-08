@@ -1,16 +1,20 @@
-# Diretrizes de IA para Modelagem e Simulação em MATLAB / Simulink
+# Diretrizes de Automação Simulink para o MarleyOS (via MATLAB MCP Server)
 
-Ao sintetizar código MATLAB para o projeto MarleyOS via MATLAB MCP Core Server ou GitHub Copilot, siga estritamente estas diretrizes:
+Sempre que gerar ou editar scripts de automação do MATLAB/Simulink neste repositório, siga estritamente os padrões de Model-Based Design:
 
-1. Simulação Moderna:
-   - Utilize a classe Simulink.SimulationInput em vez da sintaxe legada no comando sim().
-   - Configure parâmetros do modelo via .setModelParameter('ParamName', 'Value').
-   - Ajuste variáveis de calibração via .setVariable('VarName', value).
+1. **Uso Exclusivo de Simulink.SimulationInput**:
+   - Nunca use `sim(modelName, 'ExternalInput', ...)` ou defina variáveis globais soltas no `base workspace`.
+   - Crie instâncias limpas com: `simIn = Simulink.SimulationInput(modelName);`.
+   - Modifique parâmetros ou sinais usando `simIn = simIn.setVariable('varName', valor);`.
 
-2. Entradas Externas:
-   - Nunca use arrays simples concatenados [t, u] sem ativar LoadExternalInput.
-   - Dê preferência a estruturas Simulink.SimulationData.Dataset.
+2. **Formato de Dados Estruturado (Dataset)**:
+   - Configure o modelo para salvar saídas no formato `Dataset`:
+     `simIn = simIn.setModelParameter('SaveFormat', 'Dataset');`
+     `simIn = simIn.setModelParameter('SaveOutput', 'on');`
+   - Recupere sinais exclusivamente através de `simOut.logsout.get('sinal').Values`.
 
-3. Carregamento e Extração:
-   - Não use load_system de forma redundante se o objeto de simulação gerencia o carregamento.
-   - Extraia logs de sinais a partir de simOut.logsout ou simOut.yout no formato Dataset.
+3. **Integração com Telemetria**:
+   - Todo script de simulação dinâmico de trem de força deve exportar seus vetores temporais diretamente para o arquivo:
+     `module_2_mcp/data/can_telemetry.csv`
+   - O cabeçalho obrigatório do CSV é:
+     `timestamp_s,rpm,torque_nm,throttle_pct,iq_a,modo_propulsao,status_motor`
