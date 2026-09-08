@@ -12,13 +12,14 @@ def run_telemetry_loop():
     soc = 82.0
     temp_inv = 45.0
     pack_capacity_kwh = 14.8
+    prev_speed = 0.0
     history = []
 
     while True:
         cycle_time = t % 20.0
 
         if cycle_time < 5.0:
-            # EV_MODE: Marcha 1 (Clutch 1 engatada / eixo sólido ativo)
+            # EV_MODE
             progress = cycle_time / 5.0
             throttle = round(20.0 + 25.0 * math.sin(progress * math.pi), 1)
             brake = 0.0
@@ -35,14 +36,13 @@ def run_telemetry_loop():
             active_clutch = "CLUTCH_1"
 
         elif cycle_time < 14.0:
-            # P2_HYBRID_BOOST: Passagem sequencial 2ª -> 3ª -> 4ª -> 5ª (alternando C1 e C2)
+            # P2_HYBRID_BOOST
             progress = (cycle_time - 5.0) / 9.0
             throttle = round(75.0 + 22.0 * math.sin(progress * math.pi), 1)
             brake = 0.0
             rpm_em = int(2000 + 3500 * progress)
             
             if progress < 0.22:
-                # Sincronização K0 e 2ª Marcha (Clutch 2)
                 rpm_ice = int(rpm_em * (progress / 0.22))
                 k0_press = 2.0
                 k0_state = "SYNC"
@@ -50,7 +50,6 @@ def run_telemetry_loop():
                 gear = "2"
                 active_clutch = "CLUTCH_2"
             elif progress < 0.45:
-                # 3ª Marcha (Clutch 1)
                 rpm_ice = int(rpm_em * 0.96)
                 k0_press = 10.0
                 k0_state = "SLIP"
@@ -58,7 +57,6 @@ def run_telemetry_loop():
                 gear = "3"
                 active_clutch = "CLUTCH_1"
             elif progress < 0.72:
-                # 4ª Marcha (Clutch 2)
                 rpm_ice = rpm_em
                 k0_press = 18.0
                 k0_state = "LOCKED"
@@ -66,7 +64,6 @@ def run_telemetry_loop():
                 gear = "4"
                 active_clutch = "CLUTCH_2"
             else:
-                # 5ª Marcha (Clutch 1)
                 rpm_ice = rpm_em
                 k0_press = 18.0
                 k0_state = "LOCKED"
@@ -80,7 +77,7 @@ def run_telemetry_loop():
             temp_inv = min(95.0, temp_inv + 0.12)
 
         else:
-            # REGEN_BRAKE: Marcha 6 (Clutch 2 / freio)
+            # REGEN_BRAKE
             progress = (cycle_time - 14.0) / 6.0
             throttle = 0.0
             brake = round(70.0 * (1.0 - progress), 1)
@@ -97,6 +94,13 @@ def run_telemetry_loop():
             active_clutch = "CLUTCH_2"
 
         speed_kmh = round((rpm_em / 4.1) * (2 * math.pi * 0.315) * 0.06, 1)
+        
+        # Derivada inercial (Gx) em Gravidades (G)
+        accel_mps2 = ((speed_kmh - prev_speed) / 3.6) / dt
+        gx = round(accel_mps2 / 9.81, 2)
+        gy = round(0.18 * math.sin(t * 0.8), 2) # Força lateral simulada em curva
+        prev_speed = speed_kmh
+
         ev_range_km = round(((soc - 10.0) / 100.0) * pack_capacity_kwh / 0.16, 1)
 
         row = [
@@ -109,6 +113,8 @@ def run_telemetry_loop():
             f"{throttle:.1f}",
             f"{brake:.1f}",
             f"{torque:.1f}",
+            f"{gx:.2f}",
+            f"{gy:.2f}",
             f"{k0_press:.1f}",
             k0_state,
             f"{soc:.1f}",
@@ -127,9 +133,9 @@ def run_telemetry_loop():
             writer = csv.writer(f)
             writer.writerow([
                 "timestamp_s", "speed_kmh", "gear", "active_clutch", "rpm_em", 
-                "rpm_ice", "throttle_pct", "brake_pct", "torque_nm", "k0_press_bar", 
-                "k0_state", "soc_pct", "ev_range_km", "bsfc_g_kwh", "temp_inv_c", 
-                "modo_propulsao", "status_motor"
+                "rpm_ice", "throttle_pct", "brake_pct", "torque_nm", "gx", "gy", 
+                "k0_press_bar", "k0_state", "soc_pct", "ev_range_km", "bsfc_g_kwh", 
+                "temp_inv_c", "modo_propulsao", "status_motor"
             ])
             writer.writerows(history)
 
