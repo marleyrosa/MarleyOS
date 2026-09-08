@@ -18,22 +18,26 @@ HTML_PAGE = """<!DOCTYPE html>
     <style>
         :root {
             --bg: #07090e; --surface: rgba(18, 24, 38, 0.85); --border: rgba(0, 210, 255, 0.25);
-            --cyan: #00d2ff; --green: #00e676; --red: #ff3366; --text: #e6edf3; --text-dim: #8b949e;
+            --cyan: #00d2ff; --green: #00e676; --red: #ff3366; --yellow: #ffd600; --text: #e6edf3; --text-dim: #8b949e;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 14px; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px; }
         .brand { font-weight: 800; font-size: 1.1rem; color: var(--cyan); }
-        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
+        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap: 8px; margin-bottom: 14px; }
         .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
-        .stat-title { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; }
-        .stat-val { font-size: 1.25rem; font-weight: 700; margin-top: 4px; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 14px; }
-        th, td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 8px; text-align: left; }
+        .stat-title { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; }
+        .stat-val { font-size: 1.15rem; font-weight: 700; margin-top: 4px; }
+        
+        .soc-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 6px; overflow: hidden; }
+        .soc-bar-fill { height: 100%; width: 50%; background: var(--green); transition: width 0.3s ease; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-top: 14px; }
+        th, td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 5px 6px; text-align: left; }
         th { background: rgba(15, 22, 36, 0.9); color: var(--text-dim); text-transform: uppercase; }
-        .topology-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-top: 18px; }
+        .topology-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-top: 16px; }
         .topology-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
-        .topology-container { width: 100%; height: 180px; display: flex; justify-content: center; }
+        .topology-container { width: 100%; height: 170px; display: flex; justify-content: center; }
         object { width: 100%; height: 100%; border: none; }
     </style>
 </head>
@@ -43,13 +47,19 @@ HTML_PAGE = """<!DOCTYPE html>
         <div id="live-indicator" style="font-size: 0.75rem; color: var(--green);">CLUSTER ONLINE (LIVE)</div>
     </div>
     <div class="grid-stats">
-        <div class="stat-card"><div class="stat-title">Tacômetro</div><div class="stat-val" style="color:var(--cyan);"><span id="val-rpm">0</span> <span style="font-size:0.75rem; color:var(--text-dim);">RPM</span></div></div>
-        <div class="stat-card"><div class="stat-title">Torque Saída</div><div class="stat-val"><span id="val-torque">0.0</span> <span style="font-size:0.75rem; color:var(--text-dim);">Nm</span></div></div>
-        <div class="stat-card"><div class="stat-title">Acelerador</div><div class="stat-val"><span id="val-throttle">0.0</span> <span style="font-size:0.75rem; color:var(--text-dim);">%</span></div></div>
-        <div class="stat-card"><div class="stat-title">Modo Operação</div><div class="stat-val" style="font-size:0.85rem; color:var(--green);"><span id="val-mode">NOMINAL</span></div></div>
+        <div class="stat-card"><div class="stat-title">Tacômetro</div><div class="stat-val" style="color:var(--cyan);"><span id="val-rpm">0</span> <span style="font-size:0.65rem; color:var(--text-dim);">RPM</span></div></div>
+        <div class="stat-card"><div class="stat-title">Torque</div><div class="stat-val"><span id="val-torque">0.0</span> <span style="font-size:0.65rem; color:var(--text-dim);">Nm</span></div></div>
+        <div class="stat-card"><div class="stat-title">Acelerador</div><div class="stat-val"><span id="val-throttle">0.0</span> <span style="font-size:0.65rem; color:var(--text-dim);">%</span></div></div>
+        <div class="stat-card">
+            <div class="stat-title">Bateria SoC</div>
+            <div class="stat-val" style="color:var(--green);"><span id="val-soc">0.0</span> <span style="font-size:0.65rem; color:var(--text-dim);">%</span></div>
+            <div class="soc-bar-bg"><div id="soc-bar" class="soc-bar-fill"></div></div>
+        </div>
+        <div class="stat-card"><div class="stat-title">Inversor T°</div><div class="stat-val" style="color:var(--yellow);"><span id="val-temp">0.0</span> <span style="font-size:0.65rem; color:var(--text-dim);">°C</span></div></div>
+        <div class="stat-card"><div class="stat-title">Modo P2</div><div class="stat-val" style="font-size:0.75rem; color:var(--green);"><span id="val-mode">NOMINAL</span></div></div>
     </div>
     <table>
-        <thead><tr><th>Tempo (s)</th><th>RPM</th><th>Torque (Nm)</th><th>Acel (%)</th><th>Modo</th></tr></thead>
+        <thead><tr><th>Tempo (s)</th><th>RPM</th><th>Torque</th><th>Acel</th><th>SoC (%)</th><th>T (°C)</th><th>Modo</th></tr></thead>
         <tbody id="table-body"></tbody>
     </table>
     <div class="topology-card">
@@ -73,7 +83,6 @@ HTML_PAGE = """<!DOCTYPE html>
             const flowIceK0 = svgDoc.getElementById('svg-flow-ice-k0');
             const flowK0Em = svgDoc.getElementById('svg-flow-k0-em');
             const topStatus = document.getElementById('topology-status');
-
             if (!ice || !k0 || !em) return;
 
             ice.classList.remove('active-ice');
@@ -82,9 +91,7 @@ HTML_PAGE = """<!DOCTYPE html>
             if (flowIceK0) flowIceK0.classList.remove('active-flow');
             if (flowK0Em) flowK0Em.classList.remove('active-flow');
 
-            if (topStatus) {
-                topStatus.innerText = 'MODO: ' + mode;
-            }
+            if (topStatus) topStatus.innerText = 'MODO: ' + mode;
 
             if (mode === 'EV_MODE') {
                 em.classList.add('active-em-drive');
@@ -113,23 +120,28 @@ HTML_PAGE = """<!DOCTYPE html>
                 document.getElementById('val-rpm').innerText = last.rpm || '0';
                 document.getElementById('val-torque').innerText = last.torque_nm || '0.0';
                 document.getElementById('val-throttle').innerText = last.throttle_pct || '0.0';
+                document.getElementById('val-soc').innerText = last.soc_pct || '0.0';
+                document.getElementById('val-temp').innerText = last.temp_inv_c || '0.0';
                 
+                const socVal = parseFloat(last.soc_pct || '0');
+                const socBar = document.getElementById('soc-bar');
+                socBar.style.width = socVal + '%';
+                if (socVal < 20) socBar.style.background = 'var(--red)';
+                else if (socVal < 50) socBar.style.background = 'var(--yellow)';
+                else socBar.style.background = 'var(--green)';
+
                 const mode = last.modo_propulsao || 'NOMINAL';
                 const modeElem = document.getElementById('val-mode');
                 modeElem.innerText = mode;
-                if (mode === 'REGEN_BRAKE') {
-                    modeElem.style.color = 'var(--red)';
-                } else if (mode === 'P2_HYBRID_BOOST') {
-                    modeElem.style.color = 'var(--cyan)';
-                } else {
-                    modeElem.style.color = 'var(--green)';
-                }
+                if (mode === 'REGEN_BRAKE') modeElem.style.color = 'var(--red)';
+                else if (mode === 'P2_HYBRID_BOOST') modeElem.style.color = 'var(--cyan)';
+                else modeElem.style.color = 'var(--green)';
 
                 updateSvgClasses(mode);
 
                 let rowsHtml = '';
                 for (let r of data.rows) {
-                    rowsHtml += `<tr><td>${r.timestamp_s}</td><td>${r.rpm}</td><td>${r.torque_nm}</td><td>${r.throttle_pct}</td><td>${r.modo_propulsao}</td></tr>`;
+                    rowsHtml += `<tr><td>${r.timestamp_s}</td><td>${r.rpm}</td><td>${r.torque_nm}</td><td>${r.throttle_pct}</td><td>${r.soc_pct}</td><td>${r.temp_inv_c}</td><td>${r.modo_propulsao}</td></tr>`;
                 }
                 document.getElementById('table-body').innerHTML = rowsHtml;
             } catch (err) {
