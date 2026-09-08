@@ -32,8 +32,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         th, td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 8px; text-align: left; }
         th { background: rgba(15, 22, 36, 0.9); color: var(--text-dim); text-transform: uppercase; }
         .topology-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-top: 18px; }
-        .topology-header { font-size: 0.75rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
-        .topology-container { width: 100%; max-height: 180px; display: flex; justify-content: center; }
+        .topology-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+        .topology-container { width: 100%; max-height: 190px; display: flex; justify-content: center; }
     </style>
 </head>
 <body>
@@ -52,12 +52,49 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <tbody id="table-body"></tbody>
     </table>
     <div class="topology-card">
-        <div class="topology-header">Topologia Mecânica P2 & Acoplamento K0</div>
+        <div class="topology-header">
+            <span>Topologia Mecânica P2 & Acoplamento K0</span>
+            <span id="topology-status" style="color: var(--green); font-size: 0.7rem;">MODO: EV_MODE</span>
+        </div>
         <div class="topology-container">
             {{SVG_DIAGRAM}}
         </div>
     </div>
     <script>
+        function updateTopologyVisuals(mode) {
+            const ice = document.getElementById('svg-ice');
+            const k0 = document.getElementById('svg-k0');
+            const em = document.getElementById('svg-em');
+            const flowIceK0 = document.getElementById('svg-flow-ice-k0');
+            const flowK0Em = document.getElementById('svg-flow-k0-em');
+            const topStatus = document.getElementById('topology-status');
+            if (!ice || !k0 || !em) return;
+
+            // Reset de classes
+            ice.classList.remove('active-ice');
+            k0.classList.remove('active-k0-engaged');
+            em.classList.remove('active-em-drive', 'active-em-regen');
+            if (flowIceK0) flowIceK0.classList.remove('active-flow');
+            if (flowK0Em) flowK0Em.classList.remove('active-flow');
+
+            topStatus.innerText = 'MODO: ' + mode;
+
+            if (mode === 'EV_MODE') {
+                em.classList.add('active-em-drive');
+                topStatus.style.color = 'var(--green)';
+            } else if (mode === 'P2_HYBRID_BOOST') {
+                ice.classList.add('active-ice');
+                k0.classList.add('active-k0-engaged');
+                em.classList.add('active-em-drive');
+                if (flowIceK0) flowIceK0.classList.add('active-flow');
+                if (flowK0Em) flowK0Em.classList.add('active-flow');
+                topStatus.style.color = 'var(--cyan)';
+            } else if (mode === 'REGEN_BRAKE') {
+                em.classList.add('active-em-regen');
+                topStatus.style.color = 'var(--red)';
+            }
+        }
+
         async function fetchTelemetry() {
             try {
                 const res = await fetch('/api/telemetry');
@@ -70,15 +107,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 document.getElementById('val-torque').innerText = last.torque_nm || '0.0';
                 document.getElementById('val-throttle').innerText = last.throttle_pct || '0.0';
                 
+                const mode = last.modo_propulsao || 'NOMINAL';
                 const modeElem = document.getElementById('val-mode');
-                modeElem.innerText = last.modo_propulsao || 'NOMINAL';
-                if (last.modo_propulsao === 'REGEN_BRAKE') {
+                modeElem.innerText = mode;
+                if (mode === 'REGEN_BRAKE') {
                     modeElem.style.color = 'var(--red)';
-                } else if (last.modo_propulsao === 'P2_HYBRID_BOOST') {
+                } else if (mode === 'P2_HYBRID_BOOST') {
                     modeElem.style.color = 'var(--cyan)';
                 } else {
                     modeElem.style.color = 'var(--green)';
                 }
+
+                updateTopologyVisuals(mode);
 
                 let rowsHtml = '';
                 for (let r of data.rows) {
@@ -86,7 +126,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 }
                 document.getElementById('table-body').innerHTML = rowsHtml;
             } catch (err) {
-                console.error('Falha de sincronizacao CAN:', err);
+                console.error('Falha CAN:', err);
             }
         }
         setInterval(fetchTelemetry, 300);
