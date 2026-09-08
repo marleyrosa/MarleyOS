@@ -4,14 +4,10 @@
       "type": "stdio",
       "command": "matlab-mcp-core-server",
       "args": [
+        "--matlab-root=/usr/local/MATLAB/R2024b",
         "--initial-working-folder=${workspaceFolder}",
         "--initialize-matlab-on-startup=true"
       ]
-    },
-    "marleyos_can": {
-      "type": "stdio",
-      "command": "python",
-      "args": ["module_2_mcp/mcp_server.py"]
     }
   }
 }
