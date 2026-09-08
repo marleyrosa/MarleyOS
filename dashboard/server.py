@@ -2,11 +2,11 @@ import http.server
 import socketserver
 import os
 import csv
-import json
 
 PORT = 8080
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CSV_PATH = os.path.join(ROOT_DIR, "module_2_mcp", "data", "can_telemetry.csv")
+SVG_PATH = os.path.join(ROOT_DIR, "module_1_rag", "knowledge_base", "p2_powertrain_topology.svg")
 
 class ClusterHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
@@ -26,6 +26,11 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
                 f"<tr><td>{r.get('timestamp_s', '')}</td><td>{r.get('rpm', '')}</td><td>{r.get('torque_nm', '')}</td><td>{r.get('throttle_pct', '')}</td><td>{r.get('modo_propulsao', '')}</td></tr>"
                 for r in rows
             )
+
+            svg_diagram = ""
+            if os.path.exists(SVG_PATH):
+                with open(SVG_PATH, "r", encoding="utf-8") as f:
+                    svg_diagram = f.read()
 
             html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -49,6 +54,9 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
         table {{ width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 14px; }}
         th, td {{ border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 8px; text-align: left; }}
         th {{ background: rgba(15, 22, 36, 0.9); color: var(--text-dim); text-transform: uppercase; }}
+        .topology-card {{ background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-top: 18px; }}
+        .topology-header {{ font-size: 0.75rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }}
+        .topology-container {{ width: 100%; max-height: 180px; display: flex; justify-content: center; }}
     </style>
 </head>
 <body>
@@ -66,6 +74,12 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
         <thead><tr><th>Tempo (s)</th><th>RPM</th><th>Torque (Nm)</th><th>Acel (%)</th><th>Modo</th></tr></thead>
         <tbody>{table_rows}</tbody>
     </table>
+    <div class="topology-card">
+        <div class="topology-header">Topologia Mecânica P2 & Acoplamento K0</div>
+        <div class="topology-container">
+            {svg_diagram}
+        </div>
+    </div>
 </body>
 </html>"""
             self.send_response(200)
