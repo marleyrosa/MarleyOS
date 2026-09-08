@@ -1,22 +1,25 @@
 #!/data/data/com.termux/files/usr/bin/bash
+PROJECT_DIR="$HOME/MarleyOS"
+cd "$PROJECT_DIR" || exit 1
 
-echo "[*] Limpando instâncias anteriores do servidor..."
-pkill -9 -f "server.py" 2>/dev/null || true
+pkill -9 -f "python.*server.py" 2>/dev/null
+pkill -9 -f "python.*telemetry_feeder.py" 2>/dev/null
+fuser -k 8080/tcp 2>/dev/null
 
-echo "[*] Ativando termux-wake-lock contra suspensão..."
-termux-wake-lock
-
-echo "[*] Iniciando dashboard/server.py em background..."
-nohup python dashboard/server.py > server.log 2>&1 &
-
-sleep 1
-
-PID=$(pgrep -f "dashboard/server.py")
-if [ -n "$PID" ]; then
-    echo "[+] Servidor ativo com PID: $PID"
-    echo "[+] Cockpit pronto: http://localhost:8080"
-    echo "[i] Para acompanhar logs: tail -f ~/MarleyOS/server.log"
-else
-    echo "[-] Falha na inicialização. Verifique server.log:"
-    cat server.log
+mkdir -p module_2_mcp/data
+if [ ! -f module_2_mcp/data/can_telemetry.csv ]; then
+  echo "timestamp_s,rpm,torque_nm,throttle_pct,iq_a,modo_propulsao,status_motor" > module_2_mcp/data/can_telemetry.csv
+  echo "0.0,0,0.0,0.0,0.0,EV_MODE,NOMINAL" >> module_2_mcp/data/can_telemetry.csv
 fi
+
+termux-wake-lock 2>/dev/null
+
+nohup python dashboard/server.py > server.log 2>&1 &
+SERVER_PID=$!
+
+nohup python module_2_mcp/telemetry_feeder.py > feeder.log 2>&1 &
+FEEDER_PID=$!
+
+echo "[+] Servidor Cockpit ativo (PID: $SERVER_PID)"
+echo "[+] Telemetry Feeder ativo (PID: $FEEDER_PID)"
+echo "[+] Cockpit pronto: http://localhost:8080"
