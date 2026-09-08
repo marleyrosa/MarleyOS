@@ -15,7 +15,10 @@ class AutonomousTuningAgent:
         with open(self.telemetry_path, 'r', encoding='utf-8') as f:
             data = list(csv.DictReader(f))
 
-        currents = [float(row.get('corrente_pack_a', 0.0)) for row in data]
+        currents = [
+            abs(float(row.get('corrente_pack_a') or row.get('torque_nm') or 0.0))
+            for row in data
+        ]
         max_curr = max(currents)
         print(f"[Agente] Pico de corrente identificado: {max_curr} A")
 

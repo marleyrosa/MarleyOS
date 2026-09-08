@@ -2,11 +2,17 @@
   "servers": {
     "matlab": {
       "type": "stdio",
-      "command": "matlab-mcp-core-server",
+      "command": "C:/Users/UsuarioPC/AppData/Roaming/Python/Python313/Scripts/matlab-mcp.exe",
+      "env": {
+        "MATLAB_PATH": "C:/Program Files/MATLAB/R2026a",
+        "PYTHONPATH": "C:/Users/UsuarioPC/AppData/Local/Programs/Python/Python313/Lib/site-packages"
+      }
+    },
+    "marleyos_can": {
+      "type": "stdio",
+      "command": "python",
       "args": [
-        "--matlab-root=/usr/local/MATLAB/R2024b",
-        "--initial-working-folder=${workspaceFolder}",
-        "--initialize-matlab-on-startup=true"
+        "${workspaceFolder}/module_2_mcp/mcp_server.py"
       ]
     }
   }

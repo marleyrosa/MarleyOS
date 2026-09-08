@@ -1,6 +1,7 @@
 import json
 import csv
 import os
+import sys
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TELEMETRY_PATH = os.path.join(ROOT_DIR, "module_2_mcp", "data", "can_telemetry.csv")
@@ -18,7 +19,7 @@ def tool_get_telemetry_summary():
     with open(TELEMETRY_PATH, 'r') as f:
         rows = list(csv.DictReader(f))
     rpms = [float(_value(r, "rpm_motor", "rpm_em", "rpm_ice")) for r in rows]
-    currents = [float(_value(r, "corrente_pack_a", "torque_nm")) for r in rows]
+    currents = [abs(float(_value(r, "corrente_pack_a", "torque_nm"))) for r in rows]
     temps = [float(_value(r, "temp_inversor_c", "temp_inv_c")) for r in rows]
     return {
         "amostras": len(rows),
@@ -51,6 +52,43 @@ def handle_rpc(payload):
         return TOOLS.get(name, lambda: {"error": "not found"})()
     return {"error": "invalid method"}
 
+def serve_stdio():
+    for line in sys.stdin:
+        if not line.strip():
+            continue
+        request = json.loads(line)
+        method = request.get("method")
+
+        if method == "initialize":
+            result = {
+                "protocolVersion": "2024-11-05",
+                "capabilities": {"tools": {}},
+                "serverInfo": {"name": "marleyos-can", "version": "1.0.0"},
+            }
+        elif method == "notifications/initialized":
+            continue
+        elif method == "tools/list":
+            result = {
+                "tools": [
+                    {
+                        "name": "get_telemetry_summary",
+                        "description": "Retorna o resumo da telemetria CAN atual.",
+                        "inputSchema": {"type": "object", "properties": {}},
+                    },
+                    {
+                        "name": "get_critical_events",
+                        "description": "Retorna eventos críticos da telemetria CAN.",
+                        "inputSchema": {"type": "object", "properties": {}},
+                    },
+                ]
+            }
+        elif method == "tools/call":
+            name = request.get("params", {}).get("name")
+            result = {"content": [{"type": "text", "text": json.dumps(TOOLS.get(name, lambda: {"error": "not found"})(), ensure_ascii=False)}]}
+        else:
+            result = handle_rpc(request)
+
+        print(json.dumps({"jsonrpc": "2.0", "id": request.get("id"), "result": result}, ensure_ascii=False), flush=True)
+
 if __name__ == "__main__":
-    print("[MCP Server] Ferramentas ativas:", handle_rpc({"method": "tools/list"}))
-    print("[MCP Server] Telemetria:", handle_rpc({"method": "tools/call", "params": {"name": "get_telemetry_summary"}}))
+    serve_stdio()
