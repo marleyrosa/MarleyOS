@@ -9,7 +9,7 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CSV_PATH = os.path.join(ROOT_DIR, "module_2_mcp", "data", "can_telemetry.csv")
 SVG_PATH = os.path.join(ROOT_DIR, "module_1_rag", "knowledge_base", "p2_powertrain_topology.svg")
 
-HTML_TEMPLATE = """<!DOCTYPE html>
+HTML_PAGE = """<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -33,7 +33,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         th { background: rgba(15, 22, 36, 0.9); color: var(--text-dim); text-transform: uppercase; }
         .topology-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-top: 18px; }
         .topology-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
-        .topology-container { width: 100%; max-height: 190px; display: flex; justify-content: center; }
+        .topology-container { width: 100%; height: 180px; display: flex; justify-content: center; }
+        object { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
@@ -57,41 +58,47 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <span id="topology-status" style="color: var(--green); font-size: 0.7rem;">MODO: EV_MODE</span>
         </div>
         <div class="topology-container">
-            {{SVG_DIAGRAM}}
+            <object id="svg-obj" type="image/svg+xml" data="/topology.svg"></object>
         </div>
     </div>
     <script>
-        function updateTopologyVisuals(mode) {
-            const ice = document.getElementById('svg-ice');
-            const k0 = document.getElementById('svg-k0');
-            const em = document.getElementById('svg-em');
-            const flowIceK0 = document.getElementById('svg-flow-ice-k0');
-            const flowK0Em = document.getElementById('svg-flow-k0-em');
+        function updateSvgClasses(mode) {
+            const obj = document.getElementById('svg-obj');
+            if (!obj || !obj.contentDocument) return;
+            const svgDoc = obj.contentDocument;
+
+            const ice = svgDoc.getElementById('svg-ice');
+            const k0 = svgDoc.getElementById('svg-k0');
+            const em = svgDoc.getElementById('svg-em');
+            const flowIceK0 = svgDoc.getElementById('svg-flow-ice-k0');
+            const flowK0Em = svgDoc.getElementById('svg-flow-k0-em');
             const topStatus = document.getElementById('topology-status');
+
             if (!ice || !k0 || !em) return;
 
-            // Reset de classes
             ice.classList.remove('active-ice');
             k0.classList.remove('active-k0-engaged');
             em.classList.remove('active-em-drive', 'active-em-regen');
             if (flowIceK0) flowIceK0.classList.remove('active-flow');
             if (flowK0Em) flowK0Em.classList.remove('active-flow');
 
-            topStatus.innerText = 'MODO: ' + mode;
+            if (topStatus) {
+                topStatus.innerText = 'MODO: ' + mode;
+            }
 
             if (mode === 'EV_MODE') {
                 em.classList.add('active-em-drive');
-                topStatus.style.color = 'var(--green)';
+                if (topStatus) topStatus.style.color = 'var(--green)';
             } else if (mode === 'P2_HYBRID_BOOST') {
                 ice.classList.add('active-ice');
                 k0.classList.add('active-k0-engaged');
                 em.classList.add('active-em-drive');
                 if (flowIceK0) flowIceK0.classList.add('active-flow');
                 if (flowK0Em) flowK0Em.classList.add('active-flow');
-                topStatus.style.color = 'var(--cyan)';
+                if (topStatus) topStatus.style.color = 'var(--cyan)';
             } else if (mode === 'REGEN_BRAKE') {
                 em.classList.add('active-em-regen');
-                topStatus.style.color = 'var(--red)';
+                if (topStatus) topStatus.style.color = 'var(--red)';
             }
         }
 
@@ -118,7 +125,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     modeElem.style.color = 'var(--green)';
                 }
 
-                updateTopologyVisuals(mode);
+                updateSvgClasses(mode);
 
                 let rowsHtml = '';
                 for (let r of data.rows) {
@@ -126,7 +133,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 }
                 document.getElementById('table-body').innerHTML = rowsHtml;
             } catch (err) {
-                console.error('Falha CAN:', err);
+                console.error('Erro CAN:', err);
             }
         }
         setInterval(fetchTelemetry, 300);
@@ -153,18 +160,22 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(payload)
 
-        elif self.path in ("/", "/index.html"):
-            svg_diagram = ""
+        elif self.path == "/topology.svg":
             if os.path.exists(SVG_PATH):
-                with open(SVG_PATH, "r", encoding="utf-8") as f:
-                    svg_diagram = f.read()
+                with open(SVG_PATH, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "image/svg+xml")
+                self.end_headers()
+                self.wfile.write(content)
+            else:
+                self.send_error(404, "SVG nao encontrado")
 
-            html = HTML_TEMPLATE.replace("{{SVG_DIAGRAM}}", svg_diagram)
-
+        elif self.path in ("/", "/index.html"):
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.end_headers()
-            self.wfile.write(html.encode("utf-8"))
+            self.wfile.write(HTML_PAGE.encode("utf-8"))
         else:
             self.send_error(404, "Arquivo nao encontrado")
 
@@ -172,6 +183,7 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
         pass
 
 if __name__ == "__main__":
+    socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", PORT), ClusterHandler) as httpd:
         print(f"Servidor ativo em http://localhost:{PORT}")
         httpd.serve_forever()
