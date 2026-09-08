@@ -43,7 +43,7 @@ HTML_PAGE = """<!DOCTYPE html>
         .brand { font-family: monospace; font-weight: 900; font-size: 1.15rem; letter-spacing: 1px; color: var(--cyan); text-shadow: 0 0 10px rgba(0,210,255,0.4); }
         .live-tag { font-family: monospace; font-size: 0.72rem; font-weight: bold; background: rgba(0,230,118,0.12); color: var(--green); border: 1px solid var(--green); border-radius: 4px; padding: 2px 6px; }
 
-        .cluster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap: 8px; margin-bottom: 12px; }
+        .cluster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin-bottom: 12px; }
         .telemetry-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; position: relative; overflow: hidden; }
         .telemetry-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--cyan); opacity: 0.7; }
         .card-title { font-size: 0.62rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
@@ -54,7 +54,7 @@ HTML_PAGE = """<!DOCTYPE html>
             background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
             padding: 10px; margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
         }
-        .pedal-unit { display: flex; flex-direction: column; align-items: center; perspective: 600px; }
+        .pedal-unit { display: flex; flex-direction: column; overflow: hidden; align-items: center; perspective: 600px; }
         .pedal-header { display: flex; justify-content: space-between; width: 100%; font-size: 0.7rem; font-weight: 800; font-family: monospace; margin-bottom: 6px; }
         .pedal-stage { width: 100%; height: 80px; background: #07090e; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden; }
         
@@ -62,7 +62,7 @@ HTML_PAGE = """<!DOCTYPE html>
         .pedal-plate {
             width: 58px; height: 68px; border-radius: 6px; position: relative;
             transform-origin: bottom center; transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
-            display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;
+            display: flex; flex-direction: column; overflow: hidden; justify-content: space-evenly; align-items: center;
             border: 2px solid #a0aec0; background: linear-gradient(145deg, #2d3748, #1a202c);
             box-shadow: 0 6px 10px rgba(0,0,0,0.8);
         }
@@ -86,7 +86,7 @@ HTML_PAGE = """<!DOCTYPE html>
 
         .topology-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 10px; margin-top: 12px; }
         .topology-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; color: var(--cyan); font-weight: 800; text-transform: uppercase; font-family: monospace; margin-bottom: 6px; }
-        .topology-container { width: 100%; height: 175px; display: flex; justify-content: center; }
+        .topology-container { width: 100%; height: 195px; display: flex; justify-content: center; }
         object { width: 100%; height: 100%; border: none; }
     </style>
 </head>
