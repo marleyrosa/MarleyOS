@@ -8,3 +8,6 @@ slprj/
 Model/P2HEVModel/
 module_2_mcp/data/can_telemetry.csv
 capstone_report.txt
+
+# Arquivos temporarios de telemetria
+*.csv.tmp
