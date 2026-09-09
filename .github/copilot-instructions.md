@@ -18,3 +18,19 @@ Sempre que gerar ou editar scripts de automação do MATLAB/Simulink neste repos
      `module_2_mcp/data/can_telemetry.csv`
    - O cabeçalho obrigatório do CSV é:
      `timestamp_s,rpm,torque_nm,throttle_pct,iq_a,modo_propulsao,status_motor`
+
+## Arquitetura MIL: 4 Mains
+
+1. **COMUNICACAO**: CAN/DBC, REST, Inport e Dataset.
+2. **SOFTECU**: ECM, TCM, BPCM e DCDC parametrizados.
+3. **MDL**: planta eletromecânica, PMSM, embreagens, rodas e resistências.
+4. **SISTEMA**: `logsout`, métricas e exportação para o dashboard.
+
+## Regras de baixo consumo de contexto
+
+- Use `Simulink.SimulationInput` e `sim(simIn)` para runners MIL.
+- Use `simIn.setVariable()` para calibrações e `setModelParameter()` para parâmetros de modelo.
+- Configure `SaveFormat='Dataset'`, `SaveOutput='on'` e `SignalLoggingName='logsout'`.
+- Extraia sinais de `simOut.logsout.get('sinal').Values`.
+- Não use `load_system`, `exist()`, `evalin('base')`, `assignin` ou shell em runners MIL.
+- Converta CSV de comunicação com `module_2_mcp/load_dbc_signals.m`.

@@ -1,0 +1,11 @@
+id,name,source_type,category,domain,subdomain,priority,license,url,notes
+mathworks,MathWorks MATLAB Central Simulink,official,rag_documental,automotive_modeling,powertrain;control;simulink;calibration,1,varies,https://www.mathworks.com,Model-based design controle e simulacao automotiva
+ieee,IEEE Xplore,official,rag_documental,automotive_research,vehicle_dynamics;control;systems,2,subscription,https://ieeexplore.ieee.org,Artigos e estudos tecnicos de engenharia automotiva
+dspace,dSPACE,official,rag_documental,automotive_validation,hil;sil;control_prototyping,3,public_docs,https://www.dspace.com,Validacao HIL SIL e prototipagem de controle
+autosar,AUTOSAR,official,rag_documental,automotive_software_architecture,ecu;embedded;software,4,public_docs,https://www.autosar.org,Arquitetura de software automotivo embarcado
+bosch,Bosch Mobility,official,rag_documental,automotive_systems,sensors;powertrain;electronics,5,public_docs,https://www.bosch-mobility.com,Sensores powertrain e integracao de sistemas
+sae,SAE International,official,rag_documental,automotive_engineering,vehicle_dynamics;powertrain;standards,6,varies,https://www.sae.org,Padroes e praticas de engenharia automotiva
+standards_iso,ISO UNECE NHTSA,official,rag_documental,automotive_safety_regulation,iso26262;homologation;functional_safety,7,public_standard,https://www.iso.org,Seguranca funcional homologacao e conformidade
+carla,CARLA Simulator,open_source,agent_simulation,autonomous_driving,simulation;perception;scenario,8,MIT,https://carla.org,Cenarios e testes de conducao autonoma
+apollo,Apollo Auto,open_source,agent_simulation,autonomous_driving,planning;control;perception,9,open_source,https://apollo.auto,Planejamento controle e percepcao para autonomia
+autoware,Autoware Foundation,open_source,agent_simulation,autonomous_driving,autonomy;sensor_fusion;planning,10,open_source,https://autoware.org,Arquitetura aberta de mobilidade autonoma

@@ -5,11 +5,81 @@ import csv
 import json
 import threading
 import time
+import subprocess
+import uuid
+import sys
+from urllib.parse import urlparse
 
 PORT = 8080
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+MCP_DIR = os.path.join(ROOT_DIR, "module_2_mcp")
+if MCP_DIR not in sys.path:
+    sys.path.insert(0, MCP_DIR)
+
+from generate_default_dbc import generate_default_dbc
 CSV_PATH = os.path.join(ROOT_DIR, "module_2_mcp", "data", "can_telemetry.csv")
 SVG_PATH = os.path.join(ROOT_DIR, "module_1_rag", "knowledge_base", "p2_powertrain_topology.svg")
+P2HEV_MODEL_PATH = os.path.join(ROOT_DIR, "Model", "P2HEVModel", "P2HybridVehicle.slx")
+P2HEV_SIGNALS = [
+    "VehicleSpeed", "HVBatSOC", "BusVoltage", "HVBatCurrent", "EngTrqReq",
+    "EMTrqReq", "EngineOn", "TransmissionRatio", "EMSpeed", "BrakeTorque",
+    "SpeedSetPoint",
+]
+MIL_RUN_STATE = {
+    "run_id": None,
+    "status": "idle",
+    "message": "Nenhuma execucao MIL solicitada.",
+    "result": None,
+}
+MIL_RUN_LOCK = threading.Lock()
+
+
+def normalize_p2hev_row(row):
+    """Map P2HEV Dataset export columns to the cockpit's existing contract."""
+    if "VehicleSpeed" not in row:
+        return row
+    return {
+        "timestamp_s": row.get("timestamp_s", row.get("Time", "0")),
+        "speed_kmh": row.get("VehicleSpeed", "0"),
+        "gear": row.get("TransmissionRatio", "0"),
+        "active_clutch": "CLUTCH_1" if float(row.get("EngineOn", 0) or 0) else "CLUTCH_2",
+        "rpm_em": row.get("EMSpeed", "0"),
+        "rpm_ice": "0",
+        "throttle_pct": "0",
+        "brake_pct": row.get("BrakeTorque", "0"),
+        "torque_nm": row.get("EMTrqReq", "0"),
+        "gx": "0",
+        "gy": "0",
+        "k0_press_bar": "0",
+        "k0_state": "OPEN",
+        "soc_pct": row.get("HVBatSOC", "0"),
+        "ev_range_km": "0",
+        "bsfc_g_kwh": "0",
+        "temp_inv_c": "0",
+        "modo_propulsao": "P2_HEV" if float(row.get("EngineOn", 0) or 0) else "EV_MODE",
+        "status_motor": "NOMINAL",
+        "bus_voltage_v": row.get("BusVoltage", "0"),
+        "battery_current_a": row.get("HVBatCurrent", "0"),
+        "engine_torque_request_nm": row.get("EngTrqReq", "0"),
+        "speed_setpoint_kmh": row.get("SpeedSetPoint", "0"),
+    }
+
+
+def read_telemetry_rows():
+    rows = []
+    for _ in range(3):
+        if not os.path.exists(CSV_PATH):
+            break
+        try:
+            with open(CSV_PATH, "r", encoding="utf-8") as telemetry_file:
+                raw_rows = list(csv.DictReader(telemetry_file))
+            rows = [normalize_p2hev_row(row) for row in raw_rows]
+            break
+        except (OSError, UnicodeDecodeError, ValueError):
+            time.sleep(0.005)
+    return rows
 
 HTML_PAGE = """<!DOCTYPE html>
 <html lang="pt-BR">
@@ -41,6 +111,18 @@ HTML_PAGE = """<!DOCTYPE html>
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(0, 210, 255, 0.2); padding-bottom: 6px; margin-bottom: 10px; }
         .brand { font-family: monospace; font-weight: 900; font-size: 1.1rem; color: var(--cyan); }
         .header-actions { display: flex; align-items: center; gap: 8px; }
+        .mil-run-button {
+            background: rgba(255,145,0,0.16); color: var(--orange); border: 1px solid var(--orange);
+            border-radius: 4px; padding: 4px 8px; font-size: 0.65rem; font-weight: bold; font-family: monospace;
+            cursor: pointer;
+        }
+        .mil-run-button:disabled { opacity: 0.55; cursor: wait; }
+        .mil-feedback {
+            display: none; margin: 0 0 10px; padding: 7px 10px; border: 1px solid var(--border);
+            background: rgba(14,19,29,0.95); border-radius: 6px; font-family: monospace; font-size: 0.7rem;
+        }
+        .mil-feedback.visible { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+        .mil-metrics { color: var(--text-dim); }
         .btn-logger {
             background: rgba(0, 210, 255, 0.15); color: var(--cyan); border: 1px solid var(--cyan);
             border-radius: 4px; padding: 3px 8px; font-size: 0.65rem; font-weight: bold; font-family: monospace;
@@ -112,8 +194,14 @@ HTML_PAGE = """<!DOCTYPE html>
         <div class="brand">MarleyOS // RACING TELEMETRY</div>
         <div class="header-actions">
             <a href="/api/export-csv" class="btn-logger" download="marleyos_can_telemetry.csv">💾 EXPORTAR CSV</a>
-            <div class="live-tag">LIVE CAN BUS</div>
+            <button class="mil-run-button" id="run-mil-button" type="button">🚀 EXECUTAR MIL (MATLAB)</button>
+            <div class="live-tag" id="p2hev-status">P2HEV OFFLINE</div>
         </div>
+    </div>
+
+    <div class="mil-feedback" id="mil-feedback" role="status" aria-live="polite">
+        <span id="mil-feedback-message">MIL aguardando execução.</span>
+        <span class="mil-metrics" id="mil-feedback-metrics"></span>
     </div>
 
     <div class="cluster-grid">
@@ -232,6 +320,70 @@ HTML_PAGE = """<!DOCTYPE html>
         }
 
         let telemetryRequestInFlight = false;
+        let milPollTimer = null;
+
+        function setMilFeedback(message, color, metrics) {
+            const feedback = document.getElementById('mil-feedback');
+            feedback.classList.add('visible');
+            feedback.style.borderColor = color;
+            document.getElementById('mil-feedback-message').innerText = message;
+            document.getElementById('mil-feedback-metrics').innerText = metrics || '';
+        }
+
+        async function pollMilStatus() {
+            const response = await fetch('/api/run-mil');
+            const state = await response.json();
+            if (state.status === 'queued' || state.status === 'running') {
+                setMilFeedback('Executando simulação...', 'var(--orange)');
+                milPollTimer = setTimeout(pollMilStatus, 1000);
+                return;
+            }
+            const button = document.getElementById('run-mil-button');
+            button.disabled = false;
+            if (state.status === 'passed') {
+                const metrics = state.result && state.result.metrics ? state.result.metrics : {};
+                const iq = metrics.peakIqA == null ? 'n/d' : metrics.peakIqA;
+                const gx = metrics.peakGx == null ? 'n/d' : metrics.peakGx;
+                setMilFeedback('MIL Aprovado', 'var(--green)', `iq pico: ${iq} A | Gx máx: ${gx} G | logsout: OK`);
+            } else if (state.status === 'failed') {
+                setMilFeedback('Falha no MIL', 'var(--red)', state.message || 'Verifique o log MATLAB.');
+            }
+        }
+
+        async function runMil() {
+            const button = document.getElementById('run-mil-button');
+            button.disabled = true;
+            setMilFeedback('Executando simulação...', 'var(--orange)');
+            try {
+                const response = await fetch('/api/run-mil', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({stopTime: 1})
+                });
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                await pollMilStatus();
+            } catch (error) {
+                button.disabled = false;
+                setMilFeedback('Falha no MIL', 'var(--red)', error.message);
+            }
+        }
+
+        async function fetchP2HEVStatus() {
+            try {
+                const res = await fetch('/api/p2hev/status');
+                const data = await res.json();
+                const status = document.getElementById('p2hev-status');
+                if (data.available) {
+                    status.innerText = 'P2HEV ' + data.matlab_release;
+                    status.style.color = 'var(--green)';
+                } else {
+                    status.innerText = 'P2HEV OFFLINE';
+                    status.style.color = 'var(--red)';
+                }
+            } catch (err) {
+                console.error('Falha status P2HEV:', err);
+            }
+        }
 
         async function fetchTelemetry() {
             if (telemetryRequestInFlight) return;
@@ -315,6 +467,8 @@ HTML_PAGE = """<!DOCTYPE html>
             }
         }
         setInterval(fetchTelemetry, 500);
+        document.getElementById('run-mil-button').addEventListener('click', runMil);
+        fetchP2HEVStatus();
         fetchTelemetry();
     </script>
 </body>
@@ -325,20 +479,70 @@ class ThreadingTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     daemon_threads = True
 
 class ClusterHandler(http.server.BaseHTTPRequestHandler):
+    def do_POST(self):
+        if self.path != "/api/run-mil":
+            self.send_error(404, "Arquivo nao encontrado")
+            return
+
+        content_length = int(self.headers.get("Content-Length", "0"))
+        request_body = self.rfile.read(content_length) if content_length else b"{}"
+        try:
+            request = json.loads(request_body.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            self.send_error(400, "JSON invalido")
+            return
+
+        try:
+            stop_time = float(request.get("stopTime", 1))
+        except (TypeError, ValueError):
+            self.send_error(400, "stopTime invalido")
+            return
+        if not 0 < stop_time <= 120:
+            self.send_error(400, "stopTime deve estar entre 0 e 120 segundos")
+            return
+
+        run_id = uuid.uuid4().hex
+        generate_default_dbc()
+        with MIL_RUN_LOCK:
+            MIL_RUN_STATE.update({
+                "run_id": run_id,
+                "status": "queued",
+                "message": "Execucao MIL enfileirada.",
+                "result": None,
+            })
+        threading.Thread(target=run_mil_job, args=(run_id, stop_time), daemon=True).start()
+        self._send_json(202, dict(MIL_RUN_STATE))
+
     def do_GET(self):
         if self.path == "/api/telemetry":
-            rows = []
-            for _ in range(3):
-                if not os.path.exists(CSV_PATH):
-                    break
-                try:
-                    with open(CSV_PATH, "r", encoding="utf-8") as f:
-                        rows = list(csv.DictReader(f))
-                    break
-                except (OSError, UnicodeDecodeError):
-                    time.sleep(0.005)
+            rows = read_telemetry_rows()
 
             payload = json.dumps({"rows": rows}).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(payload)
+
+        elif self.path == "/api/p2hev/status":
+            payload = json.dumps({
+                "model": "P2HybridVehicle",
+                "model_path": P2HEV_MODEL_PATH,
+                "available": os.path.exists(P2HEV_MODEL_PATH),
+                "matlab_release": "R2026a",
+                "logging_contract": "Dataset/logsout",
+                "signals": P2HEV_SIGNALS,
+                "telemetry_source": CSV_PATH,
+            }).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(payload)
+
+        elif self.path == "/api/run-mil":
+            with MIL_RUN_LOCK:
+                payload = json.dumps(dict(MIL_RUN_STATE)).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Access-Control-Allow-Origin", "*")
@@ -378,6 +582,70 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
 
     def log_message(self, format, *args):
         pass
+
+    def _send_json(self, status, value):
+        payload = json.dumps(value, ensure_ascii=False).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(payload)
+
+
+def run_mil_job(run_id, stop_time):
+    model_dir = os.path.join(ROOT_DIR, "module_3_agents_simulink")
+    harness_dir = os.path.join(ROOT_DIR, "Model")
+    mcp_dir = os.path.join(ROOT_DIR, "module_2_mcp")
+    matlab_expression = (
+        "cd('%s'); addpath('%s'); addpath('%s'); addpath('%s'); "
+        "modelName='MIL_MarleyOS_Powertrain'; stopTime=%.15g; "
+        "inputData=load_dbc_signals('%s'); "
+        "result=run_4mains_mil(modelName, stopTime, inputData); "
+        "disp(result.metrics.signalCount);"
+    ) % (
+        model_dir.replace("'", "''"),
+        model_dir.replace("'", "''"),
+        harness_dir.replace("'", "''"),
+        mcp_dir.replace("'", "''"),
+        stop_time,
+        CSV_PATH.replace("'", "''"),
+    )
+    with MIL_RUN_LOCK:
+        MIL_RUN_STATE.update({"status": "running", "message": "MATLAB MIL em execucao."})
+    try:
+        completed = subprocess.run(
+            ["matlab", "-batch", matlab_expression],
+            cwd=ROOT_DIR,
+            capture_output=True,
+            text=True,
+            timeout=max(120, int(stop_time * 60)),
+            check=False,
+        )
+        status = "passed" if completed.returncode == 0 else "failed"
+        result = {
+            "returncode": completed.returncode,
+            "stdout": completed.stdout[-4000:],
+            "stderr": completed.stderr[-4000:],
+        }
+        for line in completed.stdout.splitlines():
+            if line.startswith("MARLEYOS_METRICS="):
+                try:
+                    result["metrics"] = json.loads(line.split("=", 1)[1])
+                except json.JSONDecodeError:
+                    result["metrics"] = {"parse_error": True}
+        with MIL_RUN_LOCK:
+            MIL_RUN_STATE.update({
+                "status": status,
+                "message": "Execucao MIL concluida." if status == "passed" else "Execucao MIL falhou.",
+                "result": result,
+            })
+    except (OSError, subprocess.TimeoutExpired) as error:
+        with MIL_RUN_LOCK:
+            MIL_RUN_STATE.update({
+                "status": "failed",
+                "message": "Nao foi possivel executar o MATLAB MIL.",
+                "result": {"error": str(error)},
+            })
 
 if __name__ == "__main__":
     with ThreadingTCPServer(("", PORT), ClusterHandler) as httpd:

@@ -1,0 +1,29 @@
+VERSION ""
+
+NS_ :
+    NS_DESC_
+    CM_
+    BA_DEF_
+    BA_
+    VAL_
+
+BS_:
+
+BU_: ECU_EM ECU_ICE VEH_DYNAMICS
+
+BO_ 257 ECU_EM: 8 ECU_EM
+ SG_ iq_a : 0|16@1+ (0.1,0) [-3276.8|3276.7] "A" ECU_EM
+ SG_ rpm : 16|16@1+ (1,0) [0|65535] "rpm" ECU_EM
+ SG_ temp_c : 32|16@1- (0.1,0) [-3276.8|3276.7] "degC" ECU_EM
+
+BO_ 258 ECU_ICE: 8 ECU_ICE
+ SG_ rpm : 0|16@1+ (1,0) [0|65535] "rpm" ECU_ICE
+ SG_ k0_status : 16|8@1+ (1,0) [0|255] "state" ECU_ICE
+ SG_ k0_pressure_bar : 24|16@1+ (0.1,0) [0|6553.5] "bar" ECU_ICE
+
+BO_ 259 VEH_DYNAMICS: 8 VEH_DYNAMICS
+ SG_ speed_kmh : 0|16@1+ (0.01,0) [0|655.35] "km/h" VEH_DYNAMICS
+ SG_ tps_pct : 16|8@1+ (0.5,0) [0|127.5] "pct" VEH_DYNAMICS
+ SG_ brake_pct : 24|8@1+ (0.5,0) [0|127.5] "pct" VEH_DYNAMICS
+ SG_ gx : 32|8@1- (0.01,0) [-1.28|1.27] "g" VEH_DYNAMICS
+ SG_ gy : 40|8@1- (0.01,0) [-1.28|1.27] "g" VEH_DYNAMICS

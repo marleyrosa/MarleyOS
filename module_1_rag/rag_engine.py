@@ -1,7 +1,13 @@
+import csv
+import json
 import os
 import re
 import math
 from collections import Counter
+
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SOURCES_CSV_PATH = os.path.join(ROOT_DIR, "module_1_rag", "data", "automotive_sources.csv")
+SOURCES_JSONL_PATH = os.path.join(ROOT_DIR, "module_1_rag", "data", "automotive_sources.jsonl")
 
 def tokenize(text):
     return re.findall(r'\w+', text.lower())
@@ -16,8 +22,8 @@ def cosine_similarity(vec1, vec2):
 
 def load_documents():
     docs = []
-    csv_path = "module_1_rag/data/obd_dtc_codes.csv"
-    manual_path = "module_1_rag/data/powertrain_manual.txt"
+    csv_path = os.path.join(ROOT_DIR, "module_1_rag", "data", "obd_dtc_codes.csv")
+    manual_path = os.path.join(ROOT_DIR, "module_1_rag", "data", "powertrain_manual.txt")
     
     if os.path.exists(csv_path):
         with open(csv_path, 'r', encoding='utf-8') as f:
@@ -31,6 +37,40 @@ def load_documents():
             docs.append(f.read().strip())
             
     return docs
+
+
+def load_source_registry(csv_path=SOURCES_CSV_PATH, jsonl_path=SOURCES_JSONL_PATH):
+    """Load the curated source catalog, preferring CSV and falling back to JSONL."""
+    if os.path.exists(csv_path):
+        with open(csv_path, 'r', encoding='utf-8', newline='') as source_file:
+            sources = list(csv.DictReader(source_file))
+        for source in sources:
+            source["subdomain"] = [item.strip() for item in source.get("subdomain", "").split(";") if item.strip()]
+        return sources
+
+    if os.path.exists(jsonl_path):
+        with open(jsonl_path, 'r', encoding='utf-8') as source_file:
+            return [json.loads(line) for line in source_file if line.strip()]
+
+    return []
+
+
+def search_sources(query, max_results=5):
+    query_tokens = set(tokenize(query))
+    ranked = []
+    for source in load_source_registry():
+        searchable = " ".join([
+            source.get("name", ""),
+            source.get("domain", ""),
+            " ".join(source.get("subdomain", [])),
+            source.get("notes", ""),
+        ]).lower()
+        score = sum(token in searchable for token in query_tokens)
+        if score:
+            ranked.append((score, int(source.get("priority", 999)), source))
+
+    ranked.sort(key=lambda item: (-item[0], item[1]))
+    return [source for _, _, source in ranked[:max_results]]
 
 def retrieve(query, documents, k=2):
     query_vec = Counter(tokenize(query))

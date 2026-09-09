@@ -18,8 +18,8 @@ def tool_get_telemetry_summary():
         return {"error": "Arquivo nao encontrado"}
     with open(TELEMETRY_PATH, 'r') as f:
         rows = list(csv.DictReader(f))
-    rpms = [float(_value(r, "rpm_motor", "rpm_em", "rpm_ice")) for r in rows]
-    currents = [abs(float(_value(r, "corrente_pack_a", "torque_nm"))) for r in rows]
+    rpms = [float(_value(r, "rpm_motor", "rpm_em", "rpm_ice", "EMSpeed")) for r in rows]
+    currents = [abs(float(_value(r, "corrente_pack_a", "battery_current_a", "HVBatCurrent", "torque_nm", "EMTrqReq"))) for r in rows]
     temps = [float(_value(r, "temp_inversor_c", "temp_inv_c")) for r in rows]
     return {
         "amostras": len(rows),
