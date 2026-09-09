@@ -19,6 +19,28 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Executar Testes Unitarios e Validacao de IA
+    - name: Executar suite de testes unitarios Python
       run: |
-        python test_pipeline.py
+        python -m unittest discover -v
+
+    - name: Checagem de sintaxe dos scripts Python
+      run: |
+        python -m compileall -q -x '(\.venv|\.venv-1|\.git|slprj|Model/P2HEVModel)' .
+
+    - name: Instalar Octave para checagem de sintaxe dos scripts MATLAB
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y octave
+
+    - name: Checagem de sintaxe dos scripts de simulacao MATLAB
+      run: |
+        set -e
+        for f in module_2_mcp/load_dbc_signals.m \
+                 module_3_agents_simulink/build_4mains_harness.m \
+                 module_3_agents_simulink/run_4mains_mil.m \
+                 module_3_agents_simulink/run_k0_pressure_sweep.m; do
+          dir=$(dirname "$f")
+          fn=$(basename "$f" .m)
+          echo "Verificando $f"
+          octave --no-gui --eval "addpath('$dir'); nargin('$fn');"
+        done
