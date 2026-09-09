@@ -32,7 +32,13 @@ function signalDataset = load_dbc_signals(inputFile, signalMap)
         if isfield(signalMap, char(sourceName))
             outputName = string(signalMap.(char(sourceName)));
         end
-        values = double(sourceTable.(sourceName));
+        rawCol = sourceTable.(sourceName);
+        if iscell(rawCol) || isstring(rawCol)
+            [~, ~, numericValues] = unique(string(rawCol));
+            values = double(numericValues);
+        else
+            values = double(rawCol);
+        end
         signalDataset = signalDataset.addElement( ...
             timeseries(values(:), time(:), 'Name', char(outputName)), char(outputName));
     end

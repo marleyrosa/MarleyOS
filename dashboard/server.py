@@ -8,7 +8,10 @@ import time
 import subprocess
 import uuid
 import sys
+import shutil
 from urllib.parse import urlparse
+
+MATLAB_BIN = shutil.which("matlab") or r"C:\Program Files\MATLAB\R2026a\bin\matlab.exe"
 
 PORT = 8080
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -614,7 +617,7 @@ def run_mil_job(run_id, stop_time):
         MIL_RUN_STATE.update({"status": "running", "message": "MATLAB MIL em execucao."})
     try:
         completed = subprocess.run(
-            ["matlab", "-batch", matlab_expression],
+            [MATLAB_BIN, "-batch", matlab_expression],
             cwd=ROOT_DIR,
             capture_output=True,
             text=True,
