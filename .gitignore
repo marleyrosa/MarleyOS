@@ -1,3 +1,10 @@
 __pycache__/
 *.pyc
 server.log
+
+# Artefatos MATLAB e Caches de Execucao
+*.slxc
+slprj/
+Model/P2HEVModel/
+module_2_mcp/data/can_telemetry.csv
+capstone_report.txt
