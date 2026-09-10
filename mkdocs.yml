@@ -63,6 +63,7 @@ markdown_extensions:
 
 nav:
   - Início: index.md
+  - "Plano Mestre do Curso": COURSE_CURRICULUM.md
   - Apostila Técnica:
       - "Capítulo 1: Dinâmica ICE & MBD": course/apostilas/01_ice_powertrain.md
       - "Capítulo 2: Arquitetura Híbrida P2": CAPITULO_1_ARQUITETURA_P2.md
