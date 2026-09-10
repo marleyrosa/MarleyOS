@@ -1,4 +1,5 @@
 # Exercícios Resolvidos — Capítulos 1, 2 e 3
+**Autor:** Eng. Marley Rosa Luciano | **Formação:** NexusMBD AI-Native Powertrain Suite
 
 Todos os valores abaixo usam constantes reais do repositório: `p=4`, `lambda_pm=0.08 Wb` (harness MIL), `Kt=0.48 Nm/A` (Capítulo 1), capacidade de pack `14.8 kWh` (`telemetry_feeder.py`) e o limite `Calib_K0_PressureMax=18 bar`.
 

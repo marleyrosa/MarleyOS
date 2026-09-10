@@ -1,6 +1,7 @@
 # NexusMBD // Master Curriculum & Course Planner
 ## AI-Native Powertrain Engineering Suite: Model-Based Design & Os 4 Pilares de IA
 
+**Autor:** Eng. Marley Rosa Luciano | **Formação:** NexusMBD AI-Native Powertrain Suite  
 **Status do Curso:** Estrutura homologada e validada em código executável no repositório.  
 **Carga Horária Estimada:** 60 Horas (Teoria Matemática, Modelagem MBD, Laboratórios MIL e Implementação de IA).  
 **Público-Alvo:** Engenheiros de Sistemas Automotivos, Engenheiros de Controle & Calibração, Desenvolvedores de Software Embarcado e Engenheiros de IA/ML.

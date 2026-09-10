@@ -15,16 +15,23 @@ MATLAB_BIN = shutil.which("matlab") or r"C:\Program Files\MATLAB\R2026a\bin\matl
 
 PORT = 8080
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT_DIR not in sys.path:
-    sys.path.insert(0, ROOT_DIR)
-MCP_DIR = os.path.join(ROOT_DIR, "module_2_mcp")
-if MCP_DIR not in sys.path:
-    sys.path.insert(0, MCP_DIR)
+PARENT_DIR = os.path.dirname(ROOT_DIR)
+if os.path.exists(os.path.join(PARENT_DIR, "module_2_mcp")):
+    REPO_ROOT = PARENT_DIR
+else:
+    REPO_ROOT = ROOT_DIR
+
+for p in (ROOT_DIR, PARENT_DIR, REPO_ROOT):
+    if p not in sys.path:
+        sys.path.insert(0, p)
+    mcp_dir = os.path.join(p, "module_2_mcp")
+    if os.path.exists(mcp_dir) and mcp_dir not in sys.path:
+        sys.path.insert(0, mcp_dir)
 
 from generate_default_dbc import generate_default_dbc
-CSV_PATH = os.path.join(ROOT_DIR, "module_2_mcp", "data", "can_telemetry.csv")
-SVG_PATH = os.path.join(ROOT_DIR, "module_1_rag", "knowledge_base", "p2_powertrain_topology.svg")
-P2HEV_MODEL_PATH = os.path.join(ROOT_DIR, "Model", "P2HEVModel", "P2HybridVehicle.slx")
+CSV_PATH = os.path.join(REPO_ROOT, "module_2_mcp", "data", "can_telemetry.csv")
+SVG_PATH = os.path.join(REPO_ROOT, "module_1_rag", "knowledge_base", "p2_powertrain_topology.svg")
+P2HEV_MODEL_PATH = os.path.join(REPO_ROOT, "Model", "P2HEVModel", "P2HybridVehicle.slx")
 P2HEV_SIGNALS = [
     "VehicleSpeed", "HVBatSOC", "BusVoltage", "HVBatCurrent", "EngTrqReq",
     "EMTrqReq", "EngineOn", "TransmissionRatio", "EMSpeed", "BrakeTorque",
@@ -646,6 +653,7 @@ def get_html_page():
             <div style="display:flex; align-items:center; gap:8px;">
                 <span class="brand-title">NexusMBD // AI-NATIVE POWERTRAIN ENGINEERING SUITE</span>
                 <span style="background:rgba(0,229,255,0.15); color:var(--cyan); border:1px solid var(--cyan); font-family:var(--font-mono); font-size:0.58rem; padding:1px 5px; border-radius:3px; font-weight:800;">v2.6 PRO</span>
+                <span style="color:#00e5ff; font-size:0.75rem; font-weight:bold; background:rgba(0,229,255,0.08); border:1px solid rgba(0,229,255,0.3); padding:2px 8px; border-radius:4px; font-family:var(--font-mono);">Autor: Eng. Marley Rosa Luciano</span>
             </div>
             <span class="brand-sub">4 AI PILLARS: [MCP] CAN CONTEXT • [RAG] KNOWLEDGE BASE • [AGENTS] SIMULINK MBD • [FINE-TUNING] LLM TELEMETRY</span>
         </div>
@@ -654,7 +662,10 @@ def get_html_page():
                 📖 APOSTILA TÉCNICA
             </a>
             <a href="/slides" target="_blank" class="scope-btn" style="color:var(--amber); border-color:var(--amber); font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
-                🎬 SLIDES EXECUTIVOS
+                🎬 SLIDES (PT)
+            </a>
+            <a href="/slides-en" target="_blank" class="scope-btn" style="color:#00e5ff; border-color:#00e5ff; font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
+                🌐 SLIDES (EN)
             </a>
             <a href="/certificado" target="_blank" class="scope-btn" style="color:#ffe57f; border-color:#ffe57f; font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,229,127,0.1);">
                 🎓 CERTIFICADO OFICIAL
@@ -1615,8 +1626,10 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
             else:
                 self.send_error(404, "Certificado ainda nao emitido. Execute evaluate_course.py primeiro.")
 
-        elif req_path == "/slides":
-            slides_path = os.path.join(ROOT_DIR, "course", "slides", "deck_01_intro_mbd_ai.html")
+        elif req_path in ("/slides", "/slides/pt", "/slides-pt"):
+            slides_path = os.path.join(ROOT_DIR, "course", "slides", "nexusmbd_slides_master_pt.html")
+            if not os.path.exists(slides_path):
+                slides_path = os.path.join(ROOT_DIR, "course", "slides", "deck_01_intro_mbd_ai.html")
             if os.path.exists(slides_path):
                 with open(slides_path, "rb") as f:
                     content = f.read()
@@ -1626,6 +1639,18 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
                 self.wfile.write(content)
             else:
                 self.send_error(404, "Slides nao encontrados")
+
+        elif req_path in ("/slides-en", "/slides/en"):
+            slides_path = os.path.join(ROOT_DIR, "course", "slides", "nexusmbd_slides_master_en.html")
+            if os.path.exists(slides_path):
+                with open(slides_path, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(content)
+            else:
+                self.send_error(404, "English slides not found")
 
         elif req_path in ("/apostila", "/docs"):
             self.send_response(302)

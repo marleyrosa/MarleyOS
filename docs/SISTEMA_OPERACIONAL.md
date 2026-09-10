@@ -1,4 +1,5 @@
 # MarleyOS — Arquitetura de IA Automotiva & Manual de Aprendizagem
+**Autor:** Eng. Marley Rosa Luciano | **Formação:** NexusMBD AI-Native Powertrain Suite
 
 Este documento descreve o funcionamento interno do **MarleyOS**, concebido como um sistema operacional de engenharia com agentes cognitivos, protocolo MCP e simulação em malha fechada.
 

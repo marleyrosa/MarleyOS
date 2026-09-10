@@ -1,6 +1,7 @@
 # NexusMBD // AI-Native Powertrain Engineering Suite
 
 <div align="center" style="margin: 20px 0;">
+  <p style="font-size: 1.1rem; color: #f0f6fc; font-weight: bold; margin-bottom: 8px;">Autor: Eng. Marley Rosa Luciano</p>
   <span style="border: 1px solid #00e5ff; color: #00e5ff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-family: monospace; background: rgba(0,229,255,0.1); margin-right: 6px;">[MCP] CAN Protocol</span>
   <span style="border: 1px solid #b388ff; color: #b388ff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-family: monospace; background: rgba(179,136,255,0.1); margin-right: 6px;">[RAG] Knowledge Base</span>
   <span style="border: 1px solid #ff9100; color: #ff9100; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-family: monospace; background: rgba(255,145,0,0.1); margin-right: 6px;">[AGENTS] Simulink MBD</span>

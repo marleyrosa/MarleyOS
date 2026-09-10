@@ -1,4 +1,5 @@
 # Guia de Laboratório: Automação Simulink com MATLAB MCP Server
+**Autor:** Eng. Marley Rosa Luciano | **Formação:** NexusMBD AI-Native Powertrain Suite
 
 ## 1. Configuração do Ambiente Host
 1. Instalar o **Visual Studio Code** e a extensão **GitHub Copilot Chat**[span_3](start_span)[span_3](end_span).
