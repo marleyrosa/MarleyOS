@@ -139,14 +139,12 @@ def run_telemetry_loop():
                 "temp_inv_c", "modo_propulsao", "status_motor"
             ])
             writer.writerows(history)
-        for attempt in range(10):
+        for attempt in range(20):
             try:
                 os.replace(temp_path, CSV_PATH)
                 break
             except PermissionError:
-                if attempt == 9:
-                    raise
-                time.sleep(0.01)
+                time.sleep(0.05)
 
         t = round(t + dt, 1)
         time.sleep(dt)
