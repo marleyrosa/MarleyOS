@@ -653,22 +653,22 @@ def get_html_page():
             <div style="display:flex; align-items:center; gap:8px;">
                 <span class="brand-title">NexusMBD // AI-NATIVE POWERTRAIN ENGINEERING SUITE</span>
                 <span style="background:rgba(0,229,255,0.15); color:var(--cyan); border:1px solid var(--cyan); font-family:var(--font-mono); font-size:0.58rem; padding:1px 5px; border-radius:3px; font-weight:800;">v2.6 PRO</span>
-                <span style="color:#00e5ff; font-size:0.75rem; font-weight:bold; background:rgba(0,229,255,0.08); border:1px solid rgba(0,229,255,0.3); padding:2px 8px; border-radius:4px; font-family:var(--font-mono);">Autor: Eng. Marley Rosa Luciano</span>
+                <span style="color:#00e5ff; font-size:0.75rem; font-weight:bold; background:rgba(0,229,255,0.08); border:1px solid rgba(0,229,255,0.3); padding:2px 8px; border-radius:4px; font-family:var(--font-mono);">Author: Eng. Marley Rosa Luciano</span>
             </div>
             <span class="brand-sub">4 AI PILLARS: [MCP] CAN CONTEXT • [RAG] KNOWLEDGE BASE • [AGENTS] SIMULINK MBD • [FINE-TUNING] LLM TELEMETRY</span>
         </div>
         <div style="display:flex; align-items:center; gap:8px;">
             <a href="/apostila" target="_blank" class="scope-btn" style="color:var(--cyan); border-color:var(--cyan); font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
-                📖 APOSTILA TÉCNICA
+                📖 TECHNICAL HANDBOOK
             </a>
-            <a href="/slides" target="_blank" class="scope-btn" style="color:var(--amber); border-color:var(--amber); font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
+            <a href="/slides" target="_blank" class="scope-btn" style="color:#00e5ff; border-color:#00e5ff; font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
+                🌐 EXECUTIVE SLIDES (EN)
+            </a>
+            <a href="/slides-pt" target="_blank" class="scope-btn" style="color:var(--amber); border-color:var(--amber); font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
                 🎬 SLIDES (PT)
             </a>
-            <a href="/slides-en" target="_blank" class="scope-btn" style="color:#00e5ff; border-color:#00e5ff; font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
-                🌐 SLIDES (EN)
-            </a>
             <a href="/certificado" target="_blank" class="scope-btn" style="color:#ffe57f; border-color:#ffe57f; font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,229,127,0.1);">
-                🎓 CERTIFICADO OFICIAL
+                🎓 OFFICIAL CERTIFICATE
             </a>
             <div style="display:flex; align-items:center; gap:8px; background:rgba(0,230,118,0.08); border:1px solid rgba(0,230,118,0.25); padding:3px 8px; border-radius:4px;">
                 <span class="pulse-dot"></span>
@@ -679,7 +679,7 @@ def get_html_page():
 
     <!-- TOP 4 SYMMETRICAL AUTOMOTIVE BLOCKS -->
     <div class="top-nav-grid">
-        <!-- 1. ARQUITETURA 4 MAINS -->
+        <!-- 1. ARCHITECTURE 4 MAINS -->
         <div class="nav-card" style="--card-color: var(--cyan);">
             <svg class="nav-icon" viewBox="0 0 24 24">
                 <rect x="3" y="8" width="18" height="10" rx="2" stroke-linecap="round"/>
@@ -687,12 +687,12 @@ def get_html_page():
                 <circle cx="12" cy="13" r="2"/>
             </svg>
             <div class="nav-text-col">
-                <span class="nav-label">ARQUITETURA</span>
+                <span class="nav-label">ARCHITECTURE</span>
                 <span class="nav-title">4 MAINS MBD</span>
             </div>
         </div>
 
-        <!-- 2. EXPORTAR CSV (DATALOGGER) -->
+        <!-- 2. EXPORT CSV (DATALOGGER) -->
         <a href="/api/export-csv" class="nav-card nav-btn" style="--card-color: #00b0ff;" download="nexusmbd_can_telemetry.csv">
             <svg class="nav-icon" viewBox="0 0 24 24">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -701,30 +701,30 @@ def get_html_page():
             </svg>
             <div class="nav-text-col">
                 <span class="nav-label">DATALOGGER</span>
-                <span class="nav-title">EXPORTAR CSV</span>
+                <span class="nav-title">EXPORT CSV</span>
             </div>
         </a>
 
-        <!-- 3. EXECUTAR MIL (SIMULADOR) -->
+        <!-- 3. RUN MIL (SIMULATOR) -->
         <button class="nav-card nav-btn" id="run-mil-button" type="button" style="--card-color: var(--amber);">
             <svg class="nav-icon" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="9"/>
                 <polygon points="10 8 16 12 10 16 10 8" fill="var(--amber)"/>
             </svg>
             <div class="nav-text-col">
-                <span class="nav-label">SIMULADOR</span>
-                <span class="nav-title" id="mil-btn-text">EXECUTAR MIL</span>
+                <span class="nav-label">SIMULATOR</span>
+                <span class="nav-title" id="mil-btn-text">RUN MIL</span>
             </div>
         </button>
 
-        <!-- 4. REDE CAN // P2HEV STATUS -->
+        <!-- 4. CAN BUS // P2HEV STATUS -->
         <div class="nav-card" style="--card-color: var(--green);">
             <span class="pulse-dot"></span>
             <svg class="nav-icon" viewBox="0 0 24 24">
                 <path d="M12 2v6M9 8h6M7 14h10M12 14v8M5 11l2 2M19 11l-2 2"/>
             </svg>
             <div class="nav-text-col">
-                <span class="nav-label">REDE CAN</span>
+                <span class="nav-label">CAN NETWORK</span>
                 <span class="nav-title">P2HEV ONLINE</span>
             </div>
         </div>
@@ -763,10 +763,10 @@ def get_html_page():
     <!-- MIL PROGRESS & FEEDBACK BANNER -->
     <div class="mil-feedback-banner" id="mil-feedback">
         <div class="mil-banner-row">
-            <span id="mil-feedback-message" style="font-weight:bold;">MIL pronto para execucao.</span>
+            <span id="mil-feedback-message" style="font-weight:bold;">MIL simulator ready for execution.</span>
             <div style="display:flex; gap:8px; align-items:center;">
                 <button id="btn-open-simulink-direct" class="scope-btn" style="color:var(--cyan); border-color:var(--cyan); font-weight:bold; cursor:pointer;" type="button">
-                    ABRIR SIMULINK
+                    OPEN SIMULINK
                 </button>
                 <span id="mil-progress-pct" style="color:var(--cyan); font-weight:bold;">0%</span>
             </div>
@@ -783,7 +783,7 @@ def get_html_page():
     <!-- PRIMARY GAUGES -->
     <div class="metrics-grid-top">
         <div class="gauge-card" style="--card-accent: var(--cyan);">
-            <div class="gauge-card-title">Velocidade</div>
+            <div class="gauge-card-title">Vehicle Speed</div>
             <div class="gauge-card-val" style="color:var(--cyan);">
                 <span id="val-speed">0.0</span> <span class="gauge-card-unit">km/h</span>
             </div>
@@ -794,24 +794,24 @@ def get_html_page():
         </div>
 
         <div class="gauge-card" style="--card-accent: var(--green);">
-            <div class="gauge-card-title">Potencia Hibrida</div>
+            <div class="gauge-card-title">Hybrid Power</div>
             <div class="gauge-card-val" style="color:var(--green);">
                 <span id="val-p-total">0.0</span> <span class="gauge-card-unit">kW</span>
             </div>
             <div class="gauge-sub-row">
-                <span><span id="val-cv">0</span> cv</span>
+                <span><span id="val-cv">0</span> hp</span>
                 <span style="color:var(--cyan);" id="val-p-em">EM: 0 kW</span>
             </div>
         </div>
 
         <div class="gauge-card" style="--card-accent: var(--purple);">
-            <div class="gauge-card-title">FOC PMSM // Iq</div>
+            <div class="gauge-card-title">PMSM FOC // Iq</div>
             <div class="gauge-card-val" style="color:var(--purple);">
                 <span id="val-iq">0.0</span> <span class="gauge-card-unit">A</span>
             </div>
             <div class="gauge-sub-row">
                 <span>Freq: <span id="val-freq">0</span> Hz</span>
-                <span>Teto: 250 A</span>
+                <span>Limit: 250 A</span>
             </div>
         </div>
 
@@ -821,13 +821,13 @@ def get_html_page():
                 <span id="val-rpm-ice">0</span> <span class="gauge-card-unit">RPM</span>
             </div>
             <div class="gauge-sub-row">
-                <span>Rotor EM: <span id="val-rpm-em" style="color:var(--cyan);">0</span></span>
+                <span>EM Rotor: <span id="val-rpm-em" style="color:var(--cyan);">0</span></span>
                 <span id="val-delta-rpm" style="color:var(--text-muted);">&Delta; 0</span>
             </div>
         </div>
 
         <div class="gauge-card" style="--card-accent: #00e676;">
-            <div class="gauge-card-title">HV Bateria & Bus</div>
+            <div class="gauge-card-title">HV Battery & Bus</div>
             <div class="gauge-card-val" style="color:#00e676;">
                 <span id="val-soc">0.0</span> <span class="gauge-card-unit">%</span>
             </div>
@@ -838,11 +838,11 @@ def get_html_page():
         </div>
     </div>
 
-    <!-- DYNAMIC TOPOLOGY SVG SECTION (RESTORED WITH ACTIVE STATES) -->
+    <!-- DYNAMIC TOPOLOGY SVG SECTION -->
     <div class="topology-card">
         <div class="topology-header">
-            <span>ARQUITETURA DINAMICA // TOPOLOGIA P2 &amp; e-DCT DUAL-SHAFT</span>
-            <span id="topology-status" class="topology-status-badge">MODO: EV_MODE</span>
+            <span>DYNAMIC ARCHITECTURE // P2 TOPOLOGY &amp; DUAL-SHAFT e-DCT</span>
+            <span id="topology-status" class="topology-status-badge">MODE: EV_MODE</span>
         </div>
         <div class="topology-container" id="topology-wrapper">
             {{SVG_TOPOLOGY}}
@@ -854,7 +854,7 @@ def get_html_page():
         <!-- DOMAIN 1: TORQUE & PROPULSION -->
         <div class="domain-box">
             <div class="domain-title">
-                <span>Split de Torque &amp; Modos</span>
+                <span>Torque Split &amp; Operating Modes</span>
                 <span id="val-torque-total" style="color:var(--cyan);">0 Nm</span>
             </div>
             <div class="mode-hero-badge EV_MODE" id="val-mode-hero">EV_MODE</div>
@@ -870,7 +870,7 @@ def get_html_page():
 
             <!-- COMPACT RACING PEDALS (REDUCED BY HALF) -->
             <div class="pedals-compact-row">
-                <!-- ACCEL -->
+                <!-- THROTTLE -->
                 <div class="pedal-item">
                     <div class="pedal-billet throttle" id="pedal-throttle">
                         <div class="billet-hole"></div>
@@ -879,7 +879,7 @@ def get_html_page():
                     </div>
                     <div class="pedal-info">
                         <div class="pedal-title-bar">
-                            <span style="color:var(--green);">ACEL</span>
+                            <span style="color:var(--green);">THROTTLE</span>
                             <span id="val-throttle">0%</span>
                         </div>
                         <div class="pedal-mini-gauge">
@@ -895,7 +895,7 @@ def get_html_page():
                     </div>
                     <div class="pedal-info">
                         <div class="pedal-title-bar">
-                            <span style="color:var(--red);">FREIO</span>
+                            <span style="color:var(--red);">BRAKE</span>
                             <span id="val-brake">0%</span>
                         </div>
                         <div class="pedal-mini-gauge">
@@ -909,24 +909,24 @@ def get_html_page():
         <!-- DOMAIN 2: K0 COUPLING & DUAL-SHAFT DCT -->
         <div class="domain-box">
             <div class="domain-title">
-                <span>Dinamica K0 &amp; Transmissao e-DCT</span>
+                <span>K0 Coupling Dynamics &amp; e-DCT Gearbox</span>
                 <span id="val-k0-pressure-text" style="color:var(--amber);">0.0 bar</span>
             </div>
 
             <div class="k0-coupling-meter">
                 <div style="display:flex; justify-content:space-between; font-size:0.62rem; font-family:var(--font-mono);">
-                    <span>Escorregamento K0:</span>
+                    <span>K0 Slip Speed:</span>
                     <span>&Delta;&omega; = <strong id="val-delta-rpm-text" style="color:var(--cyan);">0</strong> RPM</span>
                 </div>
                 <div class="meter-bar-track">
                     <div class="meter-bar-fill" id="bar-k0-pressure" style="width:0%; background:var(--amber);"></div>
                 </div>
-                <div class="k0-status-badge OPEN" id="val-k0-phase-badge">FASE 1: SYNC / OPEN (0.5 bar)</div>
+                <div class="k0-status-badge OPEN" id="val-k0-phase-badge">PHASE 1: SYNC / OPEN (0.5 bar)</div>
             </div>
 
             <div class="dct-matrix">
                 <div class="shaft-col">
-                    <span class="shaft-title">EIXO SOLIDO (C1)</span>
+                    <span class="shaft-title">SOLID SHAFT (C1)</span>
                     <div class="gear-nodes">
                         <div class="gear-node" id="gear-node-1">1</div>
                         <div class="gear-node" id="gear-node-3">3</div>
@@ -934,7 +934,7 @@ def get_html_page():
                     </div>
                 </div>
                 <div class="shaft-col">
-                    <span class="shaft-title">EIXO OCO (C2)</span>
+                    <span class="shaft-title">HOLLOW SHAFT (C2)</span>
                     <div class="gear-nodes">
                         <div class="gear-node" id="gear-node-2">2</div>
                         <div class="gear-node" id="gear-node-4">4</div>
@@ -953,14 +953,14 @@ def get_html_page():
         <!-- DOMAIN 3: BSFC & G-BOWL -->
         <div class="domain-box">
             <div class="domain-title">
-                <span>Eficiencia BSFC &amp; Forca G</span>
+                <span>BSFC Efficiency &amp; G-Force</span>
                 <span id="val-bsfc" style="color:var(--green);">0 g/kWh</span>
             </div>
 
             <!-- BSFC SWEET SPOT METER -->
             <div style="background:rgba(0,0,0,0.3); padding:5px 7px; border-radius:4px; border:1px solid rgba(255,255,255,0.06); display:flex; flex-direction:column; gap:3px;">
                 <div style="display:flex; justify-content:space-between; font-size:0.62rem; font-family:var(--font-mono);">
-                    <span>Consumo Especifico:</span>
+                    <span>Specific Consumption:</span>
                     <span id="val-bsfc-zone" style="color:var(--green); font-weight:bold;">OFF (EV)</span>
                 </div>
                 <div class="meter-bar-track" style="background:linear-gradient(90deg, #333 0%, #ff9100 20%, #00e676 40%, #ff9100 70%, #ff1744 100%);">
@@ -994,16 +994,16 @@ def get_html_page():
         <div class="scope-header">
             <div class="scope-title">
                 <span>&#128200;</span>
-                <span>OSCILOSCOPIO DE TELEMETRIA // 60 FPS</span>
+                <span>REAL-TIME TELEMETRY OSCILLOSCOPE // 60 FPS</span>
             </div>
             <div class="scope-channel-pills">
-                <span class="channel-pill active" style="color:var(--cyan);" data-channel="speed_kmh">Velocidade</span>
-                <span class="channel-pill active" style="color:var(--green);" data-channel="t_em">Torque EM</span>
-                <span class="channel-pill active" style="color:var(--amber);" data-channel="t_ice">Torque ICE</span>
-                <span class="channel-pill active" style="color:var(--purple);" data-channel="iq_a">Corrente Iq</span>
-                <span class="channel-pill" style="color:#ff5252;" data-channel="k0_press_bar">Pressao K0</span>
-                <button class="scope-btn" id="btn-pause-scope" type="button">PAUSAR</button>
-                <button class="scope-btn" id="btn-clear-scope" type="button">LIMPAR</button>
+                <span class="channel-pill active" style="color:var(--cyan);" data-channel="speed_kmh">Vehicle Speed</span>
+                <span class="channel-pill active" style="color:var(--green);" data-channel="t_em">EM Torque</span>
+                <span class="channel-pill active" style="color:var(--amber);" data-channel="t_ice">ICE Torque</span>
+                <span class="channel-pill active" style="color:var(--purple);" data-channel="iq_a">Iq Current</span>
+                <span class="channel-pill" style="color:#ff5252;" data-channel="k0_press_bar">K0 Pressure</span>
+                <button class="scope-btn" id="btn-pause-scope" type="button">PAUSE</button>
+                <button class="scope-btn" id="btn-clear-scope" type="button">CLEAR</button>
             </div>
         </div>
         <div class="scope-canvas-wrap">
@@ -1015,25 +1015,25 @@ def get_html_page():
     <!-- LIVE CAN FRAME LOG -->
     <div class="table-card">
         <div style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; color:var(--cyan); margin-bottom:5px;">
-            BUFFER DE TELEMETRIA CAN // RECENT FRAMES
+            CAN TELEMETRY LOG BUFFER // RECENT FRAMES
         </div>
         <table>
             <thead>
                 <tr>
-                    <th>Tempo</th>
-                    <th>Vel (km/h)</th>
-                    <th>Marcha</th>
-                    <th>Modo</th>
-                    <th>Rotor EM</th>
+                    <th>Time (s)</th>
+                    <th>Speed (km/h)</th>
+                    <th>Gear</th>
+                    <th>Mode</th>
+                    <th>EM RPM</th>
                     <th>ICE RPM</th>
-                    <th>Split Tem/Tice</th>
+                    <th>Tem / Tice Split</th>
                     <th>Iq (A)</th>
-                    <th>K0 Press</th>
-                    <th>BSFC</th>
+                    <th>K0 Press (bar)</th>
+                    <th>BSFC (g/kWh)</th>
                 </tr>
             </thead>
             <tbody id="table-body">
-                <tr><td colspan="10" style="text-align:center; color:var(--text-muted);">Aguardando telemetria CAN...</td></tr>
+                <tr><td colspan="10" style="text-align:center; color:var(--text-muted);">Awaiting CAN telemetry stream...</td></tr>
             </tbody>
         </table>
     </div>
@@ -1337,7 +1337,7 @@ def get_html_page():
                 document.getElementById('table-body').innerHTML = rowsHtml;
 
             } catch (err) {
-                console.error('Falha na telemetria CAN:', err);
+                console.error('CAN telemetry streaming error:', err);
             } finally {
                 telemetryRequestInFlight = false;
             }
@@ -1360,7 +1360,7 @@ def get_html_page():
         const pauseBtn = document.getElementById('btn-pause-scope');
         pauseBtn.addEventListener('click', () => {
             isScopePaused = !isScopePaused;
-            pauseBtn.textContent = isScopePaused ? 'CONTINUAR' : 'PAUSAR';
+            pauseBtn.textContent = isScopePaused ? 'RESUME' : 'PAUSE';
             pauseBtn.style.color = isScopePaused ? 'var(--green)' : 'var(--text-primary)';
         });
         document.getElementById('btn-clear-scope').addEventListener('click', () => {
@@ -1390,7 +1390,7 @@ def get_html_page():
         }, { passive: true });
 
         // RUN MIL JOB BUTTON WITH ANIMATED PROGRESS BAR & SIMULINK MODEL LAUNCH
-                // DIRECT OPEN SIMULINK BUTTON
+        // DIRECT OPEN SIMULINK BUTTON
         const btnOpenDirect = document.getElementById('btn-open-simulink-direct');
         if (btnOpenDirect) {
             btnOpenDirect.addEventListener('click', async () => {
@@ -1398,13 +1398,13 @@ def get_html_page():
                 const msg = document.getElementById('mil-feedback-message');
                 const modelStatus = document.getElementById('mil-model-status');
                 feedback.classList.add('visible');
-                msg.textContent = 'Iniciando MATLAB & Simulink (splash aparecendo na tela)...';
-                modelStatus.textContent = 'Carregando MIL_MarleyOS_Powertrain (~15-20s)...';
+                msg.textContent = 'Launching MATLAB & Simulink (splash screen appearing)...';
+                modelStatus.textContent = 'Loading MIL_MarleyOS_Powertrain (~15-20s)...';
                 try {
                     await fetch('/api/open-model', { method: 'POST' });
-                    msg.textContent = '\u2705 Comando enviado! Janela do Simulink abrindo na sua Área de Trabalho.';
+                    msg.textContent = '\u2705 Command dispatched! Simulink window opening on your Desktop.';
                 } catch(e) {
-                    msg.textContent = 'Erro ao enviar comando de abertura.';
+                    msg.textContent = 'Error dispatching model launch command.';
                 }
             });
         }
@@ -1421,13 +1421,13 @@ def get_html_page():
             const modelStatus = document.getElementById('mil-model-status');
 
             btn.disabled = true;
-            btnText.textContent = 'EXECUTANDO...';
+            btnText.textContent = 'EXECUTING...';
             feedback.classList.add('visible');
-            msg.textContent = '1/4: Inicializando MATLAB e abrindo modelo no Simulink...';
+            msg.textContent = '1/4: Initializing MATLAB engine and loading Simulink model...';
             pct.textContent = '8%';
             bar.style.width = '8%';
-            metricsSpan.textContent = 'Aguardando solvers e interface gráfica...';
-            modelStatus.textContent = 'Splash do MATLAB em carregamento na tela...';
+            metricsSpan.textContent = 'Awaiting ODE solvers and GUI initialization...';
+            modelStatus.textContent = 'MATLAB runtime initializing on desktop...';
 
             // Start smooth progress animation timer (~20s duration)
             let progress = 8;
@@ -1439,13 +1439,13 @@ def get_html_page():
                     bar.style.width = `${progress}%`;
 
                     if (progress > 15 && progress <= 45) {
-                        msg.textContent = '2/4: Simulando Solvers 4 Mains (COMUNICACAO -> SOFTECU -> MDL)...';
-                        modelStatus.textContent = 'Solvers MBD em cálculo contínuo...';
+                        msg.textContent = '2/4: Simulating 4 Mains Solvers (COMMUNICATION -> SOFTECU -> MDL)...';
+                        modelStatus.textContent = 'MBD ODE solvers continuous integration...';
                     } else if (progress > 45 && progress <= 75) {
-                        msg.textContent = '3/4: Solvers finalizando & abrindo janela gráfica do Simulink...';
-                        modelStatus.textContent = 'Janela do Simulink ativa na sua Área de Trabalho!';
+                        msg.textContent = '3/4: Solvers finishing & rendering Simulink model canvas...';
+                        modelStatus.textContent = 'Simulink model window active on desktop!';
                     } else if (progress > 75) {
-                        msg.textContent = '3/4: Consolidando métricas de telemetria e datasets...';
+                        msg.textContent = '3/4: Consolidating telemetry metrics and simulation dataset...';
                     }
                 }
             }, 700);
@@ -1459,7 +1459,7 @@ def get_html_page():
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ stopTime: 1 })
                 });
-                if (!postRes.ok) throw new Error('Falha ao disparar simulacao MIL');
+                if (!postRes.ok) throw new Error('Failed to dispatch MIL simulation');
 
                 let status = 'running';
                 while (status === 'running' || status === 'queued') {
@@ -1472,26 +1472,26 @@ def get_html_page():
                         clearInterval(progressTimer);
                         bar.style.width = '100%';
                         pct.textContent = '100%';
-                        msg.textContent = '\u2705 4/4: SIMULACAO CONCLUIDA (PASSED) & MODELO ABERTO NO SIMULINK';
-                        modelStatus.textContent = 'Simulink: Model Loaded & Active na sua Área de Trabalho';
+                        msg.textContent = '\u2705 4/4: SIMULATION COMPLETED (PASSED) & SIMULINK MODEL LOADED';
+                        modelStatus.textContent = 'Simulink: Model Loaded & Active on Desktop';
                         const m = pollData.result && pollData.result.metrics ? pollData.result.metrics : {};
-                        metricsSpan.textContent = `Peak Iq: ${m.peakIqA || 0} A | BSFC: ${m.bsfcGPerKwh || 0} g/kWh | Gx: ${m.peakGx || 0}G | Resíduo: ${m.peakDecelerationResidual || 0}`;
+                        metricsSpan.textContent = `Peak Iq: ${m.peakIqA || 0} A | BSFC: ${m.bsfcGPerKwh || 0} g/kWh | Gx: ${m.peakGx || 0}G | Residual: ${m.peakDecelerationResidual || 0}`;
                         break;
                     } else if (status === 'failed') {
                         clearInterval(progressTimer);
                         bar.style.width = '100%';
-                        pct.textContent = 'FALHA';
-                        msg.textContent = '\u274C SIMULACAO MIL FALHOU';
-                        metricsSpan.textContent = pollData.message || 'Verifique os logs do MATLAB.';
+                        pct.textContent = 'FAILED';
+                        msg.textContent = '\u274C MIL SIMULATION FAILED';
+                        metricsSpan.textContent = pollData.message || 'Check MATLAB runtime logs.';
                         break;
                     }
                 }
             } catch (err) {
                 clearInterval(progressTimer);
-                msg.textContent = `Erro: ${err.message}`;
+                msg.textContent = `Error: ${err.message}`;
             } finally {
                 btn.disabled = false;
-                btnText.textContent = 'EXECUTAR MIL';
+                btnText.textContent = 'RUN MIL';
             }
         }
         document.getElementById('run-mil-button').addEventListener('click', runMil);
@@ -1514,11 +1514,11 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
         req_path = urlparse(self.path).path
         if req_path == "/api/open-model":
             threading.Thread(target=open_simulink_model, daemon=True).start()
-            self._send_json(200, {"status": "ok", "message": "Modelo MIL sendo aberto no MATLAB/Simulink."})
+            self._send_json(200, {"status": "ok", "message": "MIL model opening in MATLAB/Simulink."})
             return
 
         if req_path != "/api/run-mil":
-            self.send_error(404, "Arquivo nao encontrado")
+            self.send_error(404, "File not found")
             return
 
         content_length = int(self.headers.get("Content-Length", "0"))
@@ -1526,16 +1526,16 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
         try:
             request = json.loads(request_body.decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError):
-            self.send_error(400, "JSON invalido")
+            self.send_error(400, "Invalid JSON")
             return
 
         try:
             stop_time = float(request.get("stopTime", 1))
         except (TypeError, ValueError):
-            self.send_error(400, "stopTime invalido")
+            self.send_error(400, "Invalid stopTime")
             return
         if not 0 < stop_time <= 120:
-            self.send_error(400, "stopTime deve estar entre 0 e 120 segundos")
+            self.send_error(400, "stopTime must be between 0 and 120 seconds")
             return
 
         run_id = uuid.uuid4().hex
@@ -1544,7 +1544,7 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
             MIL_RUN_STATE.update({
                 "run_id": run_id,
                 "status": "queued",
-                "message": "Execucao MIL enfileirada.",
+                "message": "MIL execution queued.",
                 "result": None,
             })
         # Open model and run simulation
@@ -1601,7 +1601,7 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(content)
             else:
-                self.send_error(404, "Arquivo CSV nao encontrado")
+                self.send_error(404, "CSV file not found")
 
         elif req_path == "/topology.svg":
             if os.path.exists(SVG_PATH):
@@ -1612,7 +1612,7 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(content)
             else:
-                self.send_error(404, "SVG nao encontrado")
+                self.send_error(404, "SVG not found")
 
         elif req_path == "/certificado":
             cert_path = os.path.join(ROOT_DIR, "course", "certification", "certificado_conclusao.html")
@@ -1624,24 +1624,12 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(content)
             else:
-                self.send_error(404, "Certificado ainda nao emitido. Execute evaluate_course.py primeiro.")
+                self.send_error(404, "Certificate not yet generated. Run evaluate_course.py first.")
 
-        elif req_path in ("/slides", "/slides/pt", "/slides-pt"):
-            slides_path = os.path.join(ROOT_DIR, "course", "slides", "nexusmbd_slides_master_pt.html")
-            if not os.path.exists(slides_path):
-                slides_path = os.path.join(ROOT_DIR, "course", "slides", "deck_01_intro_mbd_ai.html")
-            if os.path.exists(slides_path):
-                with open(slides_path, "rb") as f:
-                    content = f.read()
-                self.send_response(200)
-                self.send_header("Content-Type", "text/html; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(content)
-            else:
-                self.send_error(404, "Slides nao encontrados")
-
-        elif req_path in ("/slides-en", "/slides/en"):
+        elif req_path in ("/slides", "/slides/en", "/slides-en"):
             slides_path = os.path.join(ROOT_DIR, "course", "slides", "nexusmbd_slides_master_en.html")
+            if not os.path.exists(slides_path):
+                slides_path = os.path.join(ROOT_DIR, "course", "slides", "nexusmbd_slides_master_pt.html")
             if os.path.exists(slides_path):
                 with open(slides_path, "rb") as f:
                     content = f.read()
@@ -1650,7 +1638,19 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(content)
             else:
-                self.send_error(404, "English slides not found")
+                self.send_error(404, "Slides not found")
+
+        elif req_path in ("/slides-pt", "/slides/pt"):
+            slides_path = os.path.join(ROOT_DIR, "course", "slides", "nexusmbd_slides_master_pt.html")
+            if os.path.exists(slides_path):
+                with open(slides_path, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(content)
+            else:
+                self.send_error(404, "Slides not found")
 
         elif req_path in ("/apostila", "/docs"):
             self.send_response(302)
@@ -1682,7 +1682,7 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(content)
             else:
-                self.send_error(404, "Arquivo de documentacao nao encontrado")
+                self.send_error(404, "Documentation file not found")
 
         elif req_path in ("/", "/index.html", ""):
             html = get_html_page()
@@ -1697,7 +1697,7 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(204)
             self.end_headers()
         else:
-            self.send_error(404, "Arquivo nao encontrado")
+            self.send_error(404, "File not found")
 
     def log_message(self, format, *args):
         pass
@@ -1730,7 +1730,7 @@ def run_mil_job(run_id, stop_time):
         CSV_PATH.replace("'", "''"),
     )
     with MIL_RUN_LOCK:
-        MIL_RUN_STATE.update({"status": "running", "message": "MATLAB MIL em execucao."})
+        MIL_RUN_STATE.update({"status": "running", "message": "MATLAB MIL in execution."})
     try:
         completed = subprocess.run(
             [MATLAB_BIN, "-batch", matlab_expression],
@@ -1755,14 +1755,14 @@ def run_mil_job(run_id, stop_time):
         with MIL_RUN_LOCK:
             MIL_RUN_STATE.update({
                 "status": status,
-                "message": "Execucao MIL concluida." if status == "passed" else "Execucao MIL falhou.",
+                "message": "MIL simulation completed." if status == "passed" else "MIL simulation failed.",
                 "result": result,
             })
     except (OSError, subprocess.TimeoutExpired) as error:
         with MIL_RUN_LOCK:
             MIL_RUN_STATE.update({
                 "status": "failed",
-                "message": "Nao foi possivel executar o MATLAB MIL.",
+                "message": "Unable to execute MATLAB MIL process.",
                 "result": {"error": str(error)},
             })
 
@@ -1775,5 +1775,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     with ThreadingTCPServer((args.host, args.port), ClusterHandler) as httpd:
         display_host = args.host if args.host and args.host != "0.0.0.0" else "localhost"
-        print(f"Servidor ativo em http://{display_host}:{args.port}")
+        print(f"NexusMBD server active at http://{display_host}:{args.port}")
         httpd.serve_forever()

@@ -1,12 +1,12 @@
 site_name: NexusMBD // AI-Native Powertrain Engineering Suite
-site_description: Apostila Técnica e Documentação de Model-Based Design Automotivo com os 4 Pilares de Inteligência Artificial (MCP, RAG, Agents, Fine-Tuning).
+site_description: Technical Handbooks & Model-Based Design Powertrain Engineering Suite powered by the 4 AI Pillars (MCP, RAG, Agents, Fine-Tuning).
 site_author: Marley Rosa Luciano
 repo_url: https://github.com/marleyrosa/MarleyOS
 repo_name: marleyrosa/MarleyOS
 
 theme:
   name: material
-  language: pt-BR
+  language: en
   palette:
     # Palette toggle for automatic/dark mode
     - scheme: slate
@@ -14,13 +14,13 @@ theme:
       accent: amber
       toggle:
         icon: material/brightness-4
-        name: Alternar para modo claro
+        name: Switch to light mode
     - scheme: default
       primary: cyan
       accent: amber
       toggle:
         icon: material/brightness-7
-        name: Alternar para modo escuro
+        name: Switch to dark mode
   features:
     - navigation.tabs
     - navigation.sections
@@ -62,23 +62,25 @@ markdown_extensions:
   - md_in_html
 
 nav:
-  - Início: index.md
-  - "Plano Mestre do Curso": COURSE_CURRICULUM.md
-  - Apostila Técnica:
-      - "Capítulo 1: Dinâmica ICE & Ciclo Miller": course/apostilas/01_ice_powertrain.md
-      - "Capítulo 2: Máquinas PMSM & Controle FOC": course/apostilas/02_bev_foc_traction.md
-      - "Capítulo 3: Híbrido P2, K0 & e-DCT": course/apostilas/03_hev_p2_architecture.md
-      - "Capítulo 4: [MCP] Servidor JSON-RPC & CAN DBC": course/apostilas/04_mcp_can_telemetry.md
-      - "Capítulo 5: [RAG] Busca Híbrida & Árvores DTC": course/apostilas/05_rag_knowledge_base.md
-      - "Capítulo 6: [AGENTS] Calibração Simulink MIL": course/apostilas/06_agents_simulink_mil.md
-      - "Capítulo 7: [FINE-TUNING] Datasets & ISO 26262": course/apostilas/07_finetuning_safety_audit.md
-      - "Capítulo 8: Capstone & Exame de Certificação": course/apostilas/08_capstone_certification.md
-  - Slides Executivos:
-      - "Deck 1: Visão Geral & MBD": course/slides/deck_01_intro_mbd_ai.md
-      - "Deck 2: Eletrificação BEV & Híbrido P2": course/slides/deck_02_bev_hev.md
-      - "Deck 3: Os 4 Pilares de IA & Certificação": course/slides/deck_03_ai_pillars.md
-  - Laboratórios Práticos:
-      - "Guia de Laboratório MIL/MCP": LAB_GUIDE_MBD_MCP.md
-      - "Exercícios Resolvidos": EXERCICIOS_RESOLVIDOS.md
-  - Sistema & Cockpit:
-      - "Cockpit & Arquitetura": SISTEMA_OPERACIONAL.md
+  - Home: index.md
+  - "Master Curriculum": COURSE_CURRICULUM.md
+  - Technical Handbooks:
+      - "Chapter 1: Thermal ICE Dynamics & Miller Cycle": course/apostilas/01_ice_powertrain.md
+      - "Chapter 2: PMSM Machines & FOC Control": course/apostilas/02_bev_foc_traction.md
+      - "Chapter 3: P2 Hybrid, K0 Clutch & e-DCT": course/apostilas/03_hev_p2_architecture.md
+      - "Chapter 4: [MCP] JSON-RPC Server & CAN DBC": course/apostilas/04_mcp_can_telemetry.md
+      - "Chapter 5: [RAG] Hybrid Search & DTC Fault Trees": course/apostilas/05_rag_knowledge_base.md
+      - "Chapter 6: [AGENTS] Simulink MIL Calibration": course/apostilas/06_agents_simulink_mil.md
+      - "Chapter 7: [FINE-TUNING] Datasets & ISO 26262": course/apostilas/07_finetuning_safety_audit.md
+      - "Chapter 8: Capstone & Certification Exam": course/apostilas/08_capstone_certification.md
+  - Executive Slides:
+      - "Master Presentation Full (English)": course/slides/deck_master_en.md
+      - "Apresentação Master (Português)": course/slides/deck_master_pt.md
+      - "Deck 1: MBD Overview": course/slides/deck_01_intro_mbd_ai.md
+      - "Deck 2: BEV Electrification & P2 HEV": course/slides/deck_02_bev_hev.md
+      - "Deck 3: The 4 AI Pillars & Certification": course/slides/deck_03_ai_pillars.md
+  - Practical Labs:
+      - "MIL/MCP Laboratory Guide": LAB_GUIDE_MBD_MCP.md
+      - "Solved Engineering Exercises": EXERCICIOS_RESOLVIDOS.md
+  - System & Cockpit:
+      - "Cockpit Architecture & Guide": SISTEMA_OPERACIONAL.md

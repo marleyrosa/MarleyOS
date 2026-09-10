@@ -1,10 +1,13 @@
-# Guia de Laboratório: Automação Simulink com MATLAB MCP Server
-**Autor:** Eng. Marley Rosa Luciano | **Formação:** NexusMBD AI-Native Powertrain Suite
+# Laboratory Guide: Simulink Automation with MATLAB MCP Server
 
-## 1. Configuração do Ambiente Host
-1. Instalar o **Visual Studio Code** e a extensão **GitHub Copilot Chat**[span_3](start_span)[span_3](end_span).
-2. Baixar o executável do **MATLAB MCP Core Server** do repositório oficial da MathWorks[span_4](start_span)[span_4](end_span).
-3. Configurar o arquivo `.vscode/mcp.json` na raiz do repositório MarleyOS com a diretiva de persistência[span_5](start_span)[span_5](end_span):
+**Author:** Eng. Marley Rosa Luciano | **Program:** NexusMBD AI-Native Powertrain Suite
+
+---
+
+## 1. Host Environment Configuration
+1. Install **Visual Studio Code** and the **GitHub Copilot Chat** extension.
+2. Download the **MATLAB MCP Core Server** binary from MathWorks.
+3. Configure the `.vscode/mcp.json` file in the MarleyOS root directory:
 ```json
 {
   "servers": {
@@ -12,11 +15,27 @@
       "type": "stdio",
       "command": "C:\\MATLAB\\MCP\\server\\matlab-mcp-core-server-win64.exe",
       "args": [
-        "--matlab-root=C:\\MATLAB\\R2024b",
+        "--matlab-root=C:\\Program Files\\MATLAB\\R2026a",
         "--initialize-matlab-on-startup=true",
-        "--initial-working-folder=C:\\Workspace\\MarleyOS"
+        "--initial-working-folder=C:\\Users\\UsuarioPC\\MarleyOS"
+      ]
+    },
+    "nexusmbd_can": {
+      "type": "stdio",
+      "command": "python",
+      "args": [
+        "module_2_mcp/mcp_server.py"
       ]
     }
   }
 }
+```
 
+---
+
+## 2. Headless Simulation & Agent Execution
+To execute autonomous calibration runs without opening the graphical editor:
+```bash
+python -u dashboard/server.py --host 0.0.0.0 --port 8080
+```
+Open `http://localhost:8080` and trigger the automated MIL simulator to stream synchronized 4-Mains telemetry.

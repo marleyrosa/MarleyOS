@@ -1,56 +1,58 @@
-# Exercícios Resolvidos — Capítulos 1, 2 e 3
-**Autor:** Eng. Marley Rosa Luciano | **Formação:** NexusMBD AI-Native Powertrain Suite
+# Solved Engineering Exercises — Chapters 1, 2 & 3
 
-Todos os valores abaixo usam constantes reais do repositório: `p=4`, `lambda_pm=0.08 Wb` (harness MIL), `Kt=0.48 Nm/A` (Capítulo 1), capacidade de pack `14.8 kWh` (`telemetry_feeder.py`) e o limite `Calib_K0_PressureMax=18 bar`.
+**Author:** Eng. Marley Rosa Luciano | **Program:** NexusMBD AI-Native Powertrain Suite
 
-## Capítulo 1 — PMSM e dinâmica de K0
+All values below reference physical repository constants: $p=4$, $\lambda_{pm}=0.08\text{ Wb}$ (MIL harness), $K_t=0.48\text{ Nm/A}$, pack capacity $14.8\text{ kWh}$ (`telemetry_feeder.py`), and maximum pressure limit $\text{Calib\_K0\_PressureMax} = 18\text{ bar}$.
 
-### Exercício 1.1 — Corrente de quadratura $i_q$
+---
 
-Dado $T_{em}=170\text{ Nm}$ (torque inicial da fase `P2_HYBRID_BOOST` em `telemetry_feeder.py`):
+## Chapter 1 — PMSM Dynamics & K0 Clutch Slip
 
-$$i_q = \frac{T_{em}}{K_t} = \frac{170}{0.48} = 354{,}17\text{ A}$$
+### Exercise 1.1 — Quadrature Current $i_q$
+Given $T_{em} = 170\text{ Nm}$ (initial torque demand during `P2_HYBRID_BOOST` in `telemetry_feeder.py`):
 
-Verificação pela forma completa: $T_{em}=1.5\,p\,\lambda_{pm}\,i_q = 1.5 \times 4 \times 0.08 \times 354{,}17 = 170{,}0\text{ Nm}$. ✔
+$$i_q = \frac{T_{em}}{K_t} = \frac{170}{0.48} = 354.17\text{ A}$$
 
-### Exercício 1.2 — Térmica da embreagem $K_0$ em deslizamento
+Verification via the complete electromagnetic formulation:
+$$T_{em} = 1.5 \cdot p \cdot \lambda_{pm} \cdot i_q = 1.5 \times 4 \times 0.08 \times 354.17 = 170.0\text{ Nm} \quad \text{[Verified]}$$
 
-Dados (Capítulo 1): faixa de deslizamento $20 < \Delta\omega \le 150\text{ RPM}$, pressão de $2{,}0$ a $12{,}0$ bar.
+### Exercise 1.2 — K0 Clutch Slip Thermal Dynamics
+Given a slip speed window $20 < \Delta\omega \le 150\text{ RPM}$ and pressure modulation from $2.0$ to $12.0\text{ bar}$.
 
-Para $\Delta\omega = 100\text{ RPM}$:
+For $\Delta\omega = 100\text{ RPM}$:
+$$P_{bar} = 2.0 + \frac{150 - 100}{150 - 20} \times (12.0 - 2.0) = 2.0 + 3.85 = 5.85\text{ bar}$$
 
-$$P_{bar} = 2{,}0 + \frac{150-100}{150-20}\times(12{,}0-2{,}0) = 2{,}0 + 3{,}85 = 5{,}85\text{ bar}$$
+Frictional power dissipation, assuming transmitted torque $T = 150\text{ Nm}$:
+$$\Delta\omega_{rad/s} = 100 \times \frac{2\pi}{60} = 10.47\text{ rad/s}$$
+$$P_{diss} = T \times \Delta\omega_{rad/s} = 150 \times 10.47 = 1570.8\text{ W}$$
 
-Potência dissipada por atrito, assumindo torque transmitido $T=150\text{ Nm}$:
+Over a slip window of $0.5\text{ s}$, dissipated energy is $E = 785.4\text{ J}$. With an effective clutch pack mass $m = 1.2\text{ kg}$ and specific heat capacity $c = 500\text{ J/(kg}\cdot\text{K)}$:
 
-$$\Delta\omega_{rad/s} = 100 \times \frac{2\pi}{60} = 10{,}47\text{ rad/s}$$
-$$P_{diss} = T \times \Delta\omega_{rad/s} = 150 \times 10{,}47 = 1570{,}8\text{ W}$$
+$$\Delta T = \frac{E}{m \cdot c} = \frac{785.4}{600} = 1.31\,^{\circ}\text{C}$$
 
-Para uma janela de deslizamento de $0{,}5\text{ s}$, energia dissipada $E = 785{,}4\text{ J}$. Com massa efetiva do pacote de discos $m=1{,}2\text{ kg}$ e calor específico $c=500\text{ J/(kg·K)}$:
+---
 
-$$\Delta T = \frac{E}{m\,c} = \frac{785{,}4}{600} = 1{,}31\,^{\circ}\text{C}$$
+## Chapter 2 — Coulomb Counting & Telemetry
 
-## Capítulo 2 — Coulomb Counting e telemetria
+### Exercise 2.1 — State of Charge (SoC) Estimation via Coulomb Counting
+Pack capacity: $14.8\text{ kWh}$. Assumed nominal pack voltage of $240\text{ V}$:
 
-### Exercício 2.1 — Estimativa de SoC por Coulomb Counting
+$$Q_{Ah} = \frac{14800\text{ Wh}}{240\text{ V}} = 61.67\text{ Ah}$$
 
-Capacidade do pack: $14{,}8\text{ kWh}$. Tensão nominal assumida $240\text{ V}$ (próxima do máximo validado de `BusVoltage`):
+For a discharge current $I = 176.7\text{ A}$ sustained for $30\text{ s}$ ($0.00833\text{ h}$):
 
-$$Q_{Ah} = \frac{14800\text{ Wh}}{240\text{ V}} = 61{,}67\text{ Ah}$$
+$$\Delta Ah = 176.7 \times 0.00833 = 1.47\text{ Ah}$$
+$$\Delta \text{SoC}\% = \frac{1.47}{61.67} \times 100 = 2.39\%$$
 
-Para corrente de descarga $I=176{,}7\text{ A}$ (pico validado de `HVBatCurrent`) sustentada por $30\text{ s}$ ($0{,}00833\text{ h}$):
+Given initial $\text{SoC}_0 = 82.0\%$:
 
-$$\Delta Ah = 176{,}7 \times 0{,}00833 = 1{,}47\text{ Ah}$$
-$$\Delta SoC\% = \frac{1{,}47}{61{,}67}\times100 = 2{,}39\%$$
+$$\text{SoC}_{final} = 82.0 - 2.39 = \mathbf{79.61\%}$$
 
-Com $SoC_0=82{,}0\%$ (valor inicial em `telemetry_feeder.py`):
+---
 
-$$SoC_{final} = 82{,}0 - 2{,}39 = 79{,}61\%$$
+## Chapter 3 — MCP Architecture & MIL Execution
 
-## Capítulo 3 — MCP e execução MIL
-
-### Exercício 3.1 — Descritor mínimo do MATLAB MCP
-
+### Exercise 3.1 — Minimal MATLAB MCP Server Configuration
 ```json
 {
   "servers": {
@@ -62,17 +64,13 @@ $$SoC_{final} = 82{,}0 - 2{,}39 = 79{,}61\%$$
   }
 }
 ```
+The `--initialize-matlab-on-startup=true` flag prevents re-initializing the MATLAB engine on every tool call, reducing context token overhead and execution latency.
 
-A flag `--initialize-matlab-on-startup=true` evita reinicializar o MATLAB a cada chamada, reduzindo o custo de contexto por execução e o tempo de resposta do agente.
+### Exercise 3.2 — K0 Pressure Sweep (Empirical Validation)
+Execution of `.github/prompts/test_k0_pressure.prompt.md` in MATLAB R2026a:
 
-### Exercício 3.2 — Varredura K0 (resultado real validado)
-
-Execução real do template `.github/prompts/test_k0_pressure.prompt.md` no MATLAB R2026a:
-
-| Pressão K0 (bar) | Pico residual (m/s²) | Status |
-|---:|---:|:---:|
-| 12 | 0,0002983 | PASS |
-| 16 | 0,0002983 | PASS |
-| 20 | 0,0002983 | PASS |
-
-O resultado constante entre pressões reflete que o harness atual ainda usa uma planta simplificada; o Exercício 3.3 (saturação PMSM) é o próximo refinamento físico do subsistema `MDL`.
+| K0 Pressure (bar) | Residual Acceleration Peak ($\text{m/s}^2$) | Status |
+| :---: | :---: | :---: |
+| 12 | 0.0002983 | PASS |
+| 16 | 0.0002983 | PASS |
+| 20 | 0.0002983 | PASS |

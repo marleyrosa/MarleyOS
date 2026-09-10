@@ -1,23 +1,24 @@
-# MarleyOS — Arquitetura de IA Automotiva & Manual de Aprendizagem
-**Autor:** Eng. Marley Rosa Luciano | **Formação:** NexusMBD AI-Native Powertrain Suite
+# MarleyOS — Automotive AI Architecture & Cognitive Learning Manual
 
-Este documento descreve o funcionamento interno do **MarleyOS**, concebido como um sistema operacional de engenharia com agentes cognitivos, protocolo MCP e simulação em malha fechada.
+**Author:** Eng. Marley Rosa Luciano | **Program:** NexusMBD AI-Native Powertrain Suite
 
----
-
-## 🧠 Ciclo Cognitivo de Aprendizagem do Agente
-
-1. **Percepção (Sensing):** Ingestão de telemetria CAN via servidor MCP (JSON-RPC).
-2. **Diagnóstico (RAG Engine):** Identificação de falhas DTC em manuais técnicos sem alucinação.
-3. **Julgamento de Segurança (ISO 26262):** Avaliação do nível ASIL (A a D) e definição do *Safe State*.
-4. **Atuação & Sintonia (Agent Toolkit):**
-   - Agente ReAct gera objetos modernos `Simulink.SimulationInput` para o MATLAB MCP Core Server.
-   - O agente valida se a recalibração conteve o transiente físico antes de liberar para o veículo.
-5. **Síntese Pedagógica:** O Copilot explica a razão matemática e física de cada intervenção de engenharia.
+This document outlines the internal architecture of **MarleyOS**, an engineering operating system combining cognitive AI agents, the Model Context Protocol (MCP), and closed-loop Model-in-the-Loop (MIL) simulation.
 
 ---
 
-## ⚙️ Regras do MATLAB & Simulink MCP Integration
-- **Isolamento de Variáveis:** Configurações de calibração são passadas via `.setVariable()`.
-- **Entrada e Saída Estruturada:** Dados coletados devem utilizar o formato `Simulink.SimulationData.Dataset`.
-- **Evitar Comandos Legados:** Nunca concatenar matrizes simples `[t u]` sem o método formal de simulação.
+## 🧠 Cognitive Agent Learning Cycle
+
+1. **Sensing & Ingestion:** Ingesting 100ms CAN telemetry frames via the JSON-RPC MCP server.
+2. **Diagnosis (RAG Engine):** Grounded identification of DTC faults from technical manuals without hallucination.
+3. **Safety Assessment (ISO 26262):** Automated evaluation of ASIL levels (QM to ASIL-D) and fail-safe state transition.
+4. **Actuation & Calibration (Agent Toolkit):**
+   - ReAct agent creates modern `Simulink.SimulationInput` objects for the MATLAB MCP Core Server.
+   - The agent verifies that controller retuning suppresses physical transients before approving calibration tables.
+5. **Pedagogical Synthesis:** The agent articulates the mathematical and thermodynamic rationale behind each engineering decision.
+
+---
+
+## ⚙️ MATLAB & Simulink MCP Integration Guidelines
+- **Workspace Isolation:** Parameter calibrations are injected via `.setVariable()` into the Model Workspace.
+- **Structured I/O:** Telemetry extraction must use `Simulink.SimulationData.Dataset` structures (`logsout`).
+- **Headless Execution:** Utilize `-batch` commands and `sim(in)` objects rather than legacy GUI-bound commands.
