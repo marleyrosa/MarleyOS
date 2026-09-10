@@ -11,3 +11,6 @@ capstone_report.txt
 
 # Arquivos temporarios de telemetria
 *.csv.tmp
+site/  
+docs/course/  
+MarleyOS/ 

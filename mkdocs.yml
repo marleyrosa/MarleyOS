@@ -1,0 +1,76 @@
+site_name: NexusMBD // AI-Native Powertrain Engineering Suite
+site_description: Apostila Técnica e Documentação de Model-Based Design Automotivo com os 4 Pilares de Inteligência Artificial (MCP, RAG, Agents, Fine-Tuning).
+site_author: Marley Rosa
+repo_url: https://github.com/marleyrosa/MarleyOS
+repo_name: marleyrosa/MarleyOS
+
+theme:
+  name: material
+  language: pt-BR
+  palette:
+    # Palette toggle for automatic/dark mode
+    - scheme: slate
+      primary: cyan
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Alternar para modo claro
+    - scheme: default
+      primary: cyan
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Alternar para modo escuro
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+
+extra_css:
+  - https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js
+  - https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
+  - tables
+  - attr_list
+  - md_in_html
+
+nav:
+  - Início: index.md
+  - Apostila Técnica:
+      - "Capítulo 1: Dinâmica ICE & MBD": course/apostilas/01_ice_powertrain.md
+      - "Capítulo 2: Arquitetura Híbrida P2": CAPITULO_1_ARQUITETURA_P2.md
+      - "Capítulo 3: MBD com Agentes & MCP": CAPITULO_3_MBD_AGENTES_MCP.md
+  - Slides Executivos:
+      - "Módulo 1: Apresentação": course/slides/deck_01_intro_mbd_ai.md
+  - Laboratórios Práticos:
+      - "Guia de Laboratório MIL/MCP": LAB_GUIDE_MBD_MCP.md
+      - "Exercícios Resolvidos": EXERCICIOS_RESOLVIDOS.md
+  - Sistema & Cockpit:
+      - "Cockpit & Arquitetura": SISTEMA_OPERACIONAL.md

@@ -649,9 +649,17 @@ def get_html_page():
             </div>
             <span class="brand-sub">4 AI PILLARS: [MCP] CAN CONTEXT • [RAG] KNOWLEDGE BASE • [AGENTS] SIMULINK MBD • [FINE-TUNING] LLM TELEMETRY</span>
         </div>
-        <div style="display:flex; align-items:center; gap:8px; background:rgba(0,230,118,0.08); border:1px solid rgba(0,230,118,0.25); padding:3px 8px; border-radius:4px;">
-            <span class="pulse-dot"></span>
-            <span style="font-family:var(--font-mono); font-size:0.62rem; color:var(--green); font-weight:800; letter-spacing:0.5px;">P2 HEV SYSTEM ONLINE</span>
+        <div style="display:flex; align-items:center; gap:8px;">
+            <a href="/apostila" target="_blank" class="scope-btn" style="color:var(--cyan); border-color:var(--cyan); font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
+                📖 APOSTILA TÉCNICA
+            </a>
+            <a href="/slides" target="_blank" class="scope-btn" style="color:var(--amber); border-color:var(--amber); font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
+                🎬 SLIDES EXECUTIVOS
+            </a>
+            <div style="display:flex; align-items:center; gap:8px; background:rgba(0,230,118,0.08); border:1px solid rgba(0,230,118,0.25); padding:3px 8px; border-radius:4px;">
+                <span class="pulse-dot"></span>
+                <span style="font-family:var(--font-mono); font-size:0.62rem; color:var(--green); font-weight:800; letter-spacing:0.5px;">P2 HEV SYSTEM ONLINE</span>
+            </div>
         </div>
     </div>
 
@@ -1591,6 +1599,50 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
                 self.wfile.write(content)
             else:
                 self.send_error(404, "SVG nao encontrado")
+
+        elif req_path == "/slides":
+            slides_path = os.path.join(ROOT_DIR, "course", "slides", "deck_01_intro_mbd_ai.html")
+            if os.path.exists(slides_path):
+                with open(slides_path, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(content)
+            else:
+                self.send_error(404, "Slides nao encontrados")
+
+        elif req_path in ("/apostila", "/docs"):
+            self.send_response(302)
+            self.send_header("Location", "/site/")
+            self.end_headers()
+
+        elif req_path.startswith("/site"):
+            rel_site_path = req_path[len("/site"):]
+            if not rel_site_path or rel_site_path.endswith("/"):
+                rel_site_path = rel_site_path.rstrip("/") + "/index.html"
+            rel_site_path = rel_site_path.lstrip("/")
+            file_disk_path = os.path.join(ROOT_DIR, "site", rel_site_path.replace("/", os.sep))
+            if os.path.exists(file_disk_path) and os.path.isfile(file_disk_path):
+                mime_type = "text/html; charset=utf-8"
+                if file_disk_path.endswith(".css"):
+                    mime_type = "text/css"
+                elif file_disk_path.endswith(".js"):
+                    mime_type = "application/javascript"
+                elif file_disk_path.endswith(".svg"):
+                    mime_type = "image/svg+xml"
+                elif file_disk_path.endswith(".png"):
+                    mime_type = "image/png"
+                elif file_disk_path.endswith(".woff2"):
+                    mime_type = "font/woff2"
+                with open(file_disk_path, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", mime_type)
+                self.end_headers()
+                self.wfile.write(content)
+            else:
+                self.send_error(404, "Arquivo de documentacao nao encontrado")
 
         elif req_path in ("/", "/index.html", ""):
             html = get_html_page()
