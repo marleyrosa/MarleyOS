@@ -656,6 +656,9 @@ def get_html_page():
             <a href="/slides" target="_blank" class="scope-btn" style="color:var(--amber); border-color:var(--amber); font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
                 🎬 SLIDES EXECUTIVOS
             </a>
+            <a href="/certificado" target="_blank" class="scope-btn" style="color:#ffe57f; border-color:#ffe57f; font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,229,127,0.1);">
+                🎓 CERTIFICADO OFICIAL
+            </a>
             <div style="display:flex; align-items:center; gap:8px; background:rgba(0,230,118,0.08); border:1px solid rgba(0,230,118,0.25); padding:3px 8px; border-radius:4px;">
                 <span class="pulse-dot"></span>
                 <span style="font-family:var(--font-mono); font-size:0.62rem; color:var(--green); font-weight:800; letter-spacing:0.5px;">P2 HEV SYSTEM ONLINE</span>
@@ -1599,6 +1602,18 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
                 self.wfile.write(content)
             else:
                 self.send_error(404, "SVG nao encontrado")
+
+        elif req_path == "/certificado":
+            cert_path = os.path.join(ROOT_DIR, "course", "certification", "certificado_conclusao.html")
+            if os.path.exists(cert_path):
+                with open(cert_path, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(content)
+            else:
+                self.send_error(404, "Certificado ainda nao emitido. Execute evaluate_course.py primeiro.")
 
         elif req_path == "/slides":
             slides_path = os.path.join(ROOT_DIR, "course", "slides", "deck_01_intro_mbd_ai.html")

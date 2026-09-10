@@ -65,11 +65,18 @@ nav:
   - Início: index.md
   - "Plano Mestre do Curso": COURSE_CURRICULUM.md
   - Apostila Técnica:
-      - "Capítulo 1: Dinâmica ICE & MBD": course/apostilas/01_ice_powertrain.md
-      - "Capítulo 2: Arquitetura Híbrida P2": CAPITULO_1_ARQUITETURA_P2.md
-      - "Capítulo 3: MBD com Agentes & MCP": CAPITULO_3_MBD_AGENTES_MCP.md
+      - "Capítulo 1: Dinâmica ICE & Ciclo Miller": course/apostilas/01_ice_powertrain.md
+      - "Capítulo 2: Máquinas PMSM & Controle FOC": course/apostilas/02_bev_foc_traction.md
+      - "Capítulo 3: Híbrido P2, K0 & e-DCT": course/apostilas/03_hev_p2_architecture.md
+      - "Capítulo 4: [MCP] Servidor JSON-RPC & CAN DBC": course/apostilas/04_mcp_can_telemetry.md
+      - "Capítulo 5: [RAG] Busca Híbrida & Árvores DTC": course/apostilas/05_rag_knowledge_base.md
+      - "Capítulo 6: [AGENTS] Calibração Simulink MIL": course/apostilas/06_agents_simulink_mil.md
+      - "Capítulo 7: [FINE-TUNING] Datasets & ISO 26262": course/apostilas/07_finetuning_safety_audit.md
+      - "Capítulo 8: Capstone & Exame de Certificação": course/apostilas/08_capstone_certification.md
   - Slides Executivos:
-      - "Módulo 1: Apresentação": course/slides/deck_01_intro_mbd_ai.md
+      - "Deck 1: Visão Geral & MBD": course/slides/deck_01_intro_mbd_ai.md
+      - "Deck 2: Eletrificação BEV & Híbrido P2": course/slides/deck_02_bev_hev.md
+      - "Deck 3: Os 4 Pilares de IA & Certificação": course/slides/deck_03_ai_pillars.md
   - Laboratórios Práticos:
       - "Guia de Laboratório MIL/MCP": LAB_GUIDE_MBD_MCP.md
       - "Exercícios Resolvidos": EXERCICIOS_RESOLVIDOS.md

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado de Conclusão - NexusMBD // AI-Native Powertrain Suite</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #05070a;
+            color: #f0f6fc;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .cert-container {
+            width: 1100px;
+            height: 780px;
+            background: radial-gradient(circle at 50% 30%, #0d131f 0%, #06090e 100%);
+            border: 12px solid #111722;
+            border-image: linear-gradient(135deg, #00e5ff 0%, #005b66 25%, #ff9100 75%, #ffe57f 100%) 1;
+            position: relative;
+            padding: 50px 70px;
+            box-shadow: 0 25px 80px rgba(0, 229, 255, 0.15), 0 0 100px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .cert-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-25deg);
+            font-size: 110px;
+            font-weight: 900;
+            color: rgba(0, 229, 255, 0.025);
+            letter-spacing: 15px;
+            pointer-events: none;
+            font-family: 'Cinzel', serif;
+            white-space: nowrap;
+        }
+
+        .cert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(0, 229, 255, 0.3);
+            padding-bottom: 20px;
+        }
+
+        .brand-col h2 {
+            font-size: 20px;
+            letter-spacing: 2px;
+            color: #00e5ff;
+            font-weight: 800;
+        }
+
+        .brand-col p {
+            font-size: 11px;
+            color: #8b949e;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 1px;
+        }
+
+        .cert-badge {
+            background: rgba(0, 230, 118, 0.1);
+            border: 1px solid #00e676;
+            color: #00e676;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .cert-body {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .cert-body h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #ffffff 0%, #00e5ff 60%, #ff9100 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .cert-intro {
+            font-size: 14px;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .student-name {
+            font-size: 34px;
+            font-weight: 800;
+            color: #ffffff;
+            border-bottom: 2px solid #ff9100;
+            display: inline-block;
+            padding: 0 35px 6px 35px;
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+        }
+
+        .cert-desc {
+            font-size: 13.5px;
+            color: #c9d1d9;
+            line-height: 1.65;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .mod-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            padding: 8px 10px;
+            font-size: 10.5px;
+            color: #c9d1d9;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .mod-item strong { color: #00e5ff; }
+
+        .cert-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+
+        .sig-col {
+            text-align: center;
+        }
+
+        .sig-line {
+            width: 200px;
+            border-bottom: 1px solid #8b949e;
+            margin-bottom: 6px;
+        }
+
+        .sig-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #f0f6fc;
+        }
+
+        .sig-role {
+            font-size: 10px;
+            color: #8b949e;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .meta-col {
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: #8b949e;
+            line-height: 1.5;
+        }
+
+        .meta-col strong { color: #00e5ff; }
+
+        @media print {
+            body { background: none; padding: 0; }
+            .cert-container { border-width: 8px; box-shadow: none; width: 100%; height: 100vh; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cert-container">
+        <div class="cert-watermark">NEXUSMBD</div>
+
+        <!-- HEADER -->
+        <div class="cert-header">
+            <div class="brand-col">
+                <h2>NEXUSMBD ENGINEERING SUITE</h2>
+                <p>AUTONOMOUS MODEL-BASED DESIGN • P2 HYBRID ARCHITECTURE</p>
+            </div>
+            <div class="cert-badge">
+                ISO 26262 ASIL-D COMPLIANT
+            </div>
+        </div>
+
+        <!-- BODY -->
+        <div class="cert-body">
+            <div class="cert-intro">Certificamos com distinção acadêmica e técnica que</div>
+            <div class="student-name">{{STUDENT_NAME}}</div>
+            <p class="cert-desc">
+                concluiu com êxito todos os requisitos teóricos, modelagem em <strong>Model-Based Design (MBD)</strong> e desenvolvimento de sistemas inteligentes da formação avançada <strong>NexusMBD // AI-Native Powertrain Engineering Suite</strong>, demonstrando proficiência prática em simulação dinâmica e nos 4 Pilares de Inteligência Artificial:
+            </p>
+
+            <div class="modules-grid">
+                <div class="mod-item"><strong>[ICE]</strong> Dinâmica Térmica & Ciclo Miller</div>
+                <div class="mod-item"><strong>[BEV]</strong> Máquinas PMSM & Controle FOC</div>
+                <div class="mod-item"><strong>[HEV]</strong> Híbrido P2, K0 & e-DCT</div>
+                <div class="mod-item"><strong>[MCP]</strong> Servidor JSON-RPC & CAN DBC</div>
+                <div class="mod-item"><strong>[RAG]</strong> Busca Híbrida & Árvores DTC</div>
+                <div class="mod-item"><strong>[AGENTS]</strong> ReAct Autônomo para Simulink</div>
+                <div class="mod-item"><strong>[FINE-TUNING]</strong> Adaptação ISO 26262</div>
+                <div class="mod-item"><strong>[CAPSTONE]</strong> Pipeline Integrado MIL/SIL</div>
+            </div>
+
+            <div style="margin-top: 15px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #ff9100; font-weight: bold;">
+                PONTUAÇÃO OBTIDA: {{TOTAL_SCORE}} / 1.000 PONTOS ({{PERCENTAGE}}% • {{DISTINCTION}})
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="cert-footer">
+            <div class="sig-col">
+                <div class="sig-line"></div>
+                <div class="sig-name">Marley Rosa</div>
+                <div class="sig-role">Lead Powertrain AI Architect</div>
+            </div>
+
+            <div class="sig-col">
+                <div class="sig-line"></div>
+                <div class="sig-name">Comitê de Engenharia MBD</div>
+                <div class="sig-role">NexusMBD Technical Board</div>
+            </div>
+
+            <div class="meta-col">
+                DATA DE EMISSÃO: <strong>{{ISSUE_DATE}}</strong><br>
+                CARGA HORÁRIA: <strong>60 HORAS (MBD & IA)</strong><br>
+                HASH SHA-256: <strong>{{CERTIFICATE_HASH}}</strong>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
