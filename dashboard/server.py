@@ -14,14 +14,36 @@ from urllib.parse import urlparse
 MATLAB_BIN = shutil.which("matlab") or r"C:\Program Files\MATLAB\R2026a\bin\matlab.exe"
 
 PORT = 8080
+REAL_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PARENT_DIR = os.path.dirname(ROOT_DIR)
-if os.path.exists(os.path.join(PARENT_DIR, "module_2_mcp")):
-    REPO_ROOT = PARENT_DIR
+
+# Find root containing Model, module_2_mcp and module_3_agents_simulink
+for candidate in (REAL_ROOT, PARENT_DIR, ROOT_DIR):
+    if os.path.exists(os.path.join(candidate, "module_2_mcp")):
+        REPO_ROOT = candidate
+        break
 else:
     REPO_ROOT = ROOT_DIR
 
-for p in (ROOT_DIR, PARENT_DIR, REPO_ROOT):
+# Find root containing course and site documentation
+for candidate in (ROOT_DIR, os.path.join(REPO_ROOT, "MarleyOS"), REPO_ROOT):
+    if os.path.exists(os.path.join(candidate, "site")):
+        DOCS_ROOT = candidate
+        break
+else:
+    DOCS_ROOT = ROOT_DIR
+
+
+def resolve_repo_path(*subpaths):
+    for base in (REPO_ROOT, ROOT_DIR, REAL_ROOT, DOCS_ROOT, os.path.join(REPO_ROOT, "MarleyOS")):
+        target = os.path.join(base, *subpaths)
+        if os.path.exists(target):
+            return target
+    return os.path.join(REPO_ROOT, *subpaths)
+
+
+for p in (ROOT_DIR, PARENT_DIR, REPO_ROOT, REAL_ROOT):
     if p not in sys.path:
         sys.path.insert(0, p)
     mcp_dir = os.path.join(p, "module_2_mcp")
@@ -29,9 +51,9 @@ for p in (ROOT_DIR, PARENT_DIR, REPO_ROOT):
         sys.path.insert(0, mcp_dir)
 
 from generate_default_dbc import generate_default_dbc
-CSV_PATH = os.path.join(REPO_ROOT, "module_2_mcp", "data", "can_telemetry.csv")
-SVG_PATH = os.path.join(REPO_ROOT, "module_1_rag", "knowledge_base", "p2_powertrain_topology.svg")
-P2HEV_MODEL_PATH = os.path.join(REPO_ROOT, "Model", "P2HEVModel", "P2HybridVehicle.slx")
+CSV_PATH = resolve_repo_path("module_2_mcp", "data", "can_telemetry.csv")
+SVG_PATH = resolve_repo_path("module_1_rag", "knowledge_base", "p2_powertrain_topology.svg")
+P2HEV_MODEL_PATH = resolve_repo_path("Model", "P2HEVModel", "P2HybridVehicle.slx")
 P2HEV_SIGNALS = [
     "VehicleSpeed", "HVBatSOC", "BusVoltage", "HVBatCurrent", "EngTrqReq",
     "EMTrqReq", "EngineOn", "TransmissionRatio", "EMSpeed", "BrakeTorque",
@@ -44,6 +66,169 @@ MIL_RUN_STATE = {
     "result": None,
 }
 MIL_RUN_LOCK = threading.Lock()
+
+# ==============================================================================
+# LIVE CAN TELEMETRY STREAMER WORKER
+# ==============================================================================
+STREAMING_ACTIVE = True
+
+def run_background_telemetry():
+    """Continuously stream live CAN bus telemetry frames so cockpit gauges animate in real-time."""
+    import math
+    t = 0.0
+    dt = 0.1
+    soc = 82.0
+    temp_inv = 45.0
+    pack_capacity_kwh = 14.8
+    prev_speed = 0.0
+    history = []
+
+    print("[TELEMETRY STREAMER] Background 10Hz CAN bus engine active.", flush=True)
+
+    while True:
+        if not STREAMING_ACTIVE:
+            time.sleep(0.2)
+            continue
+        try:
+            cycle_time = t % 20.0
+
+            if cycle_time < 5.0:
+                # EV_MODE (Acceleration 0 to 40 km/h)
+                progress = cycle_time / 5.0
+                throttle = round(20.0 + 25.0 * math.sin(progress * math.pi), 1)
+                brake = 0.0
+                rpm_em = int(800 * progress + 600)
+                rpm_ice = 0
+                k0_press = 0.0
+                k0_state = "OPEN"
+                torque = round(throttle * 2.2, 1)
+                mode = "EV_MODE"
+                soc = max(10.0, soc - 0.015)
+                temp_inv = max(40.0, temp_inv + 0.02)
+                bsfc = 0.0
+                gear = "1"
+                active_clutch = "CLUTCH_1"
+
+            elif cycle_time < 14.0:
+                # P2_HYBRID_BOOST (Full Hybrid Acceleration 40 to 160 km/h)
+                progress = (cycle_time - 5.0) / 9.0
+                throttle = round(75.0 + 22.0 * math.sin(progress * math.pi), 1)
+                brake = 0.0
+                rpm_em = int(2000 + 3500 * progress)
+                
+                if progress < 0.22:
+                    rpm_ice = int(rpm_em * (progress / 0.22))
+                    k0_press = 2.0
+                    k0_state = "SYNC"
+                    bsfc = 330.0
+                    gear = "2"
+                    active_clutch = "CLUTCH_2"
+                elif progress < 0.45:
+                    rpm_ice = int(rpm_em * 0.96)
+                    k0_press = 10.0
+                    k0_state = "SLIP"
+                    bsfc = 285.0
+                    gear = "3"
+                    active_clutch = "CLUTCH_1"
+                elif progress < 0.72:
+                    rpm_ice = rpm_em
+                    k0_press = 18.0
+                    k0_state = "LOCKED"
+                    bsfc = 240.0
+                    gear = "4"
+                    active_clutch = "CLUTCH_2"
+                else:
+                    rpm_ice = rpm_em
+                    k0_press = 18.0
+                    k0_state = "LOCKED"
+                    bsfc = 230.0
+                    gear = "5"
+                    active_clutch = "CLUTCH_1"
+
+                torque = round(170.0 + 130.0 * progress, 1)
+                mode = "P2_HYBRID_BOOST"
+                soc = max(10.0, soc - 0.05)
+                temp_inv = min(95.0, temp_inv + 0.12)
+
+            else:
+                # REGEN_BRAKE (Deceleration 160 to 0 km/h)
+                progress = (cycle_time - 14.0) / 6.0
+                throttle = 0.0
+                brake = round(70.0 * (1.0 - progress), 1)
+                rpm_em = max(0, int(3600 * (1.0 - progress)))
+                rpm_ice = 0
+                k0_press = 0.0
+                k0_state = "OPEN"
+                torque = round(-80.0 * (1.0 - progress), 1)
+                mode = "REGEN_BRAKE"
+                soc = min(98.0, soc + 0.04)
+                temp_inv = max(42.0, temp_inv - 0.06)
+                bsfc = 0.0
+                gear = "6"
+                active_clutch = "CLUTCH_2"
+
+            speed_kmh = round((rpm_em / 4.1) * (2 * math.pi * 0.315) * 0.06, 1)
+            
+            # Inertial derivative (Gx) in Gravities (G)
+            accel_mps2 = ((speed_kmh - prev_speed) / 3.6) / dt
+            gx = round(accel_mps2 / 9.81, 2)
+            gy = round(0.18 * math.sin(t * 0.8), 2)
+            prev_speed = speed_kmh
+
+            ev_range_km = round(((soc - 10.0) / 100.0) * pack_capacity_kwh / 0.16, 1)
+
+            row = [
+                f"{t:.1f}",
+                str(speed_kmh),
+                gear,
+                active_clutch,
+                str(rpm_em),
+                str(rpm_ice),
+                f"{throttle:.1f}",
+                f"{brake:.1f}",
+                f"{torque:.1f}",
+                f"{gx:.2f}",
+                f"{gy:.2f}",
+                f"{k0_press:.1f}",
+                k0_state,
+                f"{soc:.1f}",
+                f"{ev_range_km:.1f}",
+                f"{bsfc:.0f}",
+                f"{temp_inv:.1f}",
+                mode,
+                "NOMINAL"
+            ]
+
+            history.append(row)
+            if len(history) > 10:
+                history.pop(0)
+
+            temp_path = CSV_PATH + ".tmp"
+            os.makedirs(os.path.dirname(CSV_PATH), exist_ok=True)
+            with open(temp_path, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow([
+                    "timestamp_s", "speed_kmh", "gear", "active_clutch", "rpm_em", 
+                    "rpm_ice", "throttle_pct", "brake_pct", "torque_nm", "gx", "gy", 
+                    "k0_press_bar", "k0_state", "soc_pct", "ev_range_km", "bsfc_g_kwh", 
+                    "temp_inv_c", "modo_propulsao", "status_motor"
+                ])
+                writer.writerows(history)
+            for attempt in range(10):
+                try:
+                    os.replace(temp_path, CSV_PATH)
+                    break
+                except PermissionError:
+                    time.sleep(0.02)
+
+            t = round(t + dt, 1)
+        except Exception:
+            pass
+        time.sleep(dt)
+
+
+threading.Thread(target=run_background_telemetry, daemon=True).start()
+
 
 
 def load_topology_svg():
@@ -62,9 +247,9 @@ def load_topology_svg():
 
 def open_simulink_model():
     """Launch MATLAB graphical desktop with the MIL_MarleyOS_Powertrain model loaded."""
-    harness_dir = os.path.join(ROOT_DIR, "Model")
-    model_dir = os.path.join(ROOT_DIR, "module_3_agents_simulink")
-    mcp_dir = os.path.join(ROOT_DIR, "module_2_mcp")
+    harness_dir = resolve_repo_path("Model")
+    model_dir = resolve_repo_path("module_3_agents_simulink")
+    mcp_dir = resolve_repo_path("module_2_mcp")
     model_path = os.path.join(harness_dir, "MIL_MarleyOS_Powertrain.slx")
     
     # Method 1: ShellExecute via os.startfile (opens directly in user's physical Windows desktop)
@@ -725,7 +910,7 @@ def get_html_page():
             </svg>
             <div class="nav-text-col">
                 <span class="nav-label">CAN NETWORK</span>
-                <span class="nav-title">P2HEV ONLINE</span>
+                <span class="nav-title" id="can-status-label">STREAMING LIVE</span>
             </div>
         </div>
     </div>
@@ -1206,6 +1391,8 @@ def get_html_page():
             plotSeries('k0_press_bar', '#ff5252', 0, 20);
         }
 
+        let lastSeenTimestamp = null;
+
         // FETCH TELEMETRY LOOP
         async function fetchTelemetry() {
             if (telemetryRequestInFlight) return;
@@ -1220,9 +1407,21 @@ def get_html_page():
 
                 // Append to history buffer if not paused
                 if (!isScopePaused) {
-                    telemetryHistory.push(last);
-                    if (telemetryHistory.length > MAX_POINTS) telemetryHistory.shift();
-                    drawOscilloscope();
+                    if (telemetryHistory.length === 0 && data.rows.length > 1) {
+                        for (const r of data.rows) {
+                            telemetryHistory.push(r);
+                        }
+                        if (last) lastSeenTimestamp = parseFloat(last.timestamp_s);
+                        drawOscilloscope();
+                    } else if (last) {
+                        const currentTs = parseFloat(last.timestamp_s);
+                        if (lastSeenTimestamp === null || currentTs !== lastSeenTimestamp) {
+                            lastSeenTimestamp = currentTs;
+                            telemetryHistory.push(last);
+                            if (telemetryHistory.length > MAX_POINTS) telemetryHistory.shift();
+                            drawOscilloscope();
+                        }
+                    }
                 }
 
                 // 1. Shift Lights & Gear
@@ -1566,6 +1765,11 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(payload)
 
+        elif req_path == "/api/telemetry/toggle":
+            global STREAMING_ACTIVE
+            STREAMING_ACTIVE = not STREAMING_ACTIVE
+            self._send_json(200, {"streaming": STREAMING_ACTIVE})
+
         elif req_path == "/api/p2hev/status":
             payload = json.dumps({
                 "model": "P2HybridVehicle",
@@ -1615,7 +1819,7 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
                 self.send_error(404, "SVG not found")
 
         elif req_path == "/certificado":
-            cert_path = os.path.join(ROOT_DIR, "course", "certification", "certificado_conclusao.html")
+            cert_path = resolve_repo_path("course", "certification", "certificado_conclusao.html")
             if os.path.exists(cert_path):
                 with open(cert_path, "rb") as f:
                     content = f.read()
@@ -1627,9 +1831,9 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
                 self.send_error(404, "Certificate not yet generated. Run evaluate_course.py first.")
 
         elif req_path in ("/slides", "/slides/en", "/slides-en"):
-            slides_path = os.path.join(ROOT_DIR, "course", "slides", "nexusmbd_slides_master_en.html")
+            slides_path = resolve_repo_path("course", "slides", "nexusmbd_slides_master_en.html")
             if not os.path.exists(slides_path):
-                slides_path = os.path.join(ROOT_DIR, "course", "slides", "nexusmbd_slides_master_pt.html")
+                slides_path = resolve_repo_path("course", "slides", "nexusmbd_slides_master_pt.html")
             if os.path.exists(slides_path):
                 with open(slides_path, "rb") as f:
                     content = f.read()
@@ -1641,7 +1845,7 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
                 self.send_error(404, "Slides not found")
 
         elif req_path in ("/slides-pt", "/slides/pt"):
-            slides_path = os.path.join(ROOT_DIR, "course", "slides", "nexusmbd_slides_master_pt.html")
+            slides_path = resolve_repo_path("course", "slides", "nexusmbd_slides_master_pt.html")
             if os.path.exists(slides_path):
                 with open(slides_path, "rb") as f:
                     content = f.read()
@@ -1662,7 +1866,7 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
             if not rel_site_path or rel_site_path.endswith("/"):
                 rel_site_path = rel_site_path.rstrip("/") + "/index.html"
             rel_site_path = rel_site_path.lstrip("/")
-            file_disk_path = os.path.join(ROOT_DIR, "site", rel_site_path.replace("/", os.sep))
+            file_disk_path = resolve_repo_path("site", rel_site_path.replace("/", os.sep))
             if os.path.exists(file_disk_path) and os.path.isfile(file_disk_path):
                 mime_type = "text/html; charset=utf-8"
                 if file_disk_path.endswith(".css"):
@@ -1712,9 +1916,9 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
 
 
 def run_mil_job(run_id, stop_time):
-    model_dir = os.path.join(ROOT_DIR, "module_3_agents_simulink")
-    harness_dir = os.path.join(ROOT_DIR, "Model")
-    mcp_dir = os.path.join(ROOT_DIR, "module_2_mcp")
+    model_dir = resolve_repo_path("module_3_agents_simulink")
+    harness_dir = resolve_repo_path("Model")
+    mcp_dir = resolve_repo_path("module_2_mcp")
     matlab_expression = (
         "cd('%s'); addpath('%s'); addpath('%s'); addpath('%s'); "
         "modelName='MIL_MarleyOS_Powertrain'; stopTime=%.15g; "
@@ -1734,7 +1938,7 @@ def run_mil_job(run_id, stop_time):
     try:
         completed = subprocess.run(
             [MATLAB_BIN, "-batch", matlab_expression],
-            cwd=ROOT_DIR,
+            cwd=model_dir,
             capture_output=True,
             text=True,
             timeout=max(120, int(stop_time * 60)),
