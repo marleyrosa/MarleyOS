@@ -1847,6 +1847,46 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
             self._send_json(200, {"status": "ok", "message": "MIL model opening in MATLAB/Simulink."})
             return
 
+        if req_path == "/api/generate-certificate":
+            content_length = int(self.headers.get("Content-Length", "0"))
+            request_body = self.rfile.read(content_length) if content_length else b"{}"
+            try:
+                data = json.loads(request_body.decode("utf-8"))
+            except Exception:
+                self.send_error(400, "Invalid JSON")
+                return
+
+            student_name = str(data.get("student_name", "Eng. Marley Rosa Luciano")).strip() or "Eng. Marley Rosa Luciano"
+            student_signature = data.get("student_signature", None)
+            score = int(data.get("score", 1000))
+            percentage = float(data.get("percentage", 100.0))
+
+            if percentage >= 90.0:
+                distinction = "SUMMA CUM LAUDE (APPROVED WITH HIGHEST DISTINCTION OF EXCELLENCE)"
+            elif percentage >= 80.0:
+                distinction = "APPROVED WITH HONORS (HONORS)"
+            elif percentage >= 60.0:
+                distinction = "APPROVED (CERTIFIED POWERTRAIN ENGINEER)"
+            else:
+                distinction = "FAILED - INSUFFICIENT SCORE"
+
+            try:
+                from course.certification.evaluate_course import generate_certificate
+            except ImportError:
+                from evaluate_course import generate_certificate
+
+            cert_hash = generate_certificate(student_name, score, percentage, distinction, student_signature=student_signature)
+
+            self._send_json(200, {
+                "success": True,
+                "message": "Certificado gerado com sucesso!",
+                "student_name": student_name,
+                "certificate_url": "/certificado",
+                "site_certificate_url": "/site/certificado.html",
+                "cert_hash": cert_hash
+            })
+            return
+
         if req_path != "/api/run-mil":
             self.send_error(404, "File not found")
             return
