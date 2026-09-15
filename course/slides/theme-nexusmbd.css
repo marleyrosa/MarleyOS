@@ -29,6 +29,7 @@ h1 {
   letter-spacing: 0.5px;
   margin-bottom: 20px;
   text-transform: uppercase;
+  text-wrap: balance;
 }
 
 h2 {
@@ -37,12 +38,19 @@ h2 {
   font-weight: 700;
   margin-top: 15px;
   margin-bottom: 12px;
+  text-wrap: balance;
 }
 
 h3 {
   color: var(--color-primary);
   font-size: 22px;
   font-weight: 600;
+  text-wrap: balance;
+}
+
+table, code, pre, .footer-page {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 p, li {
@@ -115,6 +123,12 @@ footer {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
 }
 
 .grid-4 {

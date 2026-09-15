@@ -2,6 +2,16 @@
 
 Plataforma aberta de Inteligência Artificial aplicada à Engenharia Automotiva, Diagnóstico de Bordo (OBD-II), Protocolo MCP, Sistemas Embarcados e Validação Funcional (ISO 26262).
 
+
+
+> [!WARNING]
+> ### 📱 Troubleshooting para Ambientes Restritos (ex: Termux no Android / WSL / Containers)
+> 1. **Isolamento de Arquivos Temporários (`*.slxc`, `*.csv.tmp`, `slprj/`):**
+>    Sessões do Simulink e o feeder de telemetria contínua (`telemetry_feeder.py`) geram caches binários de compilação (`*.slxc`, `slprj/`) e buffers rotativos de telemetria (`*.csv.tmp`). Em sistemas móveis (como emulação FUSE/ext4 do Android no Termux), o acúmulo desses arquivos causa conflito de bloqueio de arquivo (*file lock contention / EBUSY*), esgotamento de inodes e lentidão no controle de versão.
+> 2. **Diretório Temporário Dedicado:** Configure `export TMPDIR=$PREFIX/tmp` (Termux) ou `export TMPDIR=/tmp` (Linux/WSL) para isolar arquivos voláteis em RAM/storage temporário.
+> 3. **Purga Periódica:** Limpe resíduos temporários executando: `find . -name "*.slxc" -o -name "*.csv.tmp" -o -name "*.pyc" -delete`.
+> 4. **Permissões de Execução:** Em sistemas de arquivos móveis, garanta permissão nos scripts shell: `chmod +x *.sh start_marleyos.sh`.
+
 ---
 
 ## 🚘 Módulos e Subsistemas Monitorados

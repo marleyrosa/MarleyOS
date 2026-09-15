@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 
 MATLAB_BIN = shutil.which("matlab") or r"C:\Program Files\MATLAB\R2026a\bin\matlab.exe"
 
-PORT = 8080
+PORT = int(os.getenv("PORT", "8080"))
 REAL_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PARENT_DIR = os.path.dirname(ROOT_DIR)
@@ -248,31 +248,54 @@ def load_topology_svg():
 def open_simulink_model():
     """Launch MATLAB graphical desktop with the MIL_MarleyOS_Powertrain model loaded."""
     harness_dir = resolve_repo_path("Model")
+    p2hev_dir = resolve_repo_path("Model", "P2HEVModel")
     model_dir = resolve_repo_path("module_3_agents_simulink")
     mcp_dir = resolve_repo_path("module_2_mcp")
-    model_path = os.path.join(harness_dir, "MIL_MarleyOS_Powertrain.slx")
     
-    # Method 1: ShellExecute via os.startfile (opens directly in user's physical Windows desktop)
-    try:
-        os.startfile(model_path)
-        print(f"[SIMULINK] os.startfile executed successfully on {model_path}", flush=True)
-        return True
-    except Exception as e1:
-        print(f"[SIMULINK] os.startfile failed: {e1}, attempting matlab -r...", flush=True)
+    mil_slx = os.path.join(model_dir, "MIL_MarleyOS_Powertrain.slx")
+    p2hev_slx = os.path.join(p2hev_dir, "P2HybridVehicle.slx")
+    
+    target_model_path = None
+    if os.path.exists(mil_slx):
+        target_model_path = mil_slx
+    elif os.path.exists(p2hev_slx):
+        target_model_path = p2hev_slx
+    elif os.path.exists(os.path.join(harness_dir, "MIL_MarleyOS_Powertrain.slx")):
+        target_model_path = os.path.join(harness_dir, "MIL_MarleyOS_Powertrain.slx")
+    
+    # Method 1: ShellExecute via os.startfile if target file exists
+    if target_model_path and os.path.exists(target_model_path):
+        try:
+            os.startfile(target_model_path)
+            print(f"[SIMULINK] os.startfile executed successfully on {target_model_path}", flush=True)
+            return True
+        except Exception as e1:
+            print(f"[SIMULINK] os.startfile failed: {e1}, attempting matlab -r...", flush=True)
 
-    # Method 2: Fallback via matlab -r
+    # Method 2: Fallback via matlab -r (adds all paths and auto-builds harness if missing)
     matlab_expr = (
-        "addpath('%s'); addpath('%s'); addpath('%s'); "
-        "open_system('MIL_MarleyOS_Powertrain');"
+        "addpath('%s'); addpath('%s'); addpath('%s'); addpath('%s'); "
+        "if ~isfile(fullfile('%s', 'MIL_MarleyOS_Powertrain.slx')) && exist('build_4mains_harness', 'file'), "
+        "    build_4mains_harness('%s'); "
+        "end; "
+        "if exist('MIL_MarleyOS_Powertrain', 'file') || isfile(fullfile('%s', 'MIL_MarleyOS_Powertrain.slx')), "
+        "    open_system('MIL_MarleyOS_Powertrain'); "
+        "else, "
+        "    open_system('P2HybridVehicle'); "
+        "end;"
     ) % (
         harness_dir.replace("'", "''"),
+        p2hev_dir.replace("'", "''"),
         model_dir.replace("'", "''"),
         mcp_dir.replace("'", "''"),
+        model_dir.replace("'", "''"),
+        model_dir.replace("'", "''"),
+        model_dir.replace("'", "''"),
     )
     try:
         p = subprocess.Popen(
             [MATLAB_BIN, "-r", matlab_expr],
-            cwd=harness_dir,
+            cwd=model_dir if os.path.exists(model_dir) else harness_dir,
         )
         print(f"[SIMULINK] Launched MATLAB GUI (PID {p.pid})", flush=True)
         return True
@@ -462,6 +485,35 @@ def get_html_page():
             --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        button:focus-visible, a:focus-visible, [tabindex]:focus-visible {
+            outline: 2px solid var(--cyan);
+            outline-offset: 2px;
+            box-shadow: 0 0 10px var(--cyan-glow);
+        }
+
+        .brand-title, .brand-sub, h1, h2, h3 {
+            text-wrap: balance;
+        }
+
+        .gauge-val, .gear-current, .scope-legend-val, .canvas-readout, .nav-title, .status-val {
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum";
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .pulse-dot, .led.blue.on {
+                animation: none !important;
+                opacity: 0.9 !important;
+            }
+        }
+
         body {
             font-family: var(--font-sans);
             background: radial-gradient(circle at 50% 10%, #111726 0%, var(--carbon-bg) 80%);
@@ -491,7 +543,7 @@ def get_html_page():
         .nav-card {
             height: 48px; background: var(--panel-bg); border: 1px solid var(--panel-border);
             border-radius: 6px; padding: 0 12px; display: flex; align-items: center; gap: 10px;
-            text-decoration: none; color: inherit; transition: all 0.2s ease; position: relative;
+            text-decoration: none; color: inherit; transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease; position: relative;
             overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); user-select: none;
         }
         .nav-card::before {
@@ -531,7 +583,7 @@ def get_html_page():
         .shift-lights { display: flex; gap: 4px; flex: 1; justify-content: center; align-items: center; }
         .led {
             width: 14px; height: 14px; border-radius: 2px; background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.08s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1); transition: background-color 0.08s ease, border-color 0.08s ease, box-shadow 0.08s ease;
         }
         .led.green.on { background: var(--green); border-color: #fff; box-shadow: 0 0 10px var(--green); }
         .led.yellow.on { background: var(--amber); border-color: #fff; box-shadow: 0 0 10px var(--amber); }
@@ -783,13 +835,13 @@ def get_html_page():
         .channel-pill {
             font-size: 0.6rem; font-family: var(--font-mono); font-weight: 700;
             padding: 2px 6px; border-radius: 3px; cursor: pointer; user-select: none;
-            border: 1px solid currentColor; transition: all 0.15s;
+            border: 1px solid currentColor; transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
         }
         .channel-pill.active { background: currentColor; color: #000 !important; }
         .scope-btn {
             background: rgba(255,255,255,0.08); color: var(--text-primary); border: 1px solid rgba(255,255,255,0.2);
             border-radius: 3px; padding: 2px 6px; font-size: 0.6rem; font-family: var(--font-mono);
-            cursor: pointer;
+            cursor: pointer; transition: background-color 0.15s ease, border-color 0.15s ease;
         }
         .scope-btn:hover { background: rgba(255,255,255,0.18); }
         .scope-canvas-wrap {
@@ -843,20 +895,20 @@ def get_html_page():
             <span class="brand-sub">4 AI PILLARS: [MCP] CAN CONTEXT • [RAG] KNOWLEDGE BASE • [AGENTS] SIMULINK MBD • [FINE-TUNING] LLM TELEMETRY</span>
         </div>
         <div style="display:flex; align-items:center; gap:8px;">
-            <a href="/apostila" target="_blank" class="scope-btn" style="color:var(--cyan); border-color:var(--cyan); font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
+            <a href="/apostila" target="_blank" class="scope-btn" aria-label="Open Technical Handbook in a new tab" style="color:var(--cyan); border-color:var(--cyan); font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
                 📖 TECHNICAL HANDBOOK
             </a>
-            <a href="/slides" target="_blank" class="scope-btn" style="color:#00e5ff; border-color:#00e5ff; font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
+            <a href="/slides" target="_blank" class="scope-btn" aria-label="Open Executive Slides in English in a new tab" style="color:#00e5ff; border-color:#00e5ff; font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
                 🌐 EXECUTIVE SLIDES (EN)
             </a>
-            <a href="/slides-pt" target="_blank" class="scope-btn" style="color:var(--amber); border-color:var(--amber); font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
+            <a href="/slides-pt" target="_blank" class="scope-btn" aria-label="Open Presentation Slides in Portuguese in a new tab" style="color:var(--amber); border-color:var(--amber); font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
                 🎬 SLIDES (PT)
             </a>
-            <a href="/certificado" target="_blank" class="scope-btn" style="color:#ffe57f; border-color:#ffe57f; font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,229,127,0.1);">
+            <a href="/certificado" target="_blank" class="scope-btn" aria-label="Open Official Certificate of Completion in a new tab" style="color:#ffe57f; border-color:#ffe57f; font-weight:bold; text-decoration:none; padding:3px 8px; font-size:0.65rem; border-radius:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,229,127,0.1);">
                 🎓 OFFICIAL CERTIFICATE
             </a>
-            <div style="display:flex; align-items:center; gap:8px; background:rgba(0,230,118,0.08); border:1px solid rgba(0,230,118,0.25); padding:3px 8px; border-radius:4px;">
-                <span class="pulse-dot"></span>
+            <div role="status" aria-live="polite" style="display:flex; align-items:center; gap:8px; background:rgba(0,230,118,0.08); border:1px solid rgba(0,230,118,0.25); padding:3px 8px; border-radius:4px;">
+                <span class="pulse-dot" aria-hidden="true"></span>
                 <span style="font-family:var(--font-mono); font-size:0.62rem; color:var(--green); font-weight:800; letter-spacing:0.5px;">P2 HEV SYSTEM ONLINE</span>
             </div>
         </div>
@@ -864,22 +916,22 @@ def get_html_page():
 
     <!-- TOP 4 SYMMETRICAL AUTOMOTIVE BLOCKS -->
     <div class="top-nav-grid">
-        <!-- 1. ARCHITECTURE 4 MAINS -->
-        <div class="nav-card" style="--card-color: var(--cyan);">
-            <svg class="nav-icon" viewBox="0 0 24 24">
+        <!-- 1. OPEN SIMULINK & MIL MODEL INFO -->
+        <button class="nav-card nav-btn" id="btn-open-simulink-nav" onclick="openMilModal()" type="button" style="--card-color: var(--cyan);" aria-label="Abrir Simulink e Informações do Modelo MIL">
+            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <rect x="3" y="8" width="18" height="10" rx="2" stroke-linecap="round"/>
                 <path d="M7 8V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3M10 18v2M14 18v2M3 13h2M19 13h2"/>
                 <circle cx="12" cy="13" r="2"/>
             </svg>
             <div class="nav-text-col">
-                <span class="nav-label">ARCHITECTURE</span>
-                <span class="nav-title">4 MAINS MBD</span>
+                <span class="nav-label">SIMULINK MBD</span>
+                <span class="nav-title">ABRIR SIMULINK</span>
             </div>
-        </div>
+        </button>
 
         <!-- 2. EXPORT CSV (DATALOGGER) -->
-        <a href="/api/export-csv" class="nav-card nav-btn" style="--card-color: #00b0ff;" download="nexusmbd_can_telemetry.csv">
-            <svg class="nav-icon" viewBox="0 0 24 24">
+        <a href="/api/export-csv" class="nav-card nav-btn" style="--card-color: #00b0ff;" download="nexusmbd_can_telemetry.csv" aria-label="Export CAN bus telemetry to CSV">
+            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
                 <line x1="12" y1="15" x2="12" y2="3"/>
@@ -891,8 +943,8 @@ def get_html_page():
         </a>
 
         <!-- 3. RUN MIL (SIMULATOR) -->
-        <button class="nav-card nav-btn" id="run-mil-button" type="button" style="--card-color: var(--amber);">
-            <svg class="nav-icon" viewBox="0 0 24 24">
+        <button class="nav-card nav-btn" id="run-mil-button" type="button" style="--card-color: var(--amber);" aria-label="Run Simulink MIL batch execution">
+            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <circle cx="12" cy="12" r="9"/>
                 <polygon points="10 8 16 12 10 16 10 8" fill="var(--amber)"/>
             </svg>
@@ -950,7 +1002,7 @@ def get_html_page():
         <div class="mil-banner-row">
             <span id="mil-feedback-message" style="font-weight:bold;">MIL simulator ready for execution.</span>
             <div style="display:flex; gap:8px; align-items:center;">
-                <button id="btn-open-simulink-direct" class="scope-btn" style="color:var(--cyan); border-color:var(--cyan); font-weight:bold; cursor:pointer;" type="button">
+                <button id="btn-open-simulink-direct" class="scope-btn" aria-label="Open Simulink model directly in MATLAB desktop" style="color:var(--cyan); border-color:var(--cyan); font-weight:bold; cursor:pointer;" type="button">
                     OPEN SIMULINK
                 </button>
                 <span id="mil-progress-pct" style="color:var(--cyan); font-weight:bold;">0%</span>
@@ -1187,8 +1239,8 @@ def get_html_page():
                 <span class="channel-pill active" style="color:var(--amber);" data-channel="t_ice">ICE Torque</span>
                 <span class="channel-pill active" style="color:var(--purple);" data-channel="iq_a">Iq Current</span>
                 <span class="channel-pill" style="color:#ff5252;" data-channel="k0_press_bar">K0 Pressure</span>
-                <button class="scope-btn" id="btn-pause-scope" type="button">PAUSE</button>
-                <button class="scope-btn" id="btn-clear-scope" type="button">CLEAR</button>
+                <button class="scope-btn" id="btn-pause-scope" type="button" aria-label="Pause real-time oscilloscope chart">PAUSE</button>
+                <button class="scope-btn" id="btn-clear-scope" type="button" aria-label="Clear real-time oscilloscope history">CLEAR</button>
             </div>
         </div>
         <div class="scope-canvas-wrap">
@@ -1695,9 +1747,88 @@ def get_html_page():
         }
         document.getElementById('run-mil-button').addEventListener('click', runMil);
 
+        // MIL MODEL INFO & SIMULINK MODAL LOGIC
+        function openMilModal() {
+            fetch('/api/p2hev/status')
+                .then(r => r.json())
+                .then(data => {
+                    const nameEl = document.getElementById('modal-model-name');
+                    const statusEl = document.getElementById('modal-model-status');
+                    const pathEl = document.getElementById('modal-model-path');
+                    const chipsEl = document.getElementById('modal-signals-chips');
+                    if (nameEl) nameEl.textContent = (data.model || 'MIL_MarleyOS_Powertrain') + ' / P2HybridVehicle';
+                    if (statusEl) statusEl.textContent = data.available ? 'PRONTO / DISPONÍVEL' : 'GERANDO HARNESS...';
+                    if (pathEl) pathEl.textContent = data.model_path || 'Model/P2HEVModel/P2HybridVehicle.slx';
+                    if (chipsEl && data.signals) {
+                        chipsEl.innerHTML = data.signals.map(s => `<span style="background:rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.3); color:var(--cyan); padding:2px 6px; border-radius:3px;">${s}</span>`).join('');
+                    }
+                })
+                .catch(() => {});
+            const overlay = document.getElementById('mil-modal-overlay');
+            if (overlay) overlay.style.display = 'flex';
+        }
+
+        function closeMilModal() {
+            const overlay = document.getElementById('mil-modal-overlay');
+            if (overlay) overlay.style.display = 'none';
+        }
+
+        function triggerOpenSimulinkDirect() {
+            fetch('/api/open-simulink')
+                .then(r => r.json())
+                .then(data => {
+                    alert(data.message || 'Comando enviado! O Simulink está sendo aberto no MATLAB.');
+                    closeMilModal();
+                })
+                .catch(() => {
+                    alert('Iniciando o MATLAB/Simulink...');
+                    closeMilModal();
+                });
+        }
+
+        const btnDirect = document.getElementById('btn-open-simulink-direct');
+        if (btnDirect) {
+            btnDirect.addEventListener('click', triggerOpenSimulinkDirect);
+        }
+
         // INITIAL CALL
         fetchTelemetry();
     </script>
+
+    <!-- MIL MODEL INFO MODAL -->
+    <div id="mil-modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.78); backdrop-filter:blur(5px); z-index:9999; justify-content:center; align-items:center;">
+        <div style="background:#0e131d; border:1px solid var(--cyan); border-radius:10px; width:92%; max-width:540px; padding:20px; box-shadow:0 0 25px rgba(0,229,255,0.3); font-family:var(--font-sans); color:var(--text-primary);">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(0,229,255,0.2); padding-bottom:10px; margin-bottom:15px;">
+                <h3 style="font-family:var(--font-mono); color:var(--cyan); margin:0; font-size:1.05rem; display:flex; align-items:center; gap:8px;">
+                    ⚙️ Modelo MIL & Automação Simulink
+                </h3>
+                <button type="button" onclick="closeMilModal()" style="background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer; font-weight:bold;">&times;</button>
+            </div>
+            
+            <div style="display:flex; flex-direction:column; gap:10px; font-size:0.82rem;">
+                <div><strong style="color:var(--text-muted);">Modelo Simulink:</strong> <span style="color:#fff; font-family:var(--font-mono);" id="modal-model-name">MIL_MarleyOS_Powertrain / P2HybridVehicle</span></div>
+                <div><strong style="color:var(--text-muted);">Status do Arquivo:</strong> <span style="color:var(--green); font-weight:bold;" id="modal-model-status">PRONTO / DISPONÍVEL</span></div>
+                <div><strong style="color:var(--text-muted);">Versão MATLAB:</strong> <span style="color:var(--cyan); font-family:var(--font-mono);">R2026a</span></div>
+                <div><strong style="color:var(--text-muted);">Contrato de Telemetria:</strong> <code style="background:rgba(0,0,0,0.5); padding:2px 6px; border-radius:4px; color:var(--purple);">Dataset/logsout</code></div>
+                <div><strong style="color:var(--text-muted);">Caminho do Arquivo:</strong> <div style="font-size:0.7rem; font-family:var(--font-mono); color:var(--text-muted); background:rgba(0,0,0,0.4); padding:6px; border-radius:4px; word-break:break-all; margin-top:4px;" id="modal-model-path">Model/P2HEVModel/P2HybridVehicle.slx</div></div>
+                <div><strong style="color:var(--text-muted);">Sinais Monitorados (11 Sinais MBD):</strong>
+                    <div style="font-size:0.7rem; color:#94a3b8; margin-top:6px; display:flex; flex-wrap:wrap; gap:4px;" id="modal-signals-chips">
+                        <span style="background:rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.3); color:var(--cyan); padding:2px 6px; border-radius:3px;">VehicleSpeed</span>
+                        <span style="background:rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.3); color:var(--cyan); padding:2px 6px; border-radius:3px;">HVBatSOC</span>
+                        <span style="background:rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.3); color:var(--cyan); padding:2px 6px; border-radius:3px;">BusVoltage</span>
+                        <span style="background:rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.3); color:var(--cyan); padding:2px 6px; border-radius:3px;">HVBatCurrent</span>
+                        <span style="background:rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.3); color:var(--cyan); padding:2px 6px; border-radius:3px;">EngTrqReq</span>
+                        <span style="background:rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.3); color:var(--cyan); padding:2px 6px; border-radius:3px;">EMTrqReq</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top:20px; display:flex; justify-content:flex-end; gap:10px;">
+                <button type="button" onclick="closeMilModal()" style="background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:8px 16px; border-radius:6px; cursor:pointer; font-size:0.85rem;">Fechar</button>
+                <button type="button" onclick="triggerOpenSimulinkDirect()" style="background:linear-gradient(90deg, var(--cyan), #00b0ff); color:#07090e; font-weight:bold; border:none; padding:8px 18px; border-radius:6px; cursor:pointer; font-size:0.85rem; box-shadow:0 0 12px var(--cyan-glow);">🚀 Abrir Simulink no MATLAB</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>"""
     return template.replace("{{SVG_TOPOLOGY}}", svg_content)
@@ -1769,6 +1900,15 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
             global STREAMING_ACTIVE
             STREAMING_ACTIVE = not STREAMING_ACTIVE
             self._send_json(200, {"streaming": STREAMING_ACTIVE})
+
+        elif req_path in ("/api/open-simulink", "/api/open-simulink/"):
+            threading.Thread(target=open_simulink_model, daemon=True).start()
+            self._send_json(200, {
+                "success": True,
+                "message": "Abrindo modelo Simulink MIL_MarleyOS_Powertrain no MATLAB...",
+                "model": "P2HybridVehicle",
+                "model_path": P2HEV_MODEL_PATH
+            })
 
         elif req_path == "/api/p2hev/status":
             payload = json.dumps({
@@ -1856,23 +1996,82 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
             else:
                 self.send_error(404, "Slides not found")
 
-        elif req_path in ("/apostila", "/docs"):
+        elif req_path in (
+            "/apostila", "/apostilas", "/apostila/", "/apostilas/",
+            "/handbook", "/handbooks", "/handbook/", "/handbooks/",
+            "/docs", "/docs/", "/handbook.html", "/course", "/course/"
+        ):
             self.send_response(302)
             self.send_header("Location", "/site/")
             self.end_headers()
 
+        elif req_path.startswith("/assets/") or "/assets/" in req_path or req_path.endswith((".css", ".js", ".svg", ".png", ".jpg", ".jpeg", ".woff", ".woff2", ".ttf", ".eot", ".ico")):
+            if "/assets/" in req_path:
+                asset_sub = req_path[req_path.find("/assets/")+len("/assets/"):]
+                parts = [p for p in asset_sub.split("/") if p]
+                asset_disk_path = resolve_repo_path("site", "assets", *parts) if parts else resolve_repo_path("site", "assets")
+            elif req_path.startswith("/site/"):
+                parts = [p for p in req_path[len("/site/"):].split("/") if p]
+                asset_disk_path = resolve_repo_path("site", *parts) if parts else resolve_repo_path("site")
+            else:
+                parts = [p for p in req_path.split("/") if p]
+                asset_disk_path = resolve_repo_path("site", *parts) if parts else resolve_repo_path("site")
+
+            if os.path.exists(asset_disk_path) and os.path.isfile(asset_disk_path):
+                mime_type = "text/plain"
+                if asset_disk_path.endswith(".css"):
+                    mime_type = "text/css; charset=utf-8"
+                elif asset_disk_path.endswith(".js"):
+                    mime_type = "application/javascript; charset=utf-8"
+                elif asset_disk_path.endswith(".svg"):
+                    mime_type = "image/svg+xml"
+                elif asset_disk_path.endswith(".png"):
+                    mime_type = "image/png"
+                elif asset_disk_path.endswith(".jpg") or asset_disk_path.endswith(".jpeg"):
+                    mime_type = "image/jpeg"
+                elif asset_disk_path.endswith(".woff2"):
+                    mime_type = "font/woff2"
+                elif asset_disk_path.endswith(".woff"):
+                    mime_type = "font/woff"
+                elif asset_disk_path.endswith(".ttf"):
+                    mime_type = "font/ttf"
+                elif asset_disk_path.endswith(".ico"):
+                    mime_type = "image/x-icon"
+                
+                with open(asset_disk_path, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", mime_type)
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.send_header("Cache-Control", "public, max-age=3600")
+                self.end_headers()
+                self.wfile.write(content)
+            else:
+                self.send_error(404, "Asset file not found")
+
+        elif req_path.startswith("/course/"):
+            rel_course_path = req_path[len("/course/"):]
+            parts = [p for p in rel_course_path.split("/") if p]
+            target_site_url = "/site/course/" + "/".join(parts)
+            if req_path.endswith("/") and not target_site_url.endswith("/"):
+                target_site_url += "/"
+            
+            self.send_response(302)
+            self.send_header("Location", target_site_url)
+            self.end_headers()
+
         elif req_path.startswith("/site"):
             rel_site_path = req_path[len("/site"):]
-            if not rel_site_path or rel_site_path.endswith("/"):
-                rel_site_path = rel_site_path.rstrip("/") + "/index.html"
-            rel_site_path = rel_site_path.lstrip("/")
-            file_disk_path = resolve_repo_path("site", rel_site_path.replace("/", os.sep))
+            parts = [p for p in rel_site_path.split("/") if p]
+            file_disk_path = resolve_repo_path("site", *parts) if parts else resolve_repo_path("site")
+            if os.path.isdir(file_disk_path):
+                file_disk_path = os.path.join(file_disk_path, "index.html")
             if os.path.exists(file_disk_path) and os.path.isfile(file_disk_path):
                 mime_type = "text/html; charset=utf-8"
                 if file_disk_path.endswith(".css"):
-                    mime_type = "text/css"
+                    mime_type = "text/css; charset=utf-8"
                 elif file_disk_path.endswith(".js"):
-                    mime_type = "application/javascript"
+                    mime_type = "application/javascript; charset=utf-8"
                 elif file_disk_path.endswith(".svg"):
                     mime_type = "image/svg+xml"
                 elif file_disk_path.endswith(".png"):
@@ -1918,9 +2117,13 @@ class ClusterHandler(http.server.BaseHTTPRequestHandler):
 def run_mil_job(run_id, stop_time):
     model_dir = resolve_repo_path("module_3_agents_simulink")
     harness_dir = resolve_repo_path("Model")
+    p2hev_dir = resolve_repo_path("Model", "P2HEVModel")
     mcp_dir = resolve_repo_path("module_2_mcp")
     matlab_expression = (
-        "cd('%s'); addpath('%s'); addpath('%s'); addpath('%s'); "
+        "cd('%s'); addpath('%s'); addpath('%s'); addpath('%s'); addpath('%s'); "
+        "if ~isfile(fullfile('%s', 'MIL_MarleyOS_Powertrain.slx')) && exist('build_4mains_harness', 'file'), "
+        "    build_4mains_harness('%s'); "
+        "end; "
         "modelName='MIL_MarleyOS_Powertrain'; stopTime=%.15g; "
         "inputData=load_dbc_signals('%s'); "
         "result=run_4mains_mil(modelName, stopTime, inputData); "
@@ -1929,7 +2132,10 @@ def run_mil_job(run_id, stop_time):
         model_dir.replace("'", "''"),
         model_dir.replace("'", "''"),
         harness_dir.replace("'", "''"),
+        p2hev_dir.replace("'", "''"),
         mcp_dir.replace("'", "''"),
+        model_dir.replace("'", "''"),
+        model_dir.replace("'", "''"),
         stop_time,
         CSV_PATH.replace("'", "''"),
     )
@@ -1973,11 +2179,25 @@ def run_mil_job(run_id, stop_time):
 
 if __name__ == "__main__":
     import argparse
+    import socket
     parser = argparse.ArgumentParser(description="NexusMBD Cockpit Server")
     parser.add_argument("--host", default="", help="Host address to bind")
     parser.add_argument("--port", type=int, default=PORT, help="Port to listen on")
     args = parser.parse_args()
+
+    lan_ip = "127.0.0.1"
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        lan_ip = s.getsockname()[0]
+        s.close()
+    except Exception:
+        pass
+
     with ThreadingTCPServer((args.host, args.port), ClusterHandler) as httpd:
         display_host = args.host if args.host and args.host != "0.0.0.0" else "localhost"
-        print(f"NexusMBD server active at http://{display_host}:{args.port}")
+        print(f"[NEXUSMBD] Cockpit Server Active:")
+        print(f"  • Localhost PC:   http://{display_host}:{args.port}")
+        print(f"  • Cellphone/LAN:  http://{lan_ip}:{args.port}")
+        print(f"  • Handbook/Docs:  http://{lan_ip}:{args.port}/site/")
         httpd.serve_forever()

@@ -1,13 +1,23 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificado de Conclusão - NexusMBD // AI-Native Powertrain Suite</title>
+    <title>Certificate of Completion - NexusMBD // AI-Native Powertrain Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        h1, h2, h3, .student-name, .brand-col h2 {
+            text-wrap: balance;
+        }
+
+        .meta-col, code, pre, strong {
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum";
+        }
         body {
             background-color: #05070a;
             color: #f0f6fc;
@@ -21,6 +31,7 @@
 
         .cert-container {
             width: 1100px;
+            max-width: 100%;
             height: 780px;
             background: radial-gradient(circle at 50% 30%, #0d131f 0%, #06090e 100%);
             border: 12px solid #111722;
@@ -122,7 +133,7 @@
             font-size: 13.5px;
             color: #c9d1d9;
             line-height: 1.65;
-            max-width: 860px;
+            max-width: 880px;
             margin: 0 auto;
         }
 
@@ -194,7 +205,7 @@
 </head>
 <body>
     <div class="cert-container">
-        <div class="cert-watermark">NEXUSMBD</div>
+        <div class="cert-watermark" aria-hidden="true">NEXUSMBD</div>
 
         <!-- HEADER -->
         <div class="cert-header">
@@ -209,25 +220,25 @@
 
         <!-- BODY -->
         <div class="cert-body">
-            <div class="cert-intro">Certificamos com distinção acadêmica e técnica que</div>
+            <div class="cert-intro">This is to certify with academic and technical distinction that</div>
             <div class="student-name">{{STUDENT_NAME}}</div>
             <p class="cert-desc">
-                concluiu com êxito todos os requisitos teóricos, modelagem em <strong>Model-Based Design (MBD)</strong> e desenvolvimento de sistemas inteligentes da formação avançada <strong>NexusMBD // AI-Native Powertrain Engineering Suite</strong>, demonstrando proficiência prática em simulação dinâmica e nos 4 Pilares de Inteligência Artificial:
+                has successfully completed all theoretical requirements, high-fidelity <strong>Model-Based Design (MBD)</strong> simulation, and cyber-physical intelligent systems integration of the master program <strong>NexusMBD // AI-Native Powertrain Engineering Suite</strong>, demonstrating verified competence across the 4 Pillars of Frontier Artificial Intelligence:
             </p>
 
             <div class="modules-grid">
-                <div class="mod-item"><strong>[ICE]</strong> Dinâmica Térmica & Ciclo Miller</div>
-                <div class="mod-item"><strong>[BEV]</strong> Máquinas PMSM & Controle FOC</div>
-                <div class="mod-item"><strong>[HEV]</strong> Híbrido P2, K0 & e-DCT</div>
-                <div class="mod-item"><strong>[MCP]</strong> Servidor JSON-RPC & CAN DBC</div>
-                <div class="mod-item"><strong>[RAG]</strong> Busca Híbrida & Árvores DTC</div>
-                <div class="mod-item"><strong>[AGENTS]</strong> ReAct Autônomo para Simulink</div>
-                <div class="mod-item"><strong>[FINE-TUNING]</strong> Adaptação ISO 26262</div>
-                <div class="mod-item"><strong>[CAPSTONE]</strong> Pipeline Integrado MIL/SIL</div>
+                <div class="mod-item"><strong>[ICE]</strong> Thermal Dynamics & Miller Cycle</div>
+                <div class="mod-item"><strong>[BEV]</strong> PMSM Machines & FOC Vectoring</div>
+                <div class="mod-item"><strong>[HEV]</strong> P2 Hybrid, K0 & e-DCT Gearbox</div>
+                <div class="mod-item"><strong>[MCP]</strong> JSON-RPC Server & CAN DBC</div>
+                <div class="mod-item"><strong>[RAG]</strong> Hybrid Search & DTC Fault Trees</div>
+                <div class="mod-item"><strong>[AGENTS]</strong> Autonomous Simulink ReAct</div>
+                <div class="mod-item"><strong>[FINE-TUNING]</strong> ISO 26262 ASIL-D Tuning</div>
+                <div class="mod-item"><strong>[CAPSTONE]</strong> End-to-End Closed Pipeline</div>
             </div>
 
             <div style="margin-top: 15px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #ff9100; font-weight: bold;">
-                PONTUAÇÃO OBTIDA: {{TOTAL_SCORE}} / 1.000 PONTOS ({{PERCENTAGE}}% • {{DISTINCTION}})
+                TOTAL SCORE EARNED: {{TOTAL_SCORE}} / 1,000 POINTS ({{PERCENTAGE}}% • {{DISTINCTION}})
             </div>
         </div>
 
@@ -235,20 +246,20 @@
         <div class="cert-footer">
             <div class="sig-col">
                 <div class="sig-line"></div>
-                <div class="sig-name">Marley Rosa</div>
+                <div class="sig-name">Marley Rosa Luciano</div>
                 <div class="sig-role">Lead Powertrain AI Architect</div>
             </div>
 
             <div class="sig-col">
                 <div class="sig-line"></div>
-                <div class="sig-name">Comitê de Engenharia MBD</div>
-                <div class="sig-role">NexusMBD Technical Board</div>
+                <div class="sig-name">NexusMBD Technical Board</div>
+                <div class="sig-role">Automotive Systems Committee</div>
             </div>
 
             <div class="meta-col">
-                DATA DE EMISSÃO: <strong>{{ISSUE_DATE}}</strong><br>
-                CARGA HORÁRIA: <strong>60 HORAS (MBD & IA)</strong><br>
-                HASH SHA-256: <strong>{{CERTIFICATE_HASH}}</strong>
+                ISSUE DATE: <strong>{{ISSUE_DATE}}</strong><br>
+                WORKLOAD: <strong>60 HOURS (MBD & AI)</strong><br>
+                SHA-256 HASH: <strong>{{CERTIFICATE_HASH}}</strong>
             </div>
         </div>
     </div>

@@ -10,7 +10,7 @@ size: 16:9
 <!-- _class: lead -->
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PORTUGUÊS</a>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PORTUGUÊS</a>
   <span style="color: #8b949e; margin: 0 8px;">|</span>
   <span style="color: #00e5ff; font-weight: bold; border-bottom: 2px solid #00e5ff; padding-bottom: 2px;">🇬🇧 ENGLISH</span>
 </div>
@@ -35,14 +35,14 @@ size: 16:9
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
 # Executive Curriculum Overview: Classical MBD to AI
 ### An integrated engineering roadmap uniting automotive physics and frontier artificial intelligence
 
 <div class="card">
-  <strong>The NexusMBD Paradigm:</strong> Bridging the deterministic temporal precision of MATLAB/Simulink physical powertrain solvers with the autonomous decision-making power of the 4 Artificial Intelligence Pillars.
+  <strong>The NexusMBD Paradigm:</strong> Bridging the deterministic temporal precision of MATLAB/Simulink physical powertrain solvers with the autonomous decision-making power of the 4 Artificial Intelligence Pillars across 24 executable engineering laboratories.
 </div>
 
 <div class="grid-2">
@@ -52,16 +52,16 @@ size: 16:9
       <li><strong>Module 1:</strong> Thermal ICE Dynamics & Miller Cycle (41% BSFC)</li>
       <li><strong>Module 2:</strong> BEV & FOC Vector Control (PMSM 238A)</li>
       <li><strong>Module 3:</strong> P2 Hybrid, K0 Disconnect Clutch & 6-Speed e-DCT</li>
-      <li><strong>Module 4:</strong> Systemic Architecture of the 4 AI Pillars</li>
     </ul>
   </div>
   <div class="card card-amber">
-    <h3 style="color: var(--color-secondary);">Track 2: The 4 AI Pillars & Capstone</h3>
+    <h3 style="color: var(--color-secondary);">Track 2 & 3: The 4 AI Pillars & Capstone</h3>
     <ul>
-      <li><strong>Module 5:</strong> [MCP] JSON-RPC Server & 100ms CAN DBC Stream</li>
-      <li><strong>Module 6:</strong> [RAG] Hybrid Search & DTC Fault Trees (P0A80)</li>
-      <li><strong>Module 7:</strong> [AGENTS] ReAct Simulink MIL & PI Gain Tuning</li>
-      <li><strong>Module 8:</strong> [FINE-TUNING] ISO 26262 Datasets & Digital Certification</li>
+      <li><strong>Module 4:</strong> [MCP] JSON-RPC Server & 100ms CAN DBC Stream</li>
+      <li><strong>Module 5:</strong> [RAG] Hybrid Search & DTC Fault Trees (P0A80)</li>
+      <li><strong>Module 6:</strong> [AGENTS] ReAct Simulink MIL & PI Gain Tuning</li>
+      <li><strong>Module 7:</strong> [FINE-TUNING] ISO 26262 Datasets & ASIL-D Audit</li>
+      <li><strong>Module 8:</strong> [CAPSTONE] Closed Autonomous Cyber-Physical Pipeline</li>
     </ul>
   </div>
 </div>
@@ -69,7 +69,7 @@ size: 16:9
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
 # Module 1: Thermal ICE Dynamics & Miller Cycle
@@ -101,7 +101,46 @@ size: 16:9
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+</div>
+
+# Module 1: Hands-On Engineering Laboratories
+### Executable experiments: Intake manifold ODE, 2D BSFC surface, and 4-Mains solver
+
+<div class="grid-3">
+  <div class="card">
+    <span class="badge badge-cyan">LAB 1.1</span>
+    <h4>Intake Manifold ODE</h4>
+    <ul>
+      <li><strong>Throttle Step:</strong> $15\% \to 85\%$ instantaneous opening transient.</li>
+      <li><strong>ODE Solver:</strong> $\dot{P}_m = \frac{R T_m}{V_m}(\dot{m}_{ai} - \dot{m}_{ao})$.</li>
+      <li><strong>Filling Metric:</strong> Time constant $\tau = 42\text{ ms}$; steady pressure $98.4\text{ kPa}$.</li>
+    </ul>
+  </div>
+  <div class="card card-amber">
+    <span class="badge badge-amber">LAB 1.2</span>
+    <h4>2D BSFC Surface Mapping</h4>
+    <ul>
+      <li><strong>BMEP Sweep:</strong> $2 \to 14\text{ bar}$ across $1200 \to 4500\text{ RPM}$.</li>
+      <li><strong>Thermal Peak:</strong> $230\text{ g/kWh} \implies 41\%$ efficiency sweet spot.</li>
+      <li><strong>ECU Clamping:</strong> Torque-fill limiter locks ICE in low-consumption zone.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge badge-green">LAB 1.3</span>
+    <h4>4-Mains Solver Integration</h4>
+    <ul>
+      <li><strong>Segregated Solvers:</strong> `COMUNICACAO`, `SOFTECU`, `MDL`, `OUT`.</li>
+      <li><strong>Numerical Stability:</strong> Run with `ode4` fixed-step ($1\text{ ms}$).</li>
+      <li><strong>Quality Gate:</strong> Zero algebraic loops and deterministic bus routing.</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
 # Module 2: BEV Electrification & FOC Vector Control
@@ -133,7 +172,46 @@ size: 16:9
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+</div>
+
+# Module 2: Hands-On Engineering Laboratories
+### Executable experiments: Clarke/Park vector transforms, PI current loops, and MTPA
+
+<div class="grid-3">
+  <div class="card">
+    <span class="badge badge-cyan">LAB 2.1</span>
+    <h4>Vector Transforms Proof</h4>
+    <ul>
+      <li><strong>Transforms:</strong> Clarke ($abc \to \alpha\beta$) and Park ($\alpha\beta \to dq$).</li>
+      <li><strong>Power Invariance:</strong> $p_{3\phi}(t) = \frac{3}{2}(v_d i_d + v_q i_q)$.</li>
+      <li><strong>Verification:</strong> Instantaneous electrical power invariant across $\theta_e$ rotation.</li>
+    </ul>
+  </div>
+  <div class="card card-amber">
+    <span class="badge badge-amber">LAB 2.2</span>
+    <h4>PI Current Loop Sizing</h4>
+    <ul>
+      <li><strong>Pole-Zero Match:</strong> $K_p = \omega_{bw} L$, $K_i = \omega_{bw} R_s$ ($f_{bw} = 500\text{ Hz}$).</li>
+      <li><strong>Anti-Windup:</strong> Clamping to $V_{\max} = V_{dc}/\sqrt{3}$.</li>
+      <li><strong>Step Metric:</strong> $0 \to 200\text{ A}$ in $t_r < 3.5\text{ ms}$ with $< 4\%$ overshoot.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge badge-green">LAB 2.3</span>
+    <h4>MTPA Trajectory & Weakening</h4>
+    <ul>
+      <li><strong>Saliency Torque:</strong> Exploit $L_q > L_d$ with optimal negative $i_d^*(i_q)$.</li>
+      <li><strong>Reluctance Harvest:</strong> $+9.7\%$ extra torque output at rated current ($238\text{ A}$).</li>
+      <li><strong>Flux Weakening:</strong> Extended speed range from $4200$ to $6500\text{ RPM}$.</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
 # Module 3: P2 Hybrid Architecture, K0 Clutch & e-DCT
@@ -167,10 +245,49 @@ size: 16:9
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
-# Module 4: The 4 Pillars of Automotive AI
+# Module 3: Hands-On Engineering Laboratories
+### Executable experiments: 4-State K0 clutch, jerk suppression, and e-DCT handover
+
+<div class="grid-3">
+  <div class="card">
+    <span class="badge badge-cyan">LAB 3.1</span>
+    <h4>4-State K0 Clutch Cycling</h4>
+    <ul>
+      <li><strong>State Machine:</strong> `OPEN`, `SYNC`, `SLIP`, and `LOCKED`.</li>
+      <li><strong>Fast Synchronization:</strong> ICE engine spin-up in $t_{sync} < 250\text{ ms}$.</li>
+      <li><strong>Thermal Boundary:</strong> Clamp at $8.0\text{ bar}$ with zero plate glaze degradation.</li>
+    </ul>
+  </div>
+  <div class="card card-amber">
+    <span class="badge badge-amber">LAB 3.2</span>
+    <h4>Active Anti-Jerk Damping</h4>
+    <ul>
+      <li><strong>Driveline Jerk:</strong> $j = d^3\theta/dt^3$ transient suppression.</li>
+      <li><strong>PMSM Torque Fill:</strong> Counter-torque damping driveline oscillations.</li>
+      <li><strong>NVH Benchmark:</strong> Jerk reduced from $4.38\text{ m/s}^3$ to $< 0.05\text{ m/s}^3$.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge badge-green">LAB 3.3</span>
+    <h4>e-DCT Power-Shift Handover</h4>
+    <ul>
+      <li><strong>Dual Clutch:</strong> C1 (Odd gears 1,3,5) to C2 (Even gears 2,4,6).</li>
+      <li><strong>Continuous Torque:</strong> Controlled pressure slip overlap between clutches.</li>
+      <li><strong>Shift Quality:</strong> Zero tractive torque hole during gear handover.</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+</div>
+
+# Architecture: The 4 Pillars of Automotive AI
 ### Deep, bidirectional integration between frontier generative AI and Model-Based Design
 
 <div class="grid-4">
@@ -203,10 +320,10 @@ size: 16:9
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
-# Module 5: [MCP] Model Context Protocol & CAN DBC
+# Module 4: [MCP] Model Context Protocol & CAN DBC
 ### The mission-critical bridge connecting automotive communication buses with LLMs
 
 <div class="grid-2">
@@ -236,10 +353,49 @@ size: 16:9
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
-# Module 6: [RAG] Hybrid Search & DTC Fault Diagnostics
+# Module 4: Hands-On Engineering Laboratories
+### Executable experiments: Industrial CAN parser, 100ms JSON-RPC server, and fault injection
+
+<div class="grid-3">
+  <div class="card">
+    <span class="badge badge-cyan">LAB 4.1</span>
+    <h4>Industrial CAN DBC Parser</h4>
+    <ul>
+      <li><strong>Bitwise Extraction:</strong> Parse messages `0x100`, `0x101`, and `0x200`.</li>
+      <li><strong>Physical Scaling:</strong> Decode raw bytes using DBC `scale` and `offset` factors.</li>
+      <li><strong>Verification:</strong> 100% bitwise parity on torque, RPM, and SOC signals.</li>
+    </ul>
+  </div>
+  <div class="card card-amber">
+    <span class="badge badge-amber">LAB 4.2</span>
+    <h4>100ms Streaming JSON-RPC</h4>
+    <ul>
+      <li><strong>Circular Ring Buffer:</strong> Lock-free telemetry FIFO holding recent 1,000 frames.</li>
+      <li><strong>Sub-Millisecond RPC:</strong> Expose `read_can_telemetry()` via JSON-RPC 2.0.</li>
+      <li><strong>Zero Latency:</strong> Real-time streaming to LLM agents and Web Cockpit.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge badge-green">LAB 4.3</span>
+    <h4>CAN Fault Injection Tooling</h4>
+    <ul>
+      <li><strong>Tool Implementation:</strong> `inject_fault_code(ecu_id, dtc_code, severity)`.</li>
+      <li><strong>Active DTC Triggers:</strong> Simulate HV insulation breakdown (`P0AA6`).</li>
+      <li><strong>Fail-Safe Audit:</strong> Verify automated ECU limp-home state transitions.</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+</div>
+
+# Module 5: [RAG] Hybrid Search & DTC Fault Diagnostics
 ### Retrieval-Augmented Generation powered by workshop manuals, SVG schematics, and fault trees
 
 <div class="grid-2">
@@ -273,10 +429,49 @@ size: 16:9
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
-# Module 7: [AGENTS] ReAct Agent & Simulink Calibration
+# Module 5: Hands-On Engineering Laboratories
+### Executable experiments: Multimodal indexing, hybrid dense+sparse RRF, and DTC trees
+
+<div class="grid-3">
+  <div class="card">
+    <span class="badge badge-cyan">LAB 5.1</span>
+    <h4>Multimodal Ingestion Pipeline</h4>
+    <ul>
+      <li><strong>Corpus Chunking:</strong> Parse workshop manuals and SVG schematics.</li>
+      <li><strong>Hierarchical Metadata:</strong> Index `simulink_systems.json` with ASIL tags.</li>
+      <li><strong>Vector Embeddings:</strong> High-dimensional dense representation of diagnostic rules.</li>
+    </ul>
+  </div>
+  <div class="card card-amber">
+    <span class="badge badge-amber">LAB 5.2</span>
+    <h4>Hybrid Search Engine (RRF)</h4>
+    <ul>
+      <li><strong>Dense + Sparse:</strong> Combine dense semantic vectors with BM25 keywords.</li>
+      <li><strong>Reciprocal Rank Fusion:</strong> $RRF(d) = \sum \frac{1}{60 + r_i(d)}$.</li>
+      <li><strong>Benchmark:</strong> Mean Reciprocal Rank (MRR) $> 0.94$ across 50 DTC queries.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge badge-green">LAB 5.3</span>
+    <h4>Automated DTC Decision Tree</h4>
+    <ul>
+      <li><strong>Diagnostic Trees:</strong> Automated isolation of `P0AA6`, `P0606`, `P0A80`.</li>
+      <li><strong>Guided Troubleshooting:</strong> Generate step-by-step physical test instructions.</li>
+      <li><strong>Sub-Second Resolution:</strong> Diagnostic isolation verified under $320\text{ ms}$.</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+</div>
+
+# Module 6: [AGENTS] ReAct Agent & Simulink Calibration
 ### Autonomous Model-in-the-Loop closed-loop calibration inside MATLAB R2026a
 
 <div class="grid-2">
@@ -302,10 +497,49 @@ size: 16:9
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
-# Module 8: [FINE-TUNING] Datasets & ISO 26262
+# Module 6: Hands-On Engineering Laboratories
+### Executable experiments: ReAct cognitive loop, ITAE gain tuning, and stability sweeps
+
+<div class="grid-3">
+  <div class="card">
+    <span class="badge badge-cyan">LAB 6.1</span>
+    <h4>Autonomous ReAct Loop Engine</h4>
+    <ul>
+      <li><strong>Cognitive Loop:</strong> Thought $\to$ Action $\to$ Observation $\to$ Reflection.</li>
+      <li><strong>Tool Orchestration:</strong> Programmatic dispatch to MATLAB/Simulink API.</li>
+      <li><strong>Execution Logging:</strong> Structured step trace with convergence metrics.</li>
+    </ul>
+  </div>
+  <div class="card card-amber">
+    <span class="badge badge-amber">LAB 6.2</span>
+    <h4>Autonomous ITAE Gain Tuning</h4>
+    <ul>
+      <li><strong>Performance Metric:</strong> $J_{ITAE} = \int_{0}^{T} t \cdot |e(t)| \, dt$.</li>
+      <li><strong>Autonomous Calibration:</strong> Iterate $K_p, K_i$ until overshoot $< 2\%$.</li>
+      <li><strong>Efficiency Gain:</strong> $> 62\%$ cost reduction achieved in 4 iterations.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge badge-green">LAB 6.3</span>
+    <h4>Boundary Sweep & Stability</h4>
+    <ul>
+      <li><strong>Stress Testing:</strong> Automated sweep of hydraulic clutch pressure ($2 \to 12\text{ bar}$).</li>
+      <li><strong>Safe Envelope:</strong> Identify stability limit at $8.5\text{ bar}$ to prevent cavitation.</li>
+      <li><strong>Autonomous Discovery:</strong> Safe operating band locked at $4.0\text{--}8.5\text{ bar}$.</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+</div>
+
+# Module 7: [FINE-TUNING] Datasets & ISO 26262
 ### Specializing Foundation LLMs for Safety-Critical ASIL-D Automotive Powertrains
 
 <div class="grid-2">
@@ -334,10 +568,49 @@ size: 16:9
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
-# Capstone: Closed End-to-End Autonomous Pipeline
+# Module 7: Hands-On Engineering Laboratories
+### Executable experiments: Synthetic telemetry dataset, LoRA fine-tuning, and ASIL-D audit
+
+<div class="grid-3">
+  <div class="card">
+    <span class="badge badge-cyan">LAB 7.1</span>
+    <h4>Synthetic Telemetry Datasets</h4>
+    <ul>
+      <li><strong>Dataset Pipeline:</strong> Generate 1,500 domain samples (`telemetry_finetune.jsonl`).</li>
+      <li><strong>Drive Regimes:</strong> EV mode, ICE dynamic cranking, and regenerative braking.</li>
+      <li><strong>Validation:</strong> Strict JSONL validation against ASIL-D diagnostic schema.</li>
+    </ul>
+  </div>
+  <div class="card card-amber">
+    <span class="badge badge-amber">LAB 7.2</span>
+    <h4>Parameter-Efficient LoRA SFT</h4>
+    <ul>
+      <li><strong>LoRA Configuration:</strong> Rank $r=16$, $\alpha=32$ on projection weights ($W_q, W_v$).</li>
+      <li><strong>Efficiency:</strong> $0.147\%$ trainable parameters; trains on single GPU in $< 45\text{ min}$.</li>
+      <li><strong>Domain Precision:</strong> Training cross-entropy loss converged from $2.84$ to $0.41$.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge badge-green">LAB 7.3</span>
+    <h4>ISO 26262 ASIL-D Safety Audit</h4>
+    <ul>
+      <li><strong>Adversarial Prompts:</strong> 100 out-of-boundary and conflicting torque inputs.</li>
+      <li><strong>Single Point Fault:</strong> Verified SPFM $\ge 99\%$ and zero torque runaway.</li>
+      <li><strong>Hallucination Rate:</strong> $0.0\%$ hazardous hallucinations across test suite.</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+</div>
+
+# Module 8: Capstone Closed-Loop Pipeline
 ### Complete fusion of the 4 AI pillars into a continuous calibration and verification workflow
 
 ```mermaid
@@ -350,25 +623,64 @@ graph LR
     F --> G["ISO 26262 Safety Audit"]
 ```
 
-<div class="grid-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px;">
+<div class="grid-3" style="margin-top: 15px;">
   <div class="card">
     <h4>1. Telemetry Ingestion</h4>
-    <p style="font-size: 16px;">Physical signals sampled at 100ms, decoded via CAN DBC, and streamed to the MCP server.</p>
+    <p style="font-size: 15px;">Physical signals sampled at 100ms, decoded via CAN DBC, and streamed to the MCP server.</p>
   </div>
   <div class="card card-amber">
     <h4>2. Reasoning & Action</h4>
-    <p style="font-size: 16px;">Agent cross-references vector schematics, adjusts parameters, and runs Simulink MIL without human intervention.</p>
+    <p style="font-size: 15px;">Agent cross-references vector schematics, adjusts parameters, and runs Simulink MIL without human intervention.</p>
   </div>
   <div class="card">
     <h4>3. Cockpit & Validation</h4>
-    <p style="font-size: 16px;">Web Cockpit renders real-time physical responses, while the fine-tuned safety model issues ASIL audit reports.</p>
+    <p style="font-size: 15px;">Web Cockpit renders real-time physical responses, while the fine-tuned safety model issues ASIL audit reports.</p>
   </div>
 </div>
 
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+</div>
+
+# Module 8: Hands-On Engineering Laboratories
+### Executable experiments: Cyber-physical pipeline, in-flight fault, and digital examination
+
+<div class="grid-3">
+  <div class="card">
+    <span class="badge badge-cyan">LAB 8.1</span>
+    <h4>Full Pipeline Integration</h4>
+    <ul>
+      <li><strong>Cyber-Physical Loop:</strong> CAN (MCP) $\to$ RAG $\to$ ReAct Agent $\to$ Fine-Tuning.</li>
+      <li><strong>Closed Loop:</strong> Real-time feedback driving Simulink MIL and Web Cockpit.</li>
+      <li><strong>Execution Time:</strong> Complete end-to-end automated cycle under $4.2\text{ s}$.</li>
+    </ul>
+  </div>
+  <div class="card card-amber">
+    <span class="badge badge-amber">LAB 8.2</span>
+    <h4>In-Flight Isolation Breakdown</h4>
+    <ul>
+      <li><strong>Scenario:</strong> HV isolation loss (`P0AA6`) triggered at $110\text{ km/h}$.</li>
+      <li><strong>Autonomous Action:</strong> Instant K0 clutch open, smooth regenerative ramp-down.</li>
+      <li><strong>Safety Benchmark:</strong> Controlled deceleration to safety stop in $< 8.2\text{ s}$.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge badge-green">LAB 8.3</span>
+    <h4>300-Pt Digital Exam & SHA-256</h4>
+    <ul>
+      <li><strong>Automated Evaluator:</strong> `evaluate_course.py` validates all 24 competencies.</li>
+      <li><strong>Passing Standard:</strong> 1,000 / 1,000 points (Summa Cum Laude distinction).</li>
+      <li><strong>Cryptographic Hash:</strong> SHA-256 certificate issued to candidate.</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
 # Web Cockpit: Real-Time Telemetry & Control Suite
@@ -398,26 +710,26 @@ graph LR
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
 # Assessment System & Scoring Matrix
-### Rigorous quantitative evaluation across all 8 modules totaling 1,000 points
+### Rigorous quantitative evaluation across all 24 hands-on engineering laboratories totaling 1,000 points
 
 <div class="grid-2">
   <div class="card">
     <h3>Scoring Breakdown Table</h3>
-    <table style="width:100%; font-size:15px; border-collapse: collapse;">
-      <tr style="border-bottom: 1px solid var(--color-border);"><th style="text-align:left;">Module</th><th style="text-align:right;">Weight</th></tr>
-      <tr><td>M1: Thermal ICE Dynamics & Miller Cycle</td><td style="text-align:right; font-weight:bold; color:var(--color-primary);">100 pts</td></tr>
-      <tr><td>M2: BEV Electrification & FOC Control</td><td style="text-align:right; font-weight:bold; color:var(--color-primary);">100 pts</td></tr>
-      <tr><td>M3: P2 Hybrid & K0 Disconnect Clutch</td><td style="text-align:right; font-weight:bold; color:var(--color-primary);">100 pts</td></tr>
-      <tr><td>M4: [MCP] JSON-RPC Tool Server & DBC</td><td style="text-align:right; font-weight:bold; color:var(--color-secondary);">100 pts</td></tr>
-      <tr><td>M5: [RAG] Hybrid Search & DTC Trees</td><td style="text-align:right; font-weight:bold; color:var(--color-secondary);">100 pts</td></tr>
-      <tr><td>M6: [AGENTS] Simulink MIL Calibration</td><td style="text-align:right; font-weight:bold; color:var(--color-secondary);">100 pts</td></tr>
-      <tr><td>M7: [FINE-TUNING] Datasets & ISO 26262</td><td style="text-align:right; font-weight:bold; color:var(--color-secondary);">100 pts</td></tr>
-      <tr style="border-top: 1px solid var(--color-border);"><td>M8: End-to-End Capstone Pipeline</td><td style="text-align:right; font-weight:bold; color:var(--color-accent-green);">300 pts</td></tr>
-      <tr style="border-top: 2px solid var(--color-primary); font-weight:bold;"><td>TOTAL SCORE</td><td style="text-align:right; color:#00e5ff;">1,000 pts</td></tr>
+    <table style="width:100%; font-size:14px; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--color-border);"><th style="text-align:left;">Module & Laboratory Set</th><th style="text-align:right;">Weight</th></tr>
+      <tr><td>M1: Thermal ICE Dynamics (Labs 1.1 - 1.3)</td><td style="text-align:right; font-weight:bold; color:var(--color-primary);">100 pts</td></tr>
+      <tr><td>M2: BEV Electrification & FOC (Labs 2.1 - 2.3)</td><td style="text-align:right; font-weight:bold; color:var(--color-primary);">100 pts</td></tr>
+      <tr><td>M3: P2 Hybrid & K0 Disconnect (Labs 3.1 - 3.3)</td><td style="text-align:right; font-weight:bold; color:var(--color-primary);">100 pts</td></tr>
+      <tr><td>M4: [MCP] JSON-RPC Server & CAN (Labs 4.1 - 4.3)</td><td style="text-align:right; font-weight:bold; color:var(--color-secondary);">100 pts</td></tr>
+      <tr><td>M5: [RAG] Hybrid Search & DTCs (Labs 5.1 - 5.3)</td><td style="text-align:right; font-weight:bold; color:var(--color-secondary);">100 pts</td></tr>
+      <tr><td>M6: [AGENTS] Simulink Calibration (Labs 6.1 - 6.3)</td><td style="text-align:right; font-weight:bold; color:var(--color-secondary);">100 pts</td></tr>
+      <tr><td>M7: [FINE-TUNING] Datasets & ASIL (Labs 7.1 - 7.3)</td><td style="text-align:right; font-weight:bold; color:var(--color-secondary);">100 pts</td></tr>
+      <tr style="border-top: 1px solid var(--color-border);"><td>M8: End-to-End Capstone (Labs 8.1 - 8.3)</td><td style="text-align:right; font-weight:bold; color:var(--color-accent-green);">300 pts</td></tr>
+      <tr style="border-top: 2px solid var(--color-primary); font-weight:bold;"><td>TOTAL SCORE (24 Hands-On Labs)</td><td style="text-align:right; color:#00e5ff;">1,000 pts</td></tr>
     </table>
   </div>
   <div class="card card-amber">
@@ -442,7 +754,7 @@ graph LR
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
 # Official Digital Certification & SHA-256 Hash
@@ -458,7 +770,7 @@ graph LR
     <ul>
       <li><strong>Cryptographic Algorithm:</strong> One-way SHA-256 hash truncated to 24 hexadecimal characters formatted in human-readable segments.</li>
       <li><strong>Official Hash Example:</strong><br>
-        <code>NEXUS-1154FC-3B8EA5-6D38EA-51B31B</code>
+        <code>NEXUS-056F6F-8DCD4F-2059DA-F017DA</code>
       </li>
       <li><strong>Lead Author Verification:</strong> Signed under the authority of the Lead Powertrain AI Architect: <strong>Eng. Marley Rosa Luciano</strong>.</li>
     </ul>
@@ -476,7 +788,7 @@ graph LR
 ---
 
 <div style="position: absolute; top: 20px; right: 40px; font-size: 14px; font-family: monospace;">
-  <a href="/slides" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
+  <a href="/slides-pt" style="color: #8b949e; text-decoration: none;">🇧🇷 PT</a> | <span style="color: #00e5ff; font-weight: bold;">🇬🇧 EN</span>
 </div>
 
 # Executive Conclusion & Implementation Roadmap
@@ -496,8 +808,8 @@ graph LR
     <ul>
       <li><strong>Web Cockpit:</strong> <a href="http://localhost:8080" style="color:var(--color-primary);">http://localhost:8080</a></li>
       <li><strong>Full Handbook:</strong> <a href="http://localhost:8080/site/" style="color:var(--color-primary);">http://localhost:8080/site/</a></li>
-      <li><strong>Executive Slides (PT):</strong> <a href="http://localhost:8080/slides" style="color:var(--color-secondary);">http://localhost:8080/slides</a></li>
-      <li><strong>Executive Slides (EN):</strong> <a href="http://localhost:8080/slides-en" style="color:var(--color-secondary);">http://localhost:8080/slides-en</a></li>
+      <li><strong>Executive Slides (EN):</strong> <a href="http://localhost:8080/slides" style="color:var(--color-secondary);">http://localhost:8080/slides</a></li>
+      <li><strong>Executive Slides (PT):</strong> <a href="http://localhost:8080/slides-pt" style="color:var(--color-secondary);">http://localhost:8080/slides-pt</a></li>
       <li><strong>Git Repository:</strong> <a href="https://github.com/marleyrosa/MarleyOS" style="color:var(--color-accent-green);">marleyrosa/MarleyOS</a></li>
     </ul>
   </div>

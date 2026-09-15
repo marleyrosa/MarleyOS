@@ -41,7 +41,21 @@ graph TD
 ## 🖥️ Live Telemetry Web Cockpit
 
 The platform features an interactive real-time telemetry cockpit operating locally and accessible across devices on the local network:
-* **Local Web URL (PC):** `http://localhost:8080`
-* **Executive Master Slides (English):** `http://localhost:8080/slides-en`
-* **Official Digital Certificate:** `http://localhost:8080/certificado`
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0;">
+  <a href="/" target="_blank" class="md-button md-button--primary" style="font-weight: bold; background: #00e5ff; color: #07090e;">
+    🏎️ Abrir Live Telemetry Cockpit
+  </a>
+  <a href="/course/apostilas/08_capstone_certification/" class="md-button" style="font-weight: bold;">
+    📝 Avaliação Oficial Módulo 8 (10 Questões)
+  </a>
+  <a href="/slides" target="_blank" class="md-button" style="font-weight: bold;">
+    🌐 Executive Slides (EN/PT)
+  </a>
+  <a href="/certificado" target="_blank" class="md-button" style="font-weight: bold;">
+    🎓 Official Digital Certificate
+  </a>
+</div>
+
+* **Local Web URL (PC):** <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>
 * **Termux Android Integration:** Stream raw CAN frames via `curl -s http://localhost:8080/api/telemetry | jq .`
