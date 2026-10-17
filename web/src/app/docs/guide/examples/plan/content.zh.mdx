@@ -1,0 +1,71 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip } from '@/components/mdx'
+
+# 项目规划
+
+使用 `/plan` 工作流，在写代码之前先制定详细的实现计划。
+
+## 概述
+
+`/plan` 命令会启动**仅规划模式**。
+它使用 `project-planner` 智能体创建一份详细的计划文件，而不写任何代码。
+
+<Callout type="info">
+  **关键规则：** 规划期间绝不写代码。只会创建 `{task-slug}.md` 计划文件（位于项目根目录）。
+</Callout>
+
+## 流程
+
+<StepList>
+  <Step number={1} title="描述你的项目">
+    告诉 planner 你想构建什么。
+
+    ```bash
+    /plan e-commerce site with cart and checkout
+    ```
+  </Step>
+  <Step number={2} title="苏格拉底式提问">
+    planner 会在生成计划之前提出澄清性的问题。
+  </Step>
+  <Step number={3} title="生成计划">
+    在项目根目录创建 `{task-slug}.md`，包含各项任务和智能体分工。
+  </Step>
+</StepList>
+
+## 示例会话
+
+<Terminal>
+  <TerminalLine type="user">/plan SaaS dashboard with analytics</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**澄清性问题：**</TerminalLine>
+    <div className="text-yellow-300 text-xs mt-2">
+      1. 需要哪些指标？（用户、收入？）<br/>
+      2. 实时还是按天？<br/>
+      3. 用哪个图表库？
+    </div>
+  </TerminalBlock>
+
+  <TerminalLine type="user">Users + revenue, real-time, Recharts</TerminalLine>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ 计划已创建！**</TerminalLine>
+    `saas-dashboard.md`<br/>
+    <span className="text-zinc-400">运行 `/create` 来实现。</span>
+  </TerminalBlock>
+</Terminal>
+
+## 实用技巧
+
+<ProTips>
+  <Tip title="回答要充分">
+    你提供的上下文越多，计划就越好。
+  </Tip>
+  <Tip title="编辑计划">
+    在实现之前修改生成好的计划。
+  </Tip>
+</ProTips>
+
+## 后续步骤
+
+- 为你下一个重要功能运行 `/plan`
+- 规划之后，用[创建应用](/docs/guide/examples/create)来实现

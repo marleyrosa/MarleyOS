@@ -1,0 +1,72 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature } from '@/components/mdx'
+
+# Quản lý preview
+
+Quản lý máy chủ phát triển cục bộ của bạn với quy trình `/preview`.
+
+## Tổng quan
+
+Lệnh `/preview` quản lý máy chủ phát triển cục bộ của bạn.
+Khởi động, dừng, khởi động lại hoặc kiểm tra trạng thái bằng các lệnh đơn giản.
+
+<FeatureGrid>
+  <Feature title="start" description="Khởi động máy chủ" />
+  <Feature title="stop" description="Tắt máy chủ" />
+  <Feature title="restart" description="Tải lại" />
+  <Feature title="check" description="Tình trạng" />
+</FeatureGrid>
+
+## Quy trình
+
+<StepList>
+  <Step number={1} title="Khởi động máy chủ">
+    ```bash
+    /preview start
+    ```
+  </Step>
+  <Step number={2} title="Kiểm tra trạng thái">
+    ```bash
+    /preview
+    ```
+  </Step>
+  <Step number={3} title="Dừng máy chủ">
+    ```bash
+    /preview stop
+    ```
+  </Step>
+</StepList>
+
+## Phiên làm việc ví dụ
+
+<Terminal>
+  <TerminalLine type="user">/preview start</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**🚀 Đang khởi động preview...**</TerminalLine>
+    <div className="text-xs mt-2">
+      Cổng: 3000<br/>
+      Loại: Next.js
+    </div>
+  </TerminalBlock>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ Preview sẵn sàng!**</TerminalLine>
+    URL: <span className="text-blue-400">http://localhost:3000</span>
+  </TerminalBlock>
+</Terminal>
+
+## Mẹo hay
+
+<ProTips>
+  <Tip title="Tự động nhận diện">
+    Tự động nhận diện Next.js, Vite, v.v.
+  </Tip>
+  <Tip title="Xung đột cổng">
+    Gợi ý phương án thay thế nếu cổng 3000 đang bận.
+  </Tip>
+</ProTips>
+
+## Bước tiếp theo
+
+- Chạy `/preview start` để khởi động máy chủ phát triển của bạn
+- Xem [Triển khai](/docs/guide/examples/deployment) để đưa lên môi trường thật

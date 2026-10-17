@@ -1,0 +1,78 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip } from '@/components/mdx'
+
+# 系统化调试
+
+使用严谨的 `/debug` 工作流解决复杂问题。
+
+## 概述
+
+`/debug` 工作流强制执行一套**四阶段调查协议**（发现、假设、验证、解决）。它要求在改动代码之前先拿出证据，从而避免靠猜测驱动的开发。
+
+<Callout type="info" title="何时使用：">
+  - "登录按钮点了没反应"
+  - "API 时不时返回 500 错误"
+  - "应用只在手机上崩溃"
+</Callout>
+
+## 流程
+
+<StepList>
+  <Step number={1} title="发现">
+    收集事实：错误日志、用户反馈、复现步骤。
+
+    ```bash
+    /debug Login returns 403 even with correct credentials
+    ```
+  </Step>
+  <Step number={2} title="假设">
+    提出可能的原因，并按可能性高低排序。
+  </Step>
+  <Step number={3} title="验证">
+    用脚本或日志系统化地逐一检验每个假设。
+  </Step>
+  <Step number={4} title="解决">
+    应用修复，并添加一个回归测试。
+  </Step>
+</StepList>
+
+## 示例会话
+
+<Terminal>
+  <TerminalLine type="user">/debug Form submission fails silently</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**阶段 1：发现**</TerminalLine>
+    正在读取 `CheckoutForm.tsx`…… 找到了 `handleSubmit`。
+    <span className="text-red-400">ERROR: Cannot read properties of undefined</span>
+  </TerminalBlock>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**阶段 2：假设**</TerminalLine>
+    <div className="text-xs mt-1">
+      1. `emailRef.current` 在 mount 时为 null<br/>
+      2. 事件处理器绑定不正确
+    </div>
+  </TerminalBlock>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**阶段 4：解决**</TerminalLine>
+    已应用修复：为 `emailRef` 添加了 null 检查。
+    <span className="text-green-400">✅ Test passed: Form submits successfully.</span>
+  </TerminalBlock>
+</Terminal>
+
+## 实用技巧
+
+<ProTips>
+  <Tip title="提供上下文">
+    粘贴确切的错误信息或堆栈跟踪，能让发现阶段更快。
+  </Tip>
+  <Tip title="信任，但要验证">
+    让智能体再次运行复现用例，以确认问题确实解决了。
+  </Tip>
+</ProTips>
+
+## 后续步骤
+
+- 在一个现有的 bug 上试试 `/debug`
+- 查看[部署](/docs/guide/examples/deployment)以发布你的修复

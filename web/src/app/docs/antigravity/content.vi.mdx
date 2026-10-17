@@ -1,0 +1,65 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, FeatureGrid, Feature } from '@/components/mdx'
+
+# Tích hợp Runtime Antigravity
+
+Google Antigravity là runtime production của AG Kit. Ngoài rules, skills và workflows, kit đi kèm lớp tích hợp native bên trong `.agents/`.
+
+## Lớp runtime
+
+<FeatureGrid>
+  <Feature title="antigravity.json" description="Hợp đồng runtime máy đọc được" />
+  <Feature title="hooks.json" description="Cổng an toàn PreToolUse native" />
+  <Feature title="mcp_config.json" description="Nguồn cấu hình MCP của workspace" />
+  <Feature title="Doctor" description="Chẩn đoán tích hợp chỉ đọc" />
+</FeatureGrid>
+
+## Hook an toàn công cụ
+
+`hooks.json` đăng ký cổng `PreToolUse` native cho `run_command`. Nó cố tình hẹp — chỉ chặn các mẫu phá hủy có độ tin cậy cao:
+
+- Xóa root filesystem Unix (`rm -rf /` và tương đương)
+- Format filesystem và ghi đè raw-disk (`mkfs`, ghi vào `/dev/sdX`)
+- Format ổ đĩa Windows và xóa root cưỡng bức
+
+Dọn dẹp dự án bình thường (xóa `dist/`, `node_modules/`) vẫn đi qua bình thường.
+
+<Callout type="warning">
+  Hook không thay thế quyền của Antigravity, workspace trust, sandbox, hay phê duyệt của con người. Nó là dây bẫy cuối cùng, không phải ranh giới bảo mật.
+</Callout>
+
+## Đồng bộ MCP
+
+`.agents/mcp_config.json` là nguồn cấu hình MCP của workspace. Trình đồng bộ áp dụng nó một cách tường minh — từ chối credential giữ chỗ, giữ nguyên mục xung đột theo mặc định, và sao lưu đích trước khi ghi:
+
+<Terminal>
+  <TerminalLine command="node .agents/hooks/sync-mcp.mjs" />
+</Terminal>
+
+## Antigravity Doctor
+
+Doctor kiểm tra discovery, MCP, hooks, orchestration, đóng gói plugin và mức sẵn sàng phát hành — chỉ đọc:
+
+<Terminal>
+  <TerminalLine command="node .agents/hooks/antigravity-doctor.mjs" />
+  <TerminalBlock>
+{`[PASS] discovery
+[PASS] mcp
+[PASS] hooks
+[PASS] orchestration
+[PASS] plugin
+[PASS] validation
+[PASS] Antigravity contract is ready.`}
+  </TerminalBlock>
+</Terminal>
+
+## Gói plugin
+
+Với đội muốn cài dạng đóng gói, trình build plugin tạo bundle plugin Antigravity cục bộ với inventory nội dung SHA-256 xác định:
+
+<Terminal>
+  <TerminalLine command="node .agents/hooks/build-plugin.mjs" />
+</Terminal>
+
+<Callout type="info">
+  Mọi thứ trên trang này được kiểm chứng trong CI: Doctor, test hồi quy hook, và plugin inventory chạy trên mỗi lần push.
+</Callout>

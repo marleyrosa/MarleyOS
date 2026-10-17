@@ -1,0 +1,73 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature } from '@/components/mdx'
+
+# Trạng thái dự án
+
+Có cái nhìn tổng quan đầy đủ về dự án của bạn với quy trình `/status`.
+
+## Tổng quan
+
+Lệnh `/status` cho bạn một **góc nhìn dashboard đầy đủ** về dự án.
+Xem thông tin dự án, tech stack, các tính năng đã xong, hoạt động của tác tử và trạng thái preview.
+
+<FeatureGrid>
+  <Feature title="Dự án" description="Thông tin & Stack" />
+  <Feature title="Tác tử" description="Bảng trạng thái" />
+  <Feature title="Tệp tin" description="Thống kê" />
+  <Feature title="Preview" description="Kiểm tra sức khỏe" />
+</FeatureGrid>
+
+## Quy trình
+
+<StepList>
+  <Step number={1} title="Chạy lệnh">
+    Chỉ cần chạy lệnh để xem dashboard dự án của bạn.
+
+    ```bash
+    /status
+    ```
+  </Step>
+</StepList>
+
+## Phiên làm việc ví dụ
+
+<Terminal>
+  <TerminalLine type="user">/status</TerminalLine>
+
+  <TerminalBlock>
+    <div className="text-yellow-400 mb-2">=== Project Status ===</div>
+    <div className="space-y-1 mb-4">
+      <div>📁 Dự án: my-ecommerce</div>
+      <div>🏷️ Loại: nextjs-ecommerce</div>
+      <div>📄 Tệp tin: 73 đã tạo, 12 đã sửa</div>
+    </div>
+
+    <div className="text-yellow-400 mb-2">=== Agent Status ===</div>
+    <div className="space-y-1 mb-4">
+      <div><span className="text-green-400">✅</span> database-architect → Hoàn tất</div>
+      <div><span className="text-green-400">✅</span> backend-specialist → Hoàn tất</div>
+      <div><span className="text-blue-400">🔄</span> frontend-specialist → 60%</div>
+    </div>
+
+    <div className="text-yellow-400 mb-2">=== Preview ===</div>
+    <div className="space-y-1">
+      <div>🌐 URL: <span className="text-blue-400">http://localhost:3000</span></div>
+      <div>💚 Sức khỏe: <span className="text-green-400">OK</span></div>
+    </div>
+  </TerminalBlock>
+</Terminal>
+
+## Mẹo hay
+
+<ProTips>
+  <Tip title="Trước khi triển khai">
+    Kiểm tra trạng thái để chắc chắn mọi tác tử đã hoàn tất.
+  </Tip>
+  <Tip title="Theo dõi tiến độ">
+    Giám sát điều phối đa tác tử theo thời gian thực.
+  </Tip>
+</ProTips>
+
+## Bước tiếp theo
+
+- Chạy `/status` để kiểm tra trạng thái dự án
+- Xem [Triển khai](/docs/guide/examples/deployment) khi sẵn sàng phát hành

@@ -1,0 +1,83 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature, StatusList, StatusItem } from '@/components/mdx'
+
+# Add a New Feature
+
+Learn how to safely add complex features to an existing codebase using the `/enhance` workflow.
+
+## Overview
+
+The `/enhance` workflow is your day-to-day tool for iterative development.
+Unlike `/create` which builds from scratch, `/enhance` focuses on surgically adding functionality without breaking existing code.
+
+<Callout type="info">
+  **Scenario:** Adding a "Dashboard Analytics" feature to an existing SaaS application.
+</Callout>
+
+## The Process
+
+<StepList>
+  <Step number={1} title="Feature Planning">
+    Describe your feature requirements clearly.
+
+    ```bash
+    /enhance Add an analytics dashboard for user activity
+    Requirements:
+    - Track daily active users and page views
+    - Visual charts using Recharts
+    - API endpoint to aggregate data
+    ```
+  </Step>
+  <Step number={2} title="Component Implementation">
+    Specialists implement the full vertical slice.
+
+    <FeatureGrid cols={4}>
+      <Feature title="Database" />
+      <Feature title="Backend" />
+      <Feature title="Frontend" />
+      <Feature title="Testing" />
+    </FeatureGrid>
+  </Step>
+  <Step number={3} title="Verify Integration">
+    Run `final checks` to validate bundle size, accessibility, and tests.
+  </Step>
+</StepList>
+
+## Example Session
+
+<Terminal>
+  <TerminalLine type="user">/enhance add dark mode toggle</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**Analyzing codebase...**</TerminalLine>
+    <div className="text-xs mt-2">
+      Found: Tailwind CSS with no dark mode config<br/>
+      Plan: Update tailwind.config, add ThemeProvider, create toggle component
+    </div>
+  </TerminalBlock>
+
+  <StatusList>
+    <StatusItem status="running" label="Frontend">Creating ThemeToggle...</StatusItem>
+    <StatusItem status="running" label="Testing">Adding theme tests...</StatusItem>
+  </StatusList>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ Feature Added!**</TerminalLine>
+    <span className="text-zinc-400">Run `/preview start` to test.</span>
+  </TerminalBlock>
+</Terminal>
+
+## Pro Tips
+
+<ProTips>
+  <Tip title="Check Dependencies">
+    Use `checklist.py` to prevent bundle bloat from new libraries.
+  </Tip>
+  <Tip title="Keep It Modular">
+    Isolate new components to minimize side effects on existing code.
+  </Tip>
+</ProTips>
+
+## Next Steps
+
+- Try `/enhance` in your project
+- See [Test Generation](/docs/guide/examples/test) for coverage

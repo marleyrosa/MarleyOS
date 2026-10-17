@@ -1,0 +1,65 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, FeatureGrid, Feature } from '@/components/mdx'
+
+# Antigravity Runtime Integration
+
+Google Antigravity is AG Kit's production runtime. Beyond rules, skills, and workflows, the kit ships a native integration layer inside `.agents/`.
+
+## The runtime layer
+
+<FeatureGrid>
+  <Feature title="antigravity.json" description="Machine-readable runtime contract" />
+  <Feature title="hooks.json" description="Native PreToolUse safety gate" />
+  <Feature title="mcp_config.json" description="Workspace MCP source of truth" />
+  <Feature title="Doctor" description="Read-only integration diagnostics" />
+</FeatureGrid>
+
+## Tool safety hook
+
+`hooks.json` registers a native `PreToolUse` gate for `run_command`. It is deliberately narrow — it blocks high-confidence destructive patterns only:
+
+- Unix root-filesystem deletion (`rm -rf /` and equivalents)
+- Filesystem formatting and raw-disk overwrite (`mkfs`, writing to `/dev/sdX`)
+- Windows drive formatting and forced root deletion
+
+Normal project cleanup (deleting `dist/`, `node_modules/`) passes through.
+
+<Callout type="warning">
+  The hook does not replace Antigravity permissions, workspace trust, sandboxing, or human approval. It is a last-resort tripwire, not a security boundary.
+</Callout>
+
+## MCP synchronization
+
+`.agents/mcp_config.json` is the workspace source for MCP servers. The sync helper applies it explicitly — it refuses placeholder credentials, preserves conflicting entries by default, and backs up the target before writing:
+
+<Terminal>
+  <TerminalLine command="node .agents/hooks/sync-mcp.mjs" />
+</Terminal>
+
+## Antigravity Doctor
+
+The Doctor checks discovery, MCP, hooks, orchestration, plugin packaging, and release readiness — read-only:
+
+<Terminal>
+  <TerminalLine command="node .agents/hooks/antigravity-doctor.mjs" />
+  <TerminalBlock>
+{`[PASS] discovery
+[PASS] mcp
+[PASS] hooks
+[PASS] orchestration
+[PASS] plugin
+[PASS] validation
+[PASS] Antigravity contract is ready.`}
+  </TerminalBlock>
+</Terminal>
+
+## Plugin bundle
+
+For teams who prefer a packaged install, the plugin builder produces a local Antigravity plugin bundle with a deterministic SHA-256 content inventory:
+
+<Terminal>
+  <TerminalLine command="node .agents/hooks/build-plugin.mjs" />
+</Terminal>
+
+<Callout type="info">
+  Everything on this page is validated in CI: the Doctor, hook regression tests, and plugin inventory run on every push.
+</Callout>

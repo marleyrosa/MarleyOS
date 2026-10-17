@@ -1,0 +1,41 @@
+{
+  "name": "ag-kit",
+  "version": "2026.8.31",
+  "description": "Antigravity-first AI agent engineering kit with rules, skills, workflows, orchestration, MCP guidance, and safety hooks",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vudovn/ag-kit.git"
+  },
+  "homepage": "https://github.com/vudovn/ag-kit#readme",
+  "bugs": {
+    "url": "https://github.com/vudovn/ag-kit/issues"
+  },
+  "keywords": [
+    "ag-kit",
+    "antigravity",
+    "ai",
+    "agent",
+    "orchestration",
+    "skills",
+    "workflows"
+  ],
+  "author": "vudovn",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "generate:agents": "python .agents/scripts/generate_manifest.py .agents && python .agents/scripts/dependency_graph.py .agents",
+    "check:agents": "python .agents/scripts/generate_manifest.py .agents --check && python .agents/scripts/dependency_graph.py .agents --check && python .agents/scripts/validate_kit.py .agents",
+    "validate:toolkit": "python .agents/scripts/validate_kit.py .agents",
+    "test:toolkit": "python -m unittest discover -s .agents/scripts/tests -v",
+    "check:antigravity": "node .agents/hooks/antigravity-doctor.mjs",
+    "test:antigravity": "node --test .agents/hooks/tests/antigravity.test.mjs",
+    "build:antigravity-plugin": "node .agents/hooks/build-plugin.mjs",
+    "test:cli": "npm --prefix cli test",
+    "lint:web": "npm --prefix web run lint",
+    "typecheck:web": "npm --prefix web run typecheck",
+    "build:web": "npm --prefix web run build"
+  }
+}

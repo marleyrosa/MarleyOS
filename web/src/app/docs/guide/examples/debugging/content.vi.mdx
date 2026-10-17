@@ -1,0 +1,78 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip } from '@/components/mdx'
+
+# Gỡ lỗi có hệ thống
+
+Giải quyết các vấn đề phức tạp với quy trình `/debug` chặt chẽ.
+
+## Tổng quan
+
+Quy trình `/debug` áp dụng một **giao thức điều tra 4 giai đoạn** (Khám phá, Giả thuyết, Kiểm chứng, Khắc phục). Nó ngăn lối phát triển dựa trên phỏng đoán bằng cách yêu cầu có bằng chứng trước khi thay đổi code.
+
+<Callout type="info" title="Khi nào nên dùng:">
+  - "Nút đăng nhập không làm gì cả"
+  - "API trả về lỗi 500 lúc được lúc không"
+  - "Ứng dụng chỉ crash trên điện thoại"
+</Callout>
+
+## Quy trình
+
+<StepList>
+  <Step number={1} title="Khám phá">
+    Thu thập dữ kiện: log lỗi, báo cáo người dùng, các bước tái hiện.
+
+    ```bash
+    /debug Login returns 403 even with correct credentials
+    ```
+  </Step>
+  <Step number={2} title="Giả thuyết">
+    Đặt ra các nguyên nhân tiềm năng, sắp xếp theo khả năng xảy ra.
+  </Step>
+  <Step number={3} title="Kiểm chứng">
+    Kiểm tra từng giả thuyết một cách có hệ thống bằng script hoặc log.
+  </Step>
+  <Step number={4} title="Khắc phục">
+    Áp dụng bản sửa và thêm một test hồi quy.
+  </Step>
+</StepList>
+
+## Phiên làm việc ví dụ
+
+<Terminal>
+  <TerminalLine type="user">/debug Form submission fails silently</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**Giai đoạn 1: Khám phá**</TerminalLine>
+    Đang đọc `CheckoutForm.tsx`... Tìm thấy `handleSubmit`.
+    <span className="text-red-400">ERROR: Cannot read properties of undefined</span>
+  </TerminalBlock>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**Giai đoạn 2: Giả thuyết**</TerminalLine>
+    <div className="text-xs mt-1">
+      1. `emailRef.current` là null khi mount<br/>
+      2. Trình xử lý sự kiện chưa được gắn đúng
+    </div>
+  </TerminalBlock>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**Giai đoạn 4: Khắc phục**</TerminalLine>
+    Đã áp dụng bản sửa: Thêm kiểm tra null cho `emailRef`.
+    <span className="text-green-400">✅ Test passed: Form submits successfully.</span>
+  </TerminalBlock>
+</Terminal>
+
+## Mẹo hay
+
+<ProTips>
+  <Tip title="Cung cấp ngữ cảnh">
+    Dán chính xác thông báo lỗi hoặc stack trace để khám phá nhanh hơn.
+  </Tip>
+  <Tip title="Tin nhưng phải kiểm">
+    Yêu cầu tác tử chạy lại trường hợp tái hiện để xác nhận đã xử lý xong.
+  </Tip>
+</ProTips>
+
+## Bước tiếp theo
+
+- Thử `/debug` với một lỗi có sẵn
+- Xem [Triển khai](/docs/guide/examples/deployment) để phát hành bản sửa của bạn

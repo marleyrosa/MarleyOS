@@ -1,0 +1,73 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature } from '@/components/mdx'
+
+# 项目状态
+
+使用 `/status` 工作流，全面掌握你项目的整体情况。
+
+## 概述
+
+`/status` 命令为你提供项目的**完整仪表盘视图**。
+查看项目信息、技术栈、已完成的功能、智能体活动以及预览状态。
+
+<FeatureGrid>
+  <Feature title="项目" description="信息与技术栈" />
+  <Feature title="智能体" description="状态面板" />
+  <Feature title="文件" description="统计数据" />
+  <Feature title="预览" description="健康检查" />
+</FeatureGrid>
+
+## 流程
+
+<StepList>
+  <Step number={1} title="运行命令">
+    只需运行命令即可查看你的项目仪表盘。
+
+    ```bash
+    /status
+    ```
+  </Step>
+</StepList>
+
+## 示例会话
+
+<Terminal>
+  <TerminalLine type="user">/status</TerminalLine>
+
+  <TerminalBlock>
+    <div className="text-yellow-400 mb-2">=== Project Status ===</div>
+    <div className="space-y-1 mb-4">
+      <div>📁 项目: my-ecommerce</div>
+      <div>🏷️ 类型: nextjs-ecommerce</div>
+      <div>📄 文件: 已创建 73 个，已修改 12 个</div>
+    </div>
+
+    <div className="text-yellow-400 mb-2">=== Agent Status ===</div>
+    <div className="space-y-1 mb-4">
+      <div><span className="text-green-400">✅</span> database-architect → 已完成</div>
+      <div><span className="text-green-400">✅</span> backend-specialist → 已完成</div>
+      <div><span className="text-blue-400">🔄</span> frontend-specialist → 60%</div>
+    </div>
+
+    <div className="text-yellow-400 mb-2">=== Preview ===</div>
+    <div className="space-y-1">
+      <div>🌐 URL: <span className="text-blue-400">http://localhost:3000</span></div>
+      <div>💚 健康状况: <span className="text-green-400">OK</span></div>
+    </div>
+  </TerminalBlock>
+</Terminal>
+
+## 实用技巧
+
+<ProTips>
+  <Tip title="部署前">
+    查看状态，确保所有智能体都已完成。
+  </Tip>
+  <Tip title="跟踪进度">
+    实时监控多智能体编排。
+  </Tip>
+</ProTips>
+
+## 后续步骤
+
+- 运行 `/status` 来查看项目状态
+- 准备好发布时，查看[部署](/docs/guide/examples/deployment)

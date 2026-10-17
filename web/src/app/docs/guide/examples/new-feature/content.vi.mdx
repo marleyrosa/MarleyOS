@@ -1,0 +1,83 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature, StatusList, StatusItem } from '@/components/mdx'
+
+# Thêm tính năng mới
+
+Tìm hiểu cách thêm các tính năng phức tạp vào codebase có sẵn một cách an toàn với quy trình `/enhance`.
+
+## Tổng quan
+
+Quy trình `/enhance` là công cụ hằng ngày cho việc phát triển lặp.
+Khác với `/create` (dựng từ đầu), `/enhance` tập trung thêm chức năng một cách phẫu thuật mà không phá vỡ code hiện có.
+
+<Callout type="info">
+  **Tình huống:** Thêm tính năng "Dashboard Analytics" vào một ứng dụng SaaS có sẵn.
+</Callout>
+
+## Quy trình
+
+<StepList>
+  <Step number={1} title="Lập kế hoạch tính năng">
+    Mô tả yêu cầu tính năng của bạn thật rõ ràng.
+
+    ```bash
+    /enhance Add an analytics dashboard for user activity
+    Requirements:
+    - Track daily active users and page views
+    - Visual charts using Recharts
+    - API endpoint to aggregate data
+    ```
+  </Step>
+  <Step number={2} title="Triển khai thành phần">
+    Các chuyên gia triển khai trọn vẹn lát cắt dọc (vertical slice).
+
+    <FeatureGrid cols={4}>
+      <Feature title="Database" />
+      <Feature title="Backend" />
+      <Feature title="Frontend" />
+      <Feature title="Testing" />
+    </FeatureGrid>
+  </Step>
+  <Step number={3} title="Kiểm tra tích hợp">
+    Chạy `final checks` để xác thực kích thước bundle, khả năng truy cập và kiểm thử.
+  </Step>
+</StepList>
+
+## Phiên làm việc ví dụ
+
+<Terminal>
+  <TerminalLine type="user">/enhance add dark mode toggle</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**Đang phân tích codebase...**</TerminalLine>
+    <div className="text-xs mt-2">
+      Phát hiện: Tailwind CSS chưa cấu hình dark mode<br/>
+      Kế hoạch: Cập nhật tailwind.config, thêm ThemeProvider, tạo component toggle
+    </div>
+  </TerminalBlock>
+
+  <StatusList>
+    <StatusItem status="running" label="Frontend">Đang tạo ThemeToggle...</StatusItem>
+    <StatusItem status="running" label="Testing">Đang thêm test cho theme...</StatusItem>
+  </StatusList>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ Đã thêm tính năng!**</TerminalLine>
+    <span className="text-zinc-400">Chạy `/preview start` để kiểm thử.</span>
+  </TerminalBlock>
+</Terminal>
+
+## Mẹo hay
+
+<ProTips>
+  <Tip title="Kiểm tra dependency">
+    Dùng `checklist.py` để tránh bundle phình to vì thư viện mới.
+  </Tip>
+  <Tip title="Giữ tính mô-đun">
+    Cô lập component mới để giảm thiểu ảnh hưởng phụ lên code hiện có.
+  </Tip>
+</ProTips>
+
+## Bước tiếp theo
+
+- Thử `/enhance` trong dự án của bạn
+- Xem [Sinh kiểm thử](/docs/guide/examples/test) để biết về độ phủ

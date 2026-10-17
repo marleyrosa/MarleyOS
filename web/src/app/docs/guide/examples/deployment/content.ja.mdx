@@ -1,0 +1,88 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip } from '@/components/mdx'
+
+# 本番環境へのデプロイ
+
+安全第一の `/deploy` ワークフローで、自信を持ってリリースしましょう。
+
+## 概要
+
+`/deploy` コマンドは**監査とリリースの指揮官**です。
+デプロイ前に、コードへ厳格なヘルスチェックを強制的に通過させます。
+
+<Callout type="info" title="次の場合はデプロイを止めます：">
+  - セキュリティの脆弱性が見つかった
+  - linting エラーがある
+  - TypeScript の型が不正
+  - 重要なテストが失敗した
+</Callout>
+
+## プロセス
+
+<StepList>
+  <Step number={1} title="コマンドを実行する">
+    コードの準備ができたら、デプロイパイプラインを起動します。
+
+    ```bash
+    /deploy
+    ```
+  </Step>
+  <Step number={2} title="出発前チェックリスト">
+    エージェントがプロジェクトの健全性を自動で監査します。
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3">
+        <h4 className="text-sm font-semibold mb-1">🛡️ セキュリティ</h4>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 m-0">脆弱性とシークレットをスキャン</p>
+      </div>
+      <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3">
+        <h4 className="text-sm font-semibold mb-1">📋 品質</h4>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 m-0">Linting と型安全性を強制</p>
+      </div>
+    </div>
+  </Step>
+  <Step number={3} title="リリース">
+    チェックを通過すると、ビルドしてあなたのプラットフォーム（Vercel、Docker など）へプッシュします。
+  </Step>
+</StepList>
+
+## セッション例
+
+<Terminal>
+  <TerminalLine type="user">/deploy</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**出発前チェックを実行中……**</TerminalLine>
+    <div className="space-y-1 mt-2">
+      <div>🔄 セキュリティスキャン…… <span className="text-green-400">PASSED</span></div>
+      <div>🔄 Lint チェック…… <span className="text-green-400">PASSED</span></div>
+      <div>🔄 型の検証…… <span className="text-green-400">PASSED</span></div>
+    </div>
+    <br/>
+    <span className="text-green-400">✅ すべてのチェックを通過しました！</span>
+    Vercel へデプロイ中……
+  </TerminalBlock>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**🚀 デプロイ完了！**</TerminalLine>
+    <div className="space-y-1 mt-2">
+      <div>🌐 URL: <span className="text-blue-400">https://my-app.vercel.app</span></div>
+      <div>💚 ヘルスチェック: <span className="text-green-400">OK</span></div>
+    </div>
+  </TerminalBlock>
+</Terminal>
+
+## 実践のヒント
+
+<ProTips>
+  <Tip title="まずチェック">
+    実際にはデプロイせず、`/deploy check` で検証をドライランしましょう。
+  </Tip>
+  <Tip title="ロールバックの安心">
+    `/deploy rollback` で、直前の安定版へ即座に戻せます。
+  </Tip>
+</ProTips>
+
+## 次のステップ
+
+- `/deploy check` を試して出発前チェックを実行しましょう
+- [マルチエージェントのオーケストレーション](/docs/guide/examples/orchestration)について学びましょう

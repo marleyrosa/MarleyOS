@@ -1,0 +1,71 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip } from '@/components/mdx'
+
+# Lập kế hoạch dự án
+
+Tạo các kế hoạch triển khai chi tiết trước khi viết code với quy trình `/plan`.
+
+## Tổng quan
+
+Lệnh `/plan` kích hoạt **chế độ chỉ lập kế hoạch**.
+Nó dùng tác tử `project-planner` để tạo một file kế hoạch chi tiết mà không viết bất kỳ dòng code nào.
+
+<Callout type="info">
+  **Quy tắc then chốt:** KHÔNG viết CODE trong lúc lập kế hoạch. Chỉ tạo file kế hoạch `{task-slug}.md` (ở thư mục gốc dự án).
+</Callout>
+
+## Quy trình
+
+<StepList>
+  <Step number={1} title="Mô tả dự án của bạn">
+    Cho planner biết bạn muốn xây gì.
+
+    ```bash
+    /plan e-commerce site with cart and checkout
+    ```
+  </Step>
+  <Step number={2} title="Câu hỏi Socratic">
+    Planner đặt các câu hỏi làm rõ trước khi tạo kế hoạch.
+  </Step>
+  <Step number={3} title="Kế hoạch được tạo">
+    Tạo `{task-slug}.md` ở thư mục gốc dự án kèm các tác vụ và phân công tác tử.
+  </Step>
+</StepList>
+
+## Phiên làm việc ví dụ
+
+<Terminal>
+  <TerminalLine type="user">/plan SaaS dashboard with analytics</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**Câu hỏi làm rõ:**</TerminalLine>
+    <div className="text-yellow-300 text-xs mt-2">
+      1. Các chỉ số nào? (người dùng, doanh thu?)<br/>
+      2. Thời gian thực hay theo ngày?<br/>
+      3. Thư viện biểu đồ?
+    </div>
+  </TerminalBlock>
+
+  <TerminalLine type="user">Users + revenue, real-time, Recharts</TerminalLine>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ Đã tạo kế hoạch!**</TerminalLine>
+    `saas-dashboard.md`<br/>
+    <span className="text-zinc-400">Chạy `/create` để triển khai.</span>
+  </TerminalBlock>
+</Terminal>
+
+## Mẹo hay
+
+<ProTips>
+  <Tip title="Trả lời đầy đủ">
+    Bạn cung cấp càng nhiều ngữ cảnh, kế hoạch càng tốt.
+  </Tip>
+  <Tip title="Chỉnh sửa kế hoạch">
+    Sửa kế hoạch đã tạo trước khi triển khai.
+  </Tip>
+</ProTips>
+
+## Bước tiếp theo
+
+- Chạy `/plan` cho tính năng lớn tiếp theo của bạn
+- Sau khi lập kế hoạch, dùng [Tạo ứng dụng](/docs/guide/examples/create) để triển khai

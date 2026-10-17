@@ -1,0 +1,75 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature } from '@/components/mdx'
+
+# テストの生成と実行
+
+`/test` ワークフローで、テストを生成して実行しましょう。
+
+## 概要
+
+`/test` コマンドは**テストの生成と実行**を担います。
+コードを分析し、テストスイートを作成し、テストを実行したり、カバレッジを確認したりします。
+
+<FeatureGrid>
+  <Feature title="run" description="テストを実行" />
+  <Feature title="generate" description="テストを作成" />
+  <Feature title="coverage" description="レポート" />
+  <Feature title="watch" description="ライブモード" />
+</FeatureGrid>
+
+## プロセス
+
+<StepList>
+  <Step number={1} title="すべてのテストを実行する">
+    ```bash
+    /test
+    ```
+  </Step>
+  <Step number={2} title="ファイルのテストを生成する">
+    ```bash
+    /test src/auth.ts
+    ```
+  </Step>
+  <Step number={3} title="カバレッジを確認する">
+    ```bash
+    /test coverage
+    ```
+  </Step>
+</StepList>
+
+## セッション例
+
+<Terminal>
+  <TerminalLine type="user">/test src/services/auth.ts</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**auth.ts を分析中……**</TerminalLine>
+    <div className="text-xs mt-2">
+      4 つの関数を発見：login、register、verifyToken、resetPassword
+    </div>
+  </TerminalBlock>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ テストを生成しました！**</TerminalLine>
+    <div className="text-xs mt-2">
+      作成: `tests/auth.test.ts`<br/>
+      テストケース: 12<br/>
+      カバレッジ: 95%
+    </div>
+  </TerminalBlock>
+</Terminal>
+
+## 実践のヒント
+
+<ProTips>
+  <Tip title="振る舞いをテストする">
+    実装ではなく、関数が何をするかに注目しましょう。
+  </Tip>
+  <Tip title="エッジケース">
+    エラー、空の入力、境界を常にテストしましょう。
+  </Tip>
+</ProTips>
+
+## 次のステップ
+
+- `/test` を実行してテストスイートを動かしましょう
+- テストを自動で実行する[デプロイ](/docs/guide/examples/deployment)を参照しましょう

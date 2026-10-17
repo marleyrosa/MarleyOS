@@ -2,8 +2,6 @@
 
 Plataforma aberta de Inteligência Artificial aplicada à Engenharia Automotiva, Diagnóstico de Bordo (OBD-II), Protocolo MCP, Sistemas Embarcados e Validação Funcional (ISO 26262).
 
-
-
 > [!WARNING]
 > ### 📱 Troubleshooting para Ambientes Restritos (ex: Termux no Android / WSL / Containers)
 > 1. **Isolamento de Arquivos Temporários (`*.slxc`, `*.csv.tmp`, `slprj/`):**
@@ -36,10 +34,11 @@ Plataforma aberta de Inteligência Artificial aplicada à Engenharia Automotiva,
 * **ASIL Evaluator (Módulo 4):** Validação estruturada sob a norma ISO 26262 com datasets JSONL.
 * **CI/CD MLOps (Módulo 5):** Suíte de testes automatizada com auditoria de Pull Requests via GitHub Actions.
 * **Cockpit Web Interativo (Módulo 6):** Dashboard com visual glassmorphism, orbe pulsante de status e copilot automotivo.
+* **Orbital Paper Lab:** Ambiente de simulação orbital 3D Three.js e 2D Canvas Radar com enxame de agentes autônomos para submissão científica e validação HIL.
 
 ---
 
-## � Como o Sistema Funciona
+## ⚙️ Como o Sistema Funciona
 
 O MarleyOS executa um ciclo operacional completo para validar, publicar e consumir dados de engenharia automotiva:
 
@@ -53,9 +52,20 @@ O MarleyOS executa um ciclo operacional completo para validar, publicar e consum
 
 Em operação, o ciclo é: validação → dashboard web → telemetria em CSV → consulta via MCP → automação MATLAB/Simulink.
 
-## �🚀 Como Executar
+---
 
-### 1. Inicialização Completa
+## 🚀 Como Executar
+
+### 1. Inicialização Completa do MarleyOS
 ```bash
 ./start_marleyos.sh
 python exports/export_audit.py
+```
+
+### 2. Orbital Paper Lab (Simulador & Swarm Mission Control)
+```bash
+cd web
+npm install
+npm run dev
+# Acesse no navegador: http://localhost:3000/orbital-lab
+```

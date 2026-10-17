@@ -14,3 +14,22 @@ capstone_report.txt
 site/  
 docs/course/  
 MarleyOS/ 
+
+# Dependencies and generated output (Next.js / Web)
+node_modules/
+.next/
+out/
+build/
+dist/
+coverage/
+
+# AG Kit temporary and backup data
+.temp_ag_kit/
+.ag-kit-backups/
+
+# Local editor / OS files
+.DS_Store
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/

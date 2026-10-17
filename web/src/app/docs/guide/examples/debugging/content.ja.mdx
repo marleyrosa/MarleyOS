@@ -1,0 +1,78 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip } from '@/components/mdx'
+
+# 体系的なデバッグ
+
+厳密な `/debug` ワークフローで、複雑な問題を解決しましょう。
+
+## 概要
+
+`/debug` ワークフローは**4 段階の調査プロトコル**（発見、仮説、検証、解決）を徹底させます。コードを変更する前に証拠を求めることで、当て推量に頼った開発を防ぎます。
+
+<Callout type="info" title="こんなときに使います：">
+  - 「ログインボタンを押しても何も起きない」
+  - 「API がときどき 500 エラーを返す」
+  - 「スマホでだけアプリがクラッシュする」
+</Callout>
+
+## プロセス
+
+<StepList>
+  <Step number={1} title="発見">
+    事実を集めます：エラーログ、ユーザー報告、再現手順。
+
+    ```bash
+    /debug Login returns 403 even with correct credentials
+    ```
+  </Step>
+  <Step number={2} title="仮説">
+    考えられる原因を、可能性の高い順に並べて立てます。
+  </Step>
+  <Step number={3} title="検証">
+    スクリプトやログを使い、各仮説を体系的に検証します。
+  </Step>
+  <Step number={4} title="解決">
+    修正を適用し、回帰テストを追加します。
+  </Step>
+</StepList>
+
+## セッション例
+
+<Terminal>
+  <TerminalLine type="user">/debug Form submission fails silently</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**フェーズ 1：発見**</TerminalLine>
+    `CheckoutForm.tsx` を読み込み中…… `handleSubmit` を発見。
+    <span className="text-red-400">ERROR: Cannot read properties of undefined</span>
+  </TerminalBlock>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**フェーズ 2：仮説**</TerminalLine>
+    <div className="text-xs mt-1">
+      1. `emailRef.current` が mount 時に null<br/>
+      2. イベントハンドラが正しくバインドされていない
+    </div>
+  </TerminalBlock>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**フェーズ 4：解決**</TerminalLine>
+    修正を適用：`emailRef` に null チェックを追加しました。
+    <span className="text-green-400">✅ Test passed: Form submits successfully.</span>
+  </TerminalBlock>
+</Terminal>
+
+## 実践のヒント
+
+<ProTips>
+  <Tip title="コンテキストを伝える">
+    正確なエラーメッセージやスタックトレースを貼ると、発見フェーズが速くなります。
+  </Tip>
+  <Tip title="信頼しつつ検証する">
+    エージェントに再現ケースをもう一度実行させ、本当に解決したか確認しましょう。
+  </Tip>
+</ProTips>
+
+## 次のステップ
+
+- 既存のバグで `/debug` を試してみましょう
+- 修正を出荷するには[デプロイ](/docs/guide/examples/deployment)を参照しましょう

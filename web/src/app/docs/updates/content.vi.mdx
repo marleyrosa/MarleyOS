@@ -1,0 +1,59 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, FeatureGrid, Feature } from '@/components/mdx'
+
+# Cập nhật được quản lý & Rollback
+
+AG Kit cài `.agents/` dưới dạng **cây được quản lý**: mọi file của kit được theo dõi trong manifest với hash SHA-256, nên khi cập nhật hệ thống biết chính xác file nào của bạn, file nào của kit.
+
+## Cây được quản lý hoạt động thế nào
+
+<FeatureGrid>
+  <Feature title="manifest.json" description="Đường dẫn, phiên bản, phụ thuộc của component" />
+  <Feature title="manifest.lock.json" description="Hash SHA-256 cho từng file được quản lý" />
+  <Feature title="Sao lưu" description="Tự động trước mọi thay đổi" />
+  <Feature title="Báo cáo" description="Báo cáo cập nhật máy đọc được" />
+</FeatureGrid>
+
+File bạn thêm hoặc sửa **không** thuộc quản lý của kit, nên chiến lược mặc định `merge` sẽ giữ nguyên chúng. Chỉ những file có hash khớp manifest mới được cập nhật.
+
+## Cập nhật an toàn
+
+<StepList>
+  <Step number={1} title="Xem trước kế hoạch">
+    ```bash
+    ag-kit update --dry-run
+    ```
+    Hiển thị file thêm, thay đổi, file cục bộ được giữ, và xung đột — không đụng gì cả.
+  </Step>
+  <Step number={2} title="Áp dụng merge">
+    ```bash
+    ag-kit update
+    ```
+    Bản sao lưu được tạo trước. Thay đổi cục bộ được giữ; file xung đột giữ nguyên và bản mới được lưu tại `.agents/.ag-kit/conflicts/` để xem xét.
+  </Step>
+  <Step number={3} title="Xem báo cáo">
+    Mỗi lần chạy ghi báo cáo với run ID, chiến lược, và hành động từng file. Dùng `--conflict-report <file>` để ghi vào đường dẫn tùy chỉnh.
+  </Step>
+</StepList>
+
+<Callout type="info">
+  Muốn cây gốc từ upstream? Dùng `ag-kit update --strategy replace`. Bản sao lưu vẫn được tạo trước.
+</Callout>
+
+## Rollback
+
+<Terminal>
+  <TerminalLine command="ag-kit rollback" />
+  <TerminalBlock>
+{`? Restore backup 2026-07-26T16-03-21? (y/N) y
+Restored backup 2026-07-26T16-03-21
+Pre-rollback backup: .agents/.ag-kit/backups/...`}
+  </TerminalBlock>
+</Terminal>
+
+- Mặc định dùng bản sao lưu mới nhất; chọn bản khác với `--backup <id>`.
+- Cây hiện tại được sao lưu trước khi khôi phục (tắt bằng `--no-keep-current`).
+- Xem trước với `--dry-run`.
+
+<Callout type="warning">
+  Bản sao lưu nằm trong dự án tại `.agents/.ag-kit/`. Xóa thư mục này sẽ mất các điểm rollback.
+</Callout>

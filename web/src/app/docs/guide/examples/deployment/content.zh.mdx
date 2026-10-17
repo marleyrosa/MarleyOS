@@ -1,0 +1,88 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip } from '@/components/mdx'
+
+# 生产环境部署
+
+使用安全优先的 `/deploy` 工作流，从容发布。
+
+## 概述
+
+`/deploy` 命令是一位**审计与发布指挥官**。
+它会强制你的代码在部署前通过一轮严格的健康检查。
+
+<Callout type="info" title="出现以下情况它会阻止你部署：">
+  - 发现安全漏洞
+  - 存在 linting 错误
+  - TypeScript 类型不合法
+  - 关键测试失败
+</Callout>
+
+## 流程
+
+<StepList>
+  <Step number={1} title="执行命令">
+    当代码准备就绪时，触发部署流水线。
+
+    ```bash
+    /deploy
+    ```
+  </Step>
+  <Step number={2} title="起飞前检查清单">
+    智能体会自动审计你的项目健康状况。
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3">
+        <h4 className="text-sm font-semibold mb-1">🛡️ 安全</h4>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 m-0">扫描漏洞与密钥</p>
+      </div>
+      <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3">
+        <h4 className="text-sm font-semibold mb-1">📋 质量</h4>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 m-0">强制 Linting 与类型安全</p>
+      </div>
+    </div>
+  </Step>
+  <Step number={3} title="发布">
+    如果检查通过，它会构建并推送到你的平台（Vercel、Docker 等）。
+  </Step>
+</StepList>
+
+## 示例会话
+
+<Terminal>
+  <TerminalLine type="user">/deploy</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**正在运行起飞前检查……**</TerminalLine>
+    <div className="space-y-1 mt-2">
+      <div>🔄 安全扫描…… <span className="text-green-400">PASSED</span></div>
+      <div>🔄 Lint 检查…… <span className="text-green-400">PASSED</span></div>
+      <div>🔄 类型校验…… <span className="text-green-400">PASSED</span></div>
+    </div>
+    <br/>
+    <span className="text-green-400">✅ 所有检查均已通过！</span>
+    正在部署到 Vercel……
+  </TerminalBlock>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**🚀 部署完成！**</TerminalLine>
+    <div className="space-y-1 mt-2">
+      <div>🌐 URL: <span className="text-blue-400">https://my-app.vercel.app</span></div>
+      <div>💚 健康检查: <span className="text-green-400">OK</span></div>
+    </div>
+  </TerminalBlock>
+</Terminal>
+
+## 实用技巧
+
+<ProTips>
+  <Tip title="先检查">
+    运行 `/deploy check` 进行试运行校验，而不实际部署。
+  </Tip>
+  <Tip title="回滚保障">
+    使用 `/deploy rollback` 即刻回退到上一个稳定版本。
+  </Tip>
+</ProTips>
+
+## 后续步骤
+
+- 试试 `/deploy check` 来运行起飞前检查
+- 了解[多智能体编排](/docs/guide/examples/orchestration)

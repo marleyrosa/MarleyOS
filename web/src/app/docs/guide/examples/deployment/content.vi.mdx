@@ -1,0 +1,88 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip } from '@/components/mdx'
+
+# Triển khai production
+
+Phát hành tự tin với quy trình `/deploy` đặt an toàn lên hàng đầu.
+
+## Tổng quan
+
+Lệnh `/deploy` là một **Nhạc trưởng Kiểm toán & Phát hành**.
+Nó buộc code của bạn phải vượt qua một kiểm tra sức khỏe nghiêm ngặt trước khi triển khai.
+
+<Callout type="info" title="Nó ngăn bạn triển khai nếu:">
+  - Phát hiện lỗ hổng bảo mật
+  - Tồn tại lỗi linting
+  - Kiểu TypeScript không hợp lệ
+  - Test quan trọng thất bại
+</Callout>
+
+## Quy trình
+
+<StepList>
+  <Step number={1} title="Thực thi lệnh">
+    Khi code đã sẵn sàng, kích hoạt pipeline triển khai.
+
+    ```bash
+    /deploy
+    ```
+  </Step>
+  <Step number={2} title="Danh sách kiểm tra trước khi bay">
+    Tác tử tự động kiểm toán sức khỏe dự án của bạn.
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3">
+        <h4 className="text-sm font-semibold mb-1">🛡️ Bảo mật</h4>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 m-0">Quét lỗ hổng & secret</p>
+      </div>
+      <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3">
+        <h4 className="text-sm font-semibold mb-1">📋 Chất lượng</h4>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 m-0">Áp dụng Linting & An toàn kiểu</p>
+      </div>
+    </div>
+  </Step>
+  <Step number={3} title="Phát hành">
+    Nếu các kiểm tra vượt qua, nó build và đẩy lên nền tảng của bạn (Vercel, Docker, v.v).
+  </Step>
+</StepList>
+
+## Phiên làm việc ví dụ
+
+<Terminal>
+  <TerminalLine type="user">/deploy</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**Đang chạy kiểm tra trước khi bay...**</TerminalLine>
+    <div className="space-y-1 mt-2">
+      <div>🔄 Quét bảo mật... <span className="text-green-400">PASSED</span></div>
+      <div>🔄 Kiểm tra Lint... <span className="text-green-400">PASSED</span></div>
+      <div>🔄 Xác thực kiểu... <span className="text-green-400">PASSED</span></div>
+    </div>
+    <br/>
+    <span className="text-green-400">✅ Tất cả kiểm tra đã qua!</span>
+    Đang triển khai lên Vercel...
+  </TerminalBlock>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**🚀 Triển khai hoàn tất!**</TerminalLine>
+    <div className="space-y-1 mt-2">
+      <div>🌐 URL: <span className="text-blue-400">https://my-app.vercel.app</span></div>
+      <div>💚 Kiểm tra sức khỏe: <span className="text-green-400">OK</span></div>
+    </div>
+  </TerminalBlock>
+</Terminal>
+
+## Mẹo hay
+
+<ProTips>
+  <Tip title="Kiểm tra trước">
+    Chạy `/deploy check` để chạy thử các xác thực mà không triển khai.
+  </Tip>
+  <Tip title="An toàn rollback">
+    Dùng `/deploy rollback` để lập tức quay về phiên bản ổn định gần nhất.
+  </Tip>
+</ProTips>
+
+## Bước tiếp theo
+
+- Thử `/deploy check` để chạy các kiểm tra trước khi bay
+- Tìm hiểu về [Điều phối đa tác tử](/docs/guide/examples/orchestration)

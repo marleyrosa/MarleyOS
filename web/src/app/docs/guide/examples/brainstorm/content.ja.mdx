@@ -1,0 +1,86 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature } from '@/components/mdx'
+
+# 構造化ブレインストーミング
+
+`/brainstorm` ワークフローで、コードを書く前に複数のアプローチを検討しましょう。
+
+## 概要
+
+`/brainstorm` コマンドは**構造化されたアイデア出しモード**を起動します。
+いきなりコードに飛びつくのではなく、エージェントが少なくとも 3 種類の異なるアプローチを検討し、
+それぞれの長所と短所を分析して、納得のいく意思決定を後押しします。
+
+<FeatureGrid>
+  <Feature title="コードなし" description="アイデアだけ" />
+  <Feature title="3つ以上の選択肢" description="常に比較" />
+  <Feature title="長所/短所" description="率直なトレードオフ" />
+  <Feature title="決めるのはあなた" description="最終的な選択" />
+</FeatureGrid>
+
+## プロセス
+
+<StepList>
+  <Step number={1} title="課題を説明する">
+    何を検討したいかをエージェントに伝えます。制約条件は具体的に。
+
+    ```bash
+    /brainstorm authentication system for my SaaS app
+    ```
+  </Step>
+  <Step number={2} title="選択肢を確認する">
+    エージェントが 3 つ以上のアプローチを、長所・短所・工数の目安とともに提示します。
+  </Step>
+  <Step number={3} title="意思決定する">
+    1 つを選び、`/enhance` または `/create` で実装します。
+  </Step>
+</StepList>
+
+## セッション例
+
+<Terminal>
+  <TerminalLine type="user">/brainstorm state management for complex form</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**選択肢を検討中……**</TerminalLine>
+  </TerminalBlock>
+
+  <div className="space-y-4 pl-8 mb-4">
+    <div className="border-t border-zinc-800 pt-3">
+      <strong className="text-purple-400">選択肢 A: React Hook Form + Zod</strong>
+      <div className="text-xs mt-1 space-y-1">
+        <div className="text-green-400">✅ 再レンダリングが最小限、開発体験が優秀</div>
+        <div className="text-red-400">❌ 学習コストがある</div>
+        <div className="text-yellow-400">📊 工数: 低</div>
+      </div>
+    </div>
+    <div className="border-t border-zinc-800 pt-3">
+      <strong className="text-purple-400">選択肢 B: Zustand</strong>
+      <div className="text-xs mt-1 space-y-1">
+        <div className="text-green-400">✅ 完全に制御可能、ルート間で状態を保持</div>
+        <div className="text-red-400">❌ ボイラープレートが増える</div>
+        <div className="text-yellow-400">📊 工数: 中</div>
+      </div>
+    </div>
+  </div>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**💡 おすすめ: 選択肢 A**</TerminalLine>
+    20 個以上のフィールドなら、RHF は再レンダリングを最小限に抑えます。
+  </TerminalBlock>
+</Terminal>
+
+## 実践のヒント
+
+<ProTips>
+  <Tip title="コンテキストを伝える">
+    制約条件を明示しましょう。「SSR 対応が必要」「オフラインで動く必要がある」など。
+  </Tip>
+  <Tip title="深掘りの質問をする">
+    決める前に「選択肢 B のスケーラビリティについて詳しく教えて」と聞いてみましょう。
+  </Tip>
+</ProTips>
+
+## 次のステップ
+
+- 次のアーキテクチャ判断で `/brainstorm` を試してみましょう
+- 決めたら、[新機能の追加](/docs/guide/examples/new-feature)で実装しましょう

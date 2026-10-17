@@ -1,0 +1,83 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature, StatusList, StatusItem } from '@/components/mdx'
+
+# 新機能の追加
+
+`/enhance` ワークフローで、既存のコードベースに複雑な機能を安全に追加する方法を学びましょう。
+
+## 概要
+
+`/enhance` ワークフローは、日々の反復開発に使うツールです。
+ゼロから構築する `/create` とは違い、`/enhance` は既存コードを壊さずに、外科手術のように機能を追加することに集中します。
+
+<Callout type="info">
+  **シナリオ：** 既存の SaaS アプリに「ダッシュボード分析」機能を追加します。
+</Callout>
+
+## プロセス
+
+<StepList>
+  <Step number={1} title="機能の計画">
+    機能の要件を明確に説明します。
+
+    ```bash
+    /enhance Add an analytics dashboard for user activity
+    Requirements:
+    - Track daily active users and page views
+    - Visual charts using Recharts
+    - API endpoint to aggregate data
+    ```
+  </Step>
+  <Step number={2} title="コンポーネントの実装">
+    専門エージェントが垂直スライス全体を実装します。
+
+    <FeatureGrid cols={4}>
+      <Feature title="Database" />
+      <Feature title="Backend" />
+      <Feature title="Frontend" />
+      <Feature title="Testing" />
+    </FeatureGrid>
+  </Step>
+  <Step number={3} title="統合の検証">
+    `final checks` を実行して、バンドルサイズ、アクセシビリティ、テストを検証します。
+  </Step>
+</StepList>
+
+## セッション例
+
+<Terminal>
+  <TerminalLine type="user">/enhance add dark mode toggle</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**コードベースを分析中……**</TerminalLine>
+    <div className="text-xs mt-2">
+      発見：Tailwind CSS に dark mode の設定がありません<br/>
+      計画：tailwind.config を更新し、ThemeProvider を追加し、toggle コンポーネントを作成
+    </div>
+  </TerminalBlock>
+
+  <StatusList>
+    <StatusItem status="running" label="Frontend">ThemeToggle を作成中……</StatusItem>
+    <StatusItem status="running" label="Testing">テーマのテストを追加中……</StatusItem>
+  </StatusList>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ 機能を追加しました！**</TerminalLine>
+    <span className="text-zinc-400">`/preview start` を実行してテストしましょう。</span>
+  </TerminalBlock>
+</Terminal>
+
+## 実践のヒント
+
+<ProTips>
+  <Tip title="依存関係をチェック">
+    `checklist.py` を使って、新しいライブラリによるバンドルの肥大化を防ぎましょう。
+  </Tip>
+  <Tip title="モジュール性を保つ">
+    新しいコンポーネントを隔離し、既存コードへの副作用を最小限に抑えましょう。
+  </Tip>
+</ProTips>
+
+## 次のステップ
+
+- あなたのプロジェクトで `/enhance` を試してみましょう
+- カバレッジについては[テスト生成](/docs/guide/examples/test)を参照しましょう

@@ -1,0 +1,83 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature, StatusList, StatusItem } from '@/components/mdx'
+
+# 添加新功能
+
+学习如何使用 `/enhance` 工作流，安全地为现有代码库添加复杂功能。
+
+## 概述
+
+`/enhance` 工作流是你日常迭代开发的工具。
+与从零构建的 `/create` 不同，`/enhance` 专注于像做手术一样精准地添加功能，而不破坏现有代码。
+
+<Callout type="info">
+  **场景：** 为一个现有的 SaaS 应用添加"仪表盘分析"功能。
+</Callout>
+
+## 流程
+
+<StepList>
+  <Step number={1} title="功能规划">
+    清晰地描述你的功能需求。
+
+    ```bash
+    /enhance Add an analytics dashboard for user activity
+    Requirements:
+    - Track daily active users and page views
+    - Visual charts using Recharts
+    - API endpoint to aggregate data
+    ```
+  </Step>
+  <Step number={2} title="组件实现">
+    专家智能体会实现完整的垂直切片。
+
+    <FeatureGrid cols={4}>
+      <Feature title="Database" />
+      <Feature title="Backend" />
+      <Feature title="Frontend" />
+      <Feature title="Testing" />
+    </FeatureGrid>
+  </Step>
+  <Step number={3} title="验证集成">
+    运行 `final checks` 来校验打包体积、无障碍性和测试。
+  </Step>
+</StepList>
+
+## 示例会话
+
+<Terminal>
+  <TerminalLine type="user">/enhance add dark mode toggle</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**正在分析代码库……**</TerminalLine>
+    <div className="text-xs mt-2">
+      发现：Tailwind CSS 尚未配置 dark mode<br/>
+      计划：更新 tailwind.config，添加 ThemeProvider，创建 toggle 组件
+    </div>
+  </TerminalBlock>
+
+  <StatusList>
+    <StatusItem status="running" label="Frontend">正在创建 ThemeToggle……</StatusItem>
+    <StatusItem status="running" label="Testing">正在添加主题测试……</StatusItem>
+  </StatusList>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ 功能已添加！**</TerminalLine>
+    <span className="text-zinc-400">运行 `/preview start` 来测试。</span>
+  </TerminalBlock>
+</Terminal>
+
+## 实用技巧
+
+<ProTips>
+  <Tip title="检查依赖">
+    使用 `checklist.py` 来防止新库导致打包体积膨胀。
+  </Tip>
+  <Tip title="保持模块化">
+    隔离新组件，把对现有代码的副作用降到最低。
+  </Tip>
+</ProTips>
+
+## 后续步骤
+
+- 在你的项目中试试 `/enhance`
+- 查看[测试生成](/docs/guide/examples/test)以了解覆盖率

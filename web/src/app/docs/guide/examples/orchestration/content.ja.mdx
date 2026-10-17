@@ -1,0 +1,85 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature, StatusList, StatusItem } from '@/components/mdx'
+
+# マルチエージェントのオーケストレーション
+
+`/orchestrate` ワークフローで専門エージェントを連携させ、SaaS プラットフォーム全体を構築しましょう。
+
+## 概要
+
+ほとんどの AI とのやり取りは 1 対 1 です。`orchestrator` エージェントは**プロジェクトマネージャー**として振る舞うことで、これを変えます。
+大きなリクエスト（例：「SaaS の MVP を作る」）をタスクに分解し、その仕事に最適な専門家へ割り当てます。
+
+<FeatureGrid>
+  <Feature title="Backend" description="API とDBのアーキテクト" />
+  <Feature title="Frontend" description="UI/UX の専門家" />
+  <Feature title="Security" description="安全性の監査担当" />
+  <Feature title="QA" description="テストエンジニア" />
+</FeatureGrid>
+
+## プロセス
+
+<StepList>
+  <Step number={1} title="プロジェクトの概要">
+    高レベルの目標を説明します。orchestrator がヒアリングして要件を明確にします。
+
+    ```bash
+    /orchestrate Build a "Course Platform" MVP with:
+    - User Authentication (NextAuth)
+    - Stripe Payments
+    - Video Hosting (Mux)
+    - Dashboard for Instructors
+    ```
+  </Step>
+  <Step number={2} title="フェーズ 1：計画">
+    `project-planner` エージェントが詳細なロードマップ（プロジェクトルートの `{task-slug}.md`）を作成します。
+
+    <div className="bg-zinc-50 dark:bg-zinc-900 p-3 rounded-lg text-xs font-mono border-l-2 border-blue-500 mt-2">
+      ...<br/>
+      ### 2.1 Database Schema<br/>
+      - Users (id, email, role)<br/>
+      - Courses (id, title, price)<br/>
+      ...
+    </div>
+  </Step>
+  <Step number={3} title="フェーズ 2：実行">
+    各エージェントが並行して作業します。Orchestrator は進捗を監視し、依存関係のブロックを解消します。
+  </Step>
+</StepList>
+
+## セッション例
+
+<Terminal>
+  <TerminalLine type="user">/orchestrate Build E-commerce MVP</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**チームを起動中……**</TerminalLine>
+    `{task-slug}.md` の計画に基づいてタスクを割り当て：
+  </TerminalBlock>
+
+  <StatusList>
+    <StatusItem status="running" label="Backend-Specialist">Prisma Schema を設定中……</StatusItem>
+    <StatusItem status="running" label="Frontend-Specialist">ProductCard コンポーネントを構築中……</StatusItem>
+    <StatusItem status="running" label="Security-Auditor">認証フローをレビュー中……</StatusItem>
+  </StatusList>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ プロジェクト完了！**</TerminalLine>
+    すべてのタスクが完了しました。`npm run dev` を実行して起動しましょう。
+  </TerminalBlock>
+</Terminal>
+
+## 実践のヒント
+
+<ProTips>
+  <Tip title="小さく始める">
+    一度に Facebook を作ろうとしないこと。まず MVP をオーケストレーションし、それから `/enhance` で反復しましょう。
+  </Tip>
+  <Tip title="認証を定義する">
+    ユーザーがどうログインするかを必ず指定しましょう（例：「NextAuth と GitHub を使う」）。これは重要なアーキテクチャ上の判断です。
+  </Tip>
+</ProTips>
+
+## 次のステップ
+
+- 複雑なアプリを維持するために[体系的なデバッグ](/docs/guide/examples/debugging)について学びましょう
+- MVP を出荷するには[デプロイ](/docs/guide/examples/deployment)を参照しましょう

@@ -1,0 +1,85 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature, StatusList, StatusItem } from '@/components/mdx'
+
+# Multi-Agent Orchestration
+
+Build entire SaaS platforms by coordinating specialist agents with the `/orchestrate` workflow.
+
+## Overview
+
+Most AI interactions are 1-on-1. The `orchestrator` agent changes this by acting as a **Project Manager**.
+It breaks down a large request (e.g., "Build a SaaS MVP") into tasks and assigns them to the best specialist for the job.
+
+<FeatureGrid>
+  <Feature title="Backend" description="API & DB Architect" />
+  <Feature title="Frontend" description="UI/UX Specialist" />
+  <Feature title="Security" description="Safety Auditor" />
+  <Feature title="QA" description="Test Engineer" />
+</FeatureGrid>
+
+## The Process
+
+<StepList>
+  <Step number={1} title="Project Brief">
+    Describe the high-level goal. The orchestrator will interview you to clarify requirements.
+
+    ```bash
+    /orchestrate Build a "Course Platform" MVP with:
+    - User Authentication (NextAuth)
+    - Stripe Payments
+    - Video Hosting (Mux)
+    - Dashboard for Instructors
+    ```
+  </Step>
+  <Step number={2} title="Phase 1: Planning">
+    The `project-planner` agent creates a detailed roadmap (`{task-slug}.md` in the project root).
+
+    <div className="bg-zinc-50 dark:bg-zinc-900 p-3 rounded-lg text-xs font-mono border-l-2 border-blue-500 mt-2">
+      ...<br/>
+      ### 2.1 Database Schema<br/>
+      - Users (id, email, role)<br/>
+      - Courses (id, title, price)<br/>
+      ...
+    </div>
+  </Step>
+  <Step number={3} title="Phase 2: Execution">
+    Agents work in parallel. The Orchestrator monitors progress and unblocks dependencies.
+  </Step>
+</StepList>
+
+## Example Session
+
+<Terminal>
+  <TerminalLine type="user">/orchestrate Build E-commerce MVP</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**Activating Squad...**</TerminalLine>
+    Assigning tasks based on the `{task-slug}.md` plan:
+  </TerminalBlock>
+
+  <StatusList>
+    <StatusItem status="running" label="Backend-Specialist">Configuring Prisma Schema...</StatusItem>
+    <StatusItem status="running" label="Frontend-Specialist">Building ProductCard component...</StatusItem>
+    <StatusItem status="running" label="Security-Auditor">Reviewing auth flow...</StatusItem>
+  </StatusList>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ Project Complete!**</TerminalLine>
+    All tasks finished. Run `npm run dev` to start.
+  </TerminalBlock>
+</Terminal>
+
+## Pro Tips
+
+<ProTips>
+  <Tip title="Start Small">
+    Don't try to build Facebook in one go. Orchestrate an MVP first, then use `/enhance` to iterate.
+  </Tip>
+  <Tip title="Define Auth">
+    Always specify how users log in (e.g., "Use NextAuth with GitHub"). It's a key architectural decision.
+  </Tip>
+</ProTips>
+
+## Next Steps
+
+- Learn about [Systematic Debugging](/docs/guide/examples/debugging) to maintain your complex app
+- See [Deployment](/docs/guide/examples/deployment) to ship your MVP

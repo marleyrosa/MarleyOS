@@ -1,0 +1,75 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature } from '@/components/mdx'
+
+# 测试生成与执行
+
+使用 `/test` 工作流生成并运行测试。
+
+## 概述
+
+`/test` 命令负责**测试的生成与执行**。
+分析代码、创建测试套件、运行测试或检查覆盖率。
+
+<FeatureGrid>
+  <Feature title="run" description="执行测试" />
+  <Feature title="generate" description="创建测试" />
+  <Feature title="coverage" description="报告" />
+  <Feature title="watch" description="实时模式" />
+</FeatureGrid>
+
+## 流程
+
+<StepList>
+  <Step number={1} title="运行所有测试">
+    ```bash
+    /test
+    ```
+  </Step>
+  <Step number={2} title="为文件生成测试">
+    ```bash
+    /test src/auth.ts
+    ```
+  </Step>
+  <Step number={3} title="检查覆盖率">
+    ```bash
+    /test coverage
+    ```
+  </Step>
+</StepList>
+
+## 示例会话
+
+<Terminal>
+  <TerminalLine type="user">/test src/services/auth.ts</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**正在分析 auth.ts……**</TerminalLine>
+    <div className="text-xs mt-2">
+      找到 4 个函数：login、register、verifyToken、resetPassword
+    </div>
+  </TerminalBlock>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ 测试已生成！**</TerminalLine>
+    <div className="text-xs mt-2">
+      已创建: `tests/auth.test.ts`<br/>
+      测试用例: 12<br/>
+      覆盖率: 95%
+    </div>
+  </TerminalBlock>
+</Terminal>
+
+## 实用技巧
+
+<ProTips>
+  <Tip title="测试行为">
+    关注函数做什么，而非它如何实现。
+  </Tip>
+  <Tip title="边界情况">
+    始终测试错误、空输入和各种边界。
+  </Tip>
+</ProTips>
+
+## 后续步骤
+
+- 运行 `/test` 来执行你的测试套件
+- 查看[部署](/docs/guide/examples/deployment)，它会自动运行测试

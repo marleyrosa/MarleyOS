@@ -1,0 +1,71 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip } from '@/components/mdx'
+
+# プロジェクトの計画
+
+`/plan` ワークフローで、コードを書く前に詳細な実装計画を作成しましょう。
+
+## 概要
+
+`/plan` コマンドは**計画専用モード**を起動します。
+`project-planner` エージェントを使い、コードを一切書かずに詳細な計画ファイルを作成します。
+
+<Callout type="info">
+  **重要なルール：** 計画中はコードを一切書きません。作成されるのは `{task-slug}.md` 計画ファイル（プロジェクトルート内）だけです。
+</Callout>
+
+## プロセス
+
+<StepList>
+  <Step number={1} title="プロジェクトを説明する">
+    何を作りたいかを planner に伝えます。
+
+    ```bash
+    /plan e-commerce site with cart and checkout
+    ```
+  </Step>
+  <Step number={2} title="ソクラテス式の質問">
+    planner は計画を作成する前に、確認のための質問をします。
+  </Step>
+  <Step number={3} title="計画の生成">
+    プロジェクトルートに `{task-slug}.md` を作成し、各タスクとエージェントの割り当てを含めます。
+  </Step>
+</StepList>
+
+## セッション例
+
+<Terminal>
+  <TerminalLine type="user">/plan SaaS dashboard with analytics</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**確認のための質問：**</TerminalLine>
+    <div className="text-yellow-300 text-xs mt-2">
+      1. どの指標が必要ですか？（ユーザー、収益？）<br/>
+      2. リアルタイムですか、それとも日次ですか？<br/>
+      3. チャートライブラリは？
+    </div>
+  </TerminalBlock>
+
+  <TerminalLine type="user">Users + revenue, real-time, Recharts</TerminalLine>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ 計画を作成しました！**</TerminalLine>
+    `saas-dashboard.md`<br/>
+    <span className="text-zinc-400">`/create` を実行して実装しましょう。</span>
+  </TerminalBlock>
+</Terminal>
+
+## 実践のヒント
+
+<ProTips>
+  <Tip title="しっかり答える">
+    提供するコンテキストが多いほど、計画はよくなります。
+  </Tip>
+  <Tip title="計画を編集する">
+    実装の前に、生成された計画を修正しましょう。
+  </Tip>
+</ProTips>
+
+## 次のステップ
+
+- 次の大きな機能で `/plan` を実行しましょう
+- 計画の後は、[アプリの作成](/docs/guide/examples/create)で実装しましょう

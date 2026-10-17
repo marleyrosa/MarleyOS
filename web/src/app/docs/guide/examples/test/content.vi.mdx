@@ -1,0 +1,75 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature } from '@/components/mdx'
+
+# Sinh và chạy kiểm thử
+
+Sinh và chạy test với quy trình `/test`.
+
+## Tổng quan
+
+Lệnh `/test` lo việc **sinh và chạy kiểm thử**.
+Phân tích code, tạo bộ test, chạy test hoặc kiểm tra độ phủ.
+
+<FeatureGrid>
+  <Feature title="run" description="Chạy test" />
+  <Feature title="generate" description="Tạo test" />
+  <Feature title="coverage" description="Báo cáo" />
+  <Feature title="watch" description="Chế độ trực tiếp" />
+</FeatureGrid>
+
+## Quy trình
+
+<StepList>
+  <Step number={1} title="Chạy toàn bộ test">
+    ```bash
+    /test
+    ```
+  </Step>
+  <Step number={2} title="Sinh test cho file">
+    ```bash
+    /test src/auth.ts
+    ```
+  </Step>
+  <Step number={3} title="Kiểm tra độ phủ">
+    ```bash
+    /test coverage
+    ```
+  </Step>
+</StepList>
+
+## Phiên làm việc ví dụ
+
+<Terminal>
+  <TerminalLine type="user">/test src/services/auth.ts</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**Đang phân tích auth.ts...**</TerminalLine>
+    <div className="text-xs mt-2">
+      Tìm thấy 4 hàm: login, register, verifyToken, resetPassword
+    </div>
+  </TerminalBlock>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ Đã sinh test!**</TerminalLine>
+    <div className="text-xs mt-2">
+      Đã tạo: `tests/auth.test.ts`<br/>
+      Số ca kiểm thử: 12<br/>
+      Độ phủ: 95%
+    </div>
+  </TerminalBlock>
+</Terminal>
+
+## Mẹo hay
+
+<ProTips>
+  <Tip title="Kiểm thử hành vi">
+    Tập trung vào việc hàm làm gì, không phải cách triển khai.
+  </Tip>
+  <Tip title="Trường hợp biên">
+    Luôn kiểm thử lỗi, đầu vào rỗng, các giới hạn.
+  </Tip>
+</ProTips>
+
+## Bước tiếp theo
+
+- Chạy `/test` để thực thi bộ kiểm thử của bạn
+- Xem [Triển khai](/docs/guide/examples/deployment) vốn tự động chạy test

@@ -1,0 +1,86 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature } from '@/components/mdx'
+
+# 结构化头脑风暴
+
+使用 `/brainstorm` 工作流，在动手写代码之前先探索多种方案。
+
+## 概述
+
+`/brainstorm` 命令会启动一种**结构化的构思模式**。
+与其直接动手写代码，智能体会探索至少 3 种不同的方案，
+分析各自的优缺点，帮助你做出明智的决策。
+
+<FeatureGrid>
+  <Feature title="不写代码" description="只谈想法" />
+  <Feature title="3+ 个方案" description="始终对比" />
+  <Feature title="优点/缺点" description="坦诚权衡" />
+  <Feature title="由你决定" description="最终选择" />
+</FeatureGrid>
+
+## 流程
+
+<StepList>
+  <Step number={1} title="描述你的挑战">
+    告诉智能体你想探索什么。把约束条件说清楚。
+
+    ```bash
+    /brainstorm authentication system for my SaaS app
+    ```
+  </Step>
+  <Step number={2} title="审阅方案">
+    智能体会给出 3 个以上的方案，并附上优点、缺点和工作量评估。
+  </Step>
+  <Step number={3} title="做出决策">
+    选定一个方案，然后用 `/enhance` 或 `/create` 来实现。
+  </Step>
+</StepList>
+
+## 示例会话
+
+<Terminal>
+  <TerminalLine type="user">/brainstorm state management for complex form</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**正在探索方案……**</TerminalLine>
+  </TerminalBlock>
+
+  <div className="space-y-4 pl-8 mb-4">
+    <div className="border-t border-zinc-800 pt-3">
+      <strong className="text-purple-400">方案 A：React Hook Form + Zod</strong>
+      <div className="text-xs mt-1 space-y-1">
+        <div className="text-green-400">✅ 重渲染极少，开发体验出色</div>
+        <div className="text-red-400">❌ 有一定学习曲线</div>
+        <div className="text-yellow-400">📊 工作量：低</div>
+      </div>
+    </div>
+    <div className="border-t border-zinc-800 pt-3">
+      <strong className="text-purple-400">方案 B：Zustand</strong>
+      <div className="text-xs mt-1 space-y-1">
+        <div className="text-green-400">✅ 完全可控，跨路由保持状态</div>
+        <div className="text-red-400">❌ 样板代码更多</div>
+        <div className="text-yellow-400">📊 工作量：中</div>
+      </div>
+    </div>
+  </div>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**💡 推荐：方案 A**</TerminalLine>
+    对于 20 个以上的字段，RHF 能把重渲染降到最低。
+  </TerminalBlock>
+</Terminal>
+
+## 实用技巧
+
+<ProTips>
+  <Tip title="提供上下文">
+    说明约束条件："我需要支持 SSR"、"必须能离线使用"。
+  </Tip>
+  <Tip title="追问细节">
+    在决定之前，先问"详细讲讲方案 B 的可扩展性"。
+  </Tip>
+</ProTips>
+
+## 后续步骤
+
+- 在你的下一个架构决策中试试 `/brainstorm`
+- 决定之后，用[添加新功能](/docs/guide/examples/new-feature)来实现

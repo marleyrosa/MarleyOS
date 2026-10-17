@@ -1,0 +1,85 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature, StatusList, StatusItem } from '@/components/mdx'
+
+# Điều phối đa tác tử
+
+Xây dựng cả nền tảng SaaS bằng cách điều phối các tác tử chuyên biệt với quy trình `/orchestrate`.
+
+## Tổng quan
+
+Hầu hết tương tác với AI đều là 1-đối-1. Tác tử `orchestrator` thay đổi điều này bằng cách đóng vai trò **Quản lý dự án**.
+Nó phân rã một yêu cầu lớn (ví dụ "Xây dựng SaaS MVP") thành các tác vụ và giao cho chuyên gia phù hợp nhất với từng việc.
+
+<FeatureGrid>
+  <Feature title="Backend" description="Kiến trúc sư API & DB" />
+  <Feature title="Frontend" description="Chuyên gia UI/UX" />
+  <Feature title="Security" description="Kiểm toán an toàn" />
+  <Feature title="QA" description="Kỹ sư kiểm thử" />
+</FeatureGrid>
+
+## Quy trình
+
+<StepList>
+  <Step number={1} title="Tóm tắt dự án">
+    Mô tả mục tiêu tổng thể. Orchestrator sẽ phỏng vấn bạn để làm rõ yêu cầu.
+
+    ```bash
+    /orchestrate Build a "Course Platform" MVP with:
+    - User Authentication (NextAuth)
+    - Stripe Payments
+    - Video Hosting (Mux)
+    - Dashboard for Instructors
+    ```
+  </Step>
+  <Step number={2} title="Giai đoạn 1: Lập kế hoạch">
+    Tác tử `project-planner` tạo lộ trình chi tiết (`{task-slug}.md` ở thư mục gốc dự án).
+
+    <div className="bg-zinc-50 dark:bg-zinc-900 p-3 rounded-lg text-xs font-mono border-l-2 border-blue-500 mt-2">
+      ...<br/>
+      ### 2.1 Database Schema<br/>
+      - Users (id, email, role)<br/>
+      - Courses (id, title, price)<br/>
+      ...
+    </div>
+  </Step>
+  <Step number={3} title="Giai đoạn 2: Thực thi">
+    Các tác tử làm việc song song. Orchestrator theo dõi tiến độ và gỡ các phụ thuộc bị nghẽn.
+  </Step>
+</StepList>
+
+## Phiên làm việc ví dụ
+
+<Terminal>
+  <TerminalLine type="user">/orchestrate Build E-commerce MVP</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**Đang kích hoạt đội ngũ...**</TerminalLine>
+    Giao tác vụ dựa trên kế hoạch `{task-slug}.md`:
+  </TerminalBlock>
+
+  <StatusList>
+    <StatusItem status="running" label="Backend-Specialist">Đang cấu hình Prisma Schema...</StatusItem>
+    <StatusItem status="running" label="Frontend-Specialist">Đang dựng component ProductCard...</StatusItem>
+    <StatusItem status="running" label="Security-Auditor">Đang rà soát luồng xác thực...</StatusItem>
+  </StatusList>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ Dự án hoàn tất!**</TerminalLine>
+    Mọi tác vụ đã xong. Chạy `npm run dev` để bắt đầu.
+  </TerminalBlock>
+</Terminal>
+
+## Mẹo hay
+
+<ProTips>
+  <Tip title="Bắt đầu nhỏ">
+    Đừng cố xây Facebook trong một lần. Hãy điều phối một MVP trước, rồi dùng `/enhance` để lặp.
+  </Tip>
+  <Tip title="Xác định xác thực">
+    Luôn nêu rõ người dùng đăng nhập thế nào (ví dụ "Dùng NextAuth với GitHub"). Đây là quyết định kiến trúc then chốt.
+  </Tip>
+</ProTips>
+
+## Bước tiếp theo
+
+- Tìm hiểu [Gỡ lỗi có hệ thống](/docs/guide/examples/debugging) để duy trì ứng dụng phức tạp
+- Xem [Triển khai](/docs/guide/examples/deployment) để phát hành MVP của bạn

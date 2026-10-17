@@ -1,0 +1,72 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature } from '@/components/mdx'
+
+# プレビューの管理
+
+`/preview` ワークフローで、ローカル開発サーバーを管理しましょう。
+
+## 概要
+
+`/preview` コマンドはローカル開発サーバーを管理します。
+シンプルなコマンドで、起動、停止、再起動、状態の確認ができます。
+
+<FeatureGrid>
+  <Feature title="start" description="サーバーを起動" />
+  <Feature title="stop" description="サーバーを終了" />
+  <Feature title="restart" description="再読み込み" />
+  <Feature title="check" description="健康状態" />
+</FeatureGrid>
+
+## プロセス
+
+<StepList>
+  <Step number={1} title="サーバーを起動する">
+    ```bash
+    /preview start
+    ```
+  </Step>
+  <Step number={2} title="状態を確認する">
+    ```bash
+    /preview
+    ```
+  </Step>
+  <Step number={3} title="サーバーを停止する">
+    ```bash
+    /preview stop
+    ```
+  </Step>
+</StepList>
+
+## セッション例
+
+<Terminal>
+  <TerminalLine type="user">/preview start</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**🚀 preview を起動中……**</TerminalLine>
+    <div className="text-xs mt-2">
+      ポート: 3000<br/>
+      タイプ: Next.js
+    </div>
+  </TerminalBlock>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ Preview の準備ができました！**</TerminalLine>
+    URL: <span className="text-blue-400">http://localhost:3000</span>
+  </TerminalBlock>
+</Terminal>
+
+## 実践のヒント
+
+<ProTips>
+  <Tip title="自動検出">
+    Next.js、Vite などを自動で識別します。
+  </Tip>
+  <Tip title="ポートの競合">
+    3000 番ポートが使用中の場合は、代わりのポートを提案します。
+  </Tip>
+</ProTips>
+
+## 次のステップ
+
+- `/preview start` を実行して開発サーバーを起動しましょう
+- 公開するには[デプロイ](/docs/guide/examples/deployment)を参照しましょう

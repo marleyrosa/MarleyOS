@@ -1,0 +1,73 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, StatusList, StatusItem } from '@/components/mdx'
+
+# Tạo ứng dụng mới
+
+Xây dựng ứng dụng hoàn chỉnh từ đầu với trình hướng dẫn `/create`.
+
+## Tổng quan
+
+Lệnh `/create` là **trình hướng dẫn tạo ứng dụng** của bạn.
+Nó dẫn dắt bạn qua một cuộc hội thoại tương tác, hiểu yêu cầu của bạn,
+lập kế hoạch kiến trúc và điều phối các tác tử chuyên biệt để dựng ứng dụng.
+
+<Callout type="info">
+  **Từ ý tưởng đến ứng dụng chạy được:** Chỉ cần mô tả điều bạn muốn, trình hướng dẫn sẽ lo phần tech stack, cấu trúc file, lược đồ cơ sở dữ liệu và triển khai.
+</Callout>
+
+## Quy trình
+
+<StepList>
+  <Step number={1} title="Mô tả ứng dụng của bạn">
+    Cho trình hướng dẫn biết bạn muốn xây gì. Nó sẽ hỏi để làm rõ nếu cần.
+
+    ```bash
+    /create e-commerce site with product listing and cart
+    ```
+  </Step>
+  <Step number={2} title="Xem lại kế hoạch">
+    Tác tử `project-planner` tạo một kế hoạch chi tiết. Phê duyệt để tiếp tục.
+  </Step>
+  <Step number={3} title="Tác tử xây dựng">
+    Các tác tử chuyên biệt làm việc song song: database-architect, backend, frontend.
+  </Step>
+</StepList>
+
+## Phiên làm việc ví dụ
+
+<Terminal>
+  <TerminalLine type="user">/create todo app with dark mode</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**Đang phân tích yêu cầu...**</TerminalLine>
+    Tech Stack: Next.js + Tailwind + Zustand
+    <span className="text-yellow-300">Tiếp tục? (Y/N)</span>
+  </TerminalBlock>
+
+  <TerminalLine type="user">Y</TerminalLine>
+
+  <StatusList>
+    <StatusItem status="running" label="Backend">Đang tạo store...</StatusItem>
+    <StatusItem status="running" label="Frontend">Đang dựng component...</StatusItem>
+  </StatusList>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**🚀 Đã tạo ứng dụng!**</TerminalLine>
+    Preview: <span className="text-blue-400">http://localhost:3000</span>
+  </TerminalBlock>
+</Terminal>
+
+## Mẹo hay
+
+<ProTips>
+  <Tip title="Hãy cụ thể">
+    "E-commerce với Stripe" tốt hơn "cửa hàng trực tuyến".
+  </Tip>
+  <Tip title="Bắt đầu đơn giản">
+    Tạo MVP trước, dùng `/enhance` để lặp.
+  </Tip>
+</ProTips>
+
+## Bước tiếp theo
+
+- Chạy `/create` kèm theo ý tưởng ứng dụng của bạn
+- Dùng [Thêm tính năng mới](/docs/guide/examples/new-feature) để mở rộng

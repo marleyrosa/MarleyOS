@@ -1,0 +1,310 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  AG Kit design tokens
+  - Cool zinc neutrals (one gray family)
+  - Single brand accent: teal from logo (#2DD4BF)
+  - next-themes class strategy (.dark) — no media-query token split
+*/
+
+:root {
+  --radius: 0.5rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.75rem;
+
+  --background: #fafafa;
+  --foreground: #18181b;
+  --card: #ffffff;
+  --card-foreground: #18181b;
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+  --destructive: #ef4444;
+  --destructive-foreground: #b91c1c;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #2dd4bf;
+
+  --brand: #0d9488;
+  --brand-foreground: #042f2e;
+
+  --info: #3b82f6;
+  --info-foreground: #1d4ed8;
+  --success: #10b981;
+  --success-foreground: #047857;
+  --warning: #f59e0b;
+  --warning-foreground: #b45309;
+
+  --code: #0c0c0e;
+  --code-foreground: #e4e4e7;
+  --code-border: #27272a;
+  --code-title: #18181b;
+}
+
+.dark {
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card: #0c0c0e;
+  --card-foreground: #fafafa;
+  --popover: #0c0c0e;
+  --popover-foreground: #fafafa;
+  --primary: #fafafa;
+  --primary-foreground: #18181b;
+  --secondary: #18181b;
+  --secondary-foreground: #fafafa;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --accent: #18181b;
+  --accent-foreground: #fafafa;
+  --destructive: #f87171;
+  --destructive-foreground: #fca5a5;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #2dd4bf;
+
+  --brand: #2dd4bf;
+  --brand-foreground: #042f2e;
+
+  --info: #60a5fa;
+  --info-foreground: #93c5fd;
+  --success: #34d399;
+  --success-foreground: #6ee7b7;
+  --warning: #fbbf24;
+  --warning-foreground: #fcd34d;
+
+  --code: #0c0c0e;
+  --code-foreground: #e4e4e7;
+  --code-border: #27272a;
+  --code-title: #18181b;
+}
+
+@theme inline {
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-code: var(--code);
+  --color-code-foreground: var(--code-foreground);
+  --color-code-border: var(--code-border);
+  --color-code-title: var(--code-title);
+
+  /* Terminal / inline code accents = brand teal family */
+  --color-term-green: var(--brand);
+  --color-term-cyan: var(--brand);
+  --color-term-amber: var(--warning);
+
+  --animate-skeleton: skeleton 2s -1s infinite linear;
+
+  @keyframes skeleton {
+    to {
+      background-position: -200% 0;
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased overflow-x-hidden;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--brand) 28%, transparent);
+    color: var(--foreground);
+  }
+}
+
+/* Centered page container (Tailwind v4 does not center by default) */
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  max-width: 80rem;
+}
+
+@media (width >= 40rem) {
+  .container {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (width >= 64rem) {
+  .container {
+    padding-inline: 2rem;
+  }
+}
+
+/* Single-accent brand wordmark (replaces multi-color gradient) */
+.brand-mark {
+  position: relative;
+  z-index: 1;
+}
+
+.brand-mark::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline: -0.2em;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 0.2em;
+  background: color-mix(in srgb, var(--brand) 22%, transparent);
+  transform: rotate(-1deg);
+}
+
+/* ── Fenced code blocks (rehype-pretty-code + shiki) ─────────────── */
+[data-rehype-pretty-code-figure] {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+[data-rehype-pretty-code-figure] pre {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--code-border);
+  background-color: var(--code);
+  padding: 1rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+[data-rehype-pretty-code-figure] code {
+  display: grid;
+  counter-reset: line;
+  background-color: transparent;
+  padding: 0;
+  font-family: inherit;
+  color: var(--code-foreground);
+}
+
+[data-rehype-pretty-code-figure] [data-line] {
+  padding: 0 1rem;
+  border-left: 2px solid transparent;
+}
+
+[data-rehype-pretty-code-figure] [data-highlighted-line] {
+  background-color: color-mix(in srgb, var(--brand) 12%, transparent);
+  border-left-color: var(--brand);
+}
+
+[data-rehype-pretty-code-figure] [data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1rem;
+  margin-right: 1.5rem;
+  text-align: right;
+  color: #52525b;
+}
+
+[data-rehype-pretty-code-title] {
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  border: 1px solid var(--code-border);
+  border-bottom: none;
+  background-color: var(--code-title);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #a1a1aa;
+}
+
+[data-rehype-pretty-code-title] + pre {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* Autolink wrap on headings: never paint titles as brand links */
+.heading-anchor {
+  color: inherit !important;
+  text-decoration: none;
+}
+
+.heading-anchor:hover {
+  color: inherit !important;
+  text-decoration: none;
+}
+
+/* Landing stack marquee */
+.landing-marquee {
+  animation: landing-marquee 28s linear infinite;
+}
+
+.landing-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes landing-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-marquee {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+}

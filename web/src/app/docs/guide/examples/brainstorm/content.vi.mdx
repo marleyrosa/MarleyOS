@@ -1,0 +1,86 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature } from '@/components/mdx'
+
+# Động não có cấu trúc
+
+Khám phá nhiều hướng tiếp cận trước khi viết code với quy trình `/brainstorm`.
+
+## Tổng quan
+
+Lệnh `/brainstorm` kích hoạt một **chế độ phát ý tưởng có cấu trúc**.
+Thay vì lao thẳng vào code, tác tử khám phá ít nhất 3 hướng tiếp cận khác nhau,
+phân tích ưu nhược điểm và giúp bạn ra quyết định sáng suốt.
+
+<FeatureGrid>
+  <Feature title="Không code" description="Chỉ ý tưởng" />
+  <Feature title="3+ phương án" description="Luôn so sánh" />
+  <Feature title="Ưu/Nhược" description="Đánh đổi thẳng thắn" />
+  <Feature title="Bạn quyết" description="Lựa chọn cuối" />
+</FeatureGrid>
+
+## Quy trình
+
+<StepList>
+  <Step number={1} title="Mô tả thách thức của bạn">
+    Cho tác tử biết bạn muốn khám phá gì. Hãy nêu rõ các ràng buộc.
+
+    ```bash
+    /brainstorm authentication system for my SaaS app
+    ```
+  </Step>
+  <Step number={2} title="Xem lại các phương án">
+    Tác tử trình bày 3+ hướng tiếp cận kèm ưu điểm, nhược điểm và mức công sức.
+  </Step>
+  <Step number={3} title="Ra quyết định">
+    Chọn một phương án, rồi dùng `/enhance` hoặc `/create` để triển khai.
+  </Step>
+</StepList>
+
+## Phiên làm việc ví dụ
+
+<Terminal>
+  <TerminalLine type="user">/brainstorm state management for complex form</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**Đang khám phá các phương án...**</TerminalLine>
+  </TerminalBlock>
+
+  <div className="space-y-4 pl-8 mb-4">
+    <div className="border-t border-zinc-800 pt-3">
+      <strong className="text-purple-400">Phương án A: React Hook Form + Zod</strong>
+      <div className="text-xs mt-1 space-y-1">
+        <div className="text-green-400">✅ Ít re-render, DX tuyệt vời</div>
+        <div className="text-red-400">❌ Có đường cong học tập</div>
+        <div className="text-yellow-400">📊 Công sức: Thấp</div>
+      </div>
+    </div>
+    <div className="border-t border-zinc-800 pt-3">
+      <strong className="text-purple-400">Phương án B: Zustand</strong>
+      <div className="text-xs mt-1 space-y-1">
+        <div className="text-green-400">✅ Toàn quyền kiểm soát, giữ trạng thái qua các route</div>
+        <div className="text-red-400">❌ Nhiều code khuôn mẫu hơn</div>
+        <div className="text-yellow-400">📊 Công sức: Trung bình</div>
+      </div>
+    </div>
+  </div>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**💡 Đề xuất: Phương án A**</TerminalLine>
+    Với 20+ trường, RHF giảm thiểu re-render.
+  </TerminalBlock>
+</Terminal>
+
+## Mẹo hay
+
+<ProTips>
+  <Tip title="Cung cấp ngữ cảnh">
+    Nêu các ràng buộc: "Tôi cần hỗ trợ SSR", "Phải hoạt động ngoại tuyến".
+  </Tip>
+  <Tip title="Hỏi tiếp">
+    "Cho tôi biết thêm về khả năng mở rộng của Phương án B" trước khi quyết định.
+  </Tip>
+</ProTips>
+
+## Bước tiếp theo
+
+- Thử `/brainstorm` cho quyết định kiến trúc tiếp theo của bạn
+- Sau khi quyết định, dùng [Thêm tính năng mới](/docs/guide/examples/new-feature) để triển khai

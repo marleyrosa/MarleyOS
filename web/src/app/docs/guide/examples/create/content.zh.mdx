@@ -1,0 +1,73 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, StatusList, StatusItem } from '@/components/mdx'
+
+# 创建新应用
+
+使用 `/create` 向导从零构建完整的应用。
+
+## 概述
+
+`/create` 命令是你的**应用创建向导**。
+它会通过一段交互式对话引导你，理解你的需求，
+规划架构，并编排各个专家智能体来构建你的应用。
+
+<Callout type="info">
+  **从想法到可运行的应用：** 只需描述你想要什么，向导会负责技术栈、文件结构、数据库模式和具体实现。
+</Callout>
+
+## 流程
+
+<StepList>
+  <Step number={1} title="描述你的应用">
+    告诉向导你想构建什么。如有需要，它会提出澄清性的问题。
+
+    ```bash
+    /create e-commerce site with product listing and cart
+    ```
+  </Step>
+  <Step number={2} title="审阅计划">
+    `project-planner` 智能体会生成一份详细的计划。批准后即可继续。
+  </Step>
+  <Step number={3} title="智能体开始构建">
+    专家智能体并行工作：database-architect、backend、frontend。
+  </Step>
+</StepList>
+
+## 示例会话
+
+<Terminal>
+  <TerminalLine type="user">/create todo app with dark mode</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**正在分析请求……**</TerminalLine>
+    Tech Stack: Next.js + Tailwind + Zustand
+    <span className="text-yellow-300">继续？(Y/N)</span>
+  </TerminalBlock>
+
+  <TerminalLine type="user">Y</TerminalLine>
+
+  <StatusList>
+    <StatusItem status="running" label="Backend">正在创建 store……</StatusItem>
+    <StatusItem status="running" label="Frontend">正在构建组件……</StatusItem>
+  </StatusList>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**🚀 应用已创建！**</TerminalLine>
+    Preview: <span className="text-blue-400">http://localhost:3000</span>
+  </TerminalBlock>
+</Terminal>
+
+## 实用技巧
+
+<ProTips>
+  <Tip title="尽量具体">
+    "E-commerce with Stripe" 胜过 "online store"。
+  </Tip>
+  <Tip title="从简单开始">
+    先创建 MVP，再用 `/enhance` 迭代。
+  </Tip>
+</ProTips>
+
+## 后续步骤
+
+- 运行 `/create` 并附上你的应用想法
+- 用[添加新功能](/docs/guide/examples/new-feature)来扩展

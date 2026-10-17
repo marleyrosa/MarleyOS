@@ -1,0 +1,85 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature, StatusList, StatusItem } from '@/components/mdx'
+
+# 多智能体编排
+
+使用 `/orchestrate` 工作流，通过协调多个专家智能体来构建整个 SaaS 平台。
+
+## 概述
+
+大多数 AI 交互都是一对一的。`orchestrator` 智能体改变了这一点，它扮演**项目经理**的角色。
+它会把一个庞大的需求（例如"构建一个 SaaS MVP"）拆解成多个任务，并分派给最擅长该任务的专家。
+
+<FeatureGrid>
+  <Feature title="Backend" description="API 与数据库架构师" />
+  <Feature title="Frontend" description="UI/UX 专家" />
+  <Feature title="Security" description="安全审计员" />
+  <Feature title="QA" description="测试工程师" />
+</FeatureGrid>
+
+## 流程
+
+<StepList>
+  <Step number={1} title="项目简报">
+    描述高层目标。orchestrator 会通过提问来澄清需求。
+
+    ```bash
+    /orchestrate Build a "Course Platform" MVP with:
+    - User Authentication (NextAuth)
+    - Stripe Payments
+    - Video Hosting (Mux)
+    - Dashboard for Instructors
+    ```
+  </Step>
+  <Step number={2} title="阶段 1：规划">
+    `project-planner` 智能体会生成一份详细的路线图（项目根目录下的 `{task-slug}.md`）。
+
+    <div className="bg-zinc-50 dark:bg-zinc-900 p-3 rounded-lg text-xs font-mono border-l-2 border-blue-500 mt-2">
+      ...<br/>
+      ### 2.1 Database Schema<br/>
+      - Users (id, email, role)<br/>
+      - Courses (id, title, price)<br/>
+      ...
+    </div>
+  </Step>
+  <Step number={3} title="阶段 2：执行">
+    各智能体并行工作。Orchestrator 监控进度并疏通被阻塞的依赖。
+  </Step>
+</StepList>
+
+## 示例会话
+
+<Terminal>
+  <TerminalLine type="user">/orchestrate Build E-commerce MVP</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**正在激活小队……**</TerminalLine>
+    依据 `{task-slug}.md` 计划分派任务：
+  </TerminalBlock>
+
+  <StatusList>
+    <StatusItem status="running" label="Backend-Specialist">正在配置 Prisma Schema……</StatusItem>
+    <StatusItem status="running" label="Frontend-Specialist">正在构建 ProductCard 组件……</StatusItem>
+    <StatusItem status="running" label="Security-Auditor">正在审查认证流程……</StatusItem>
+  </StatusList>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ 项目完成！**</TerminalLine>
+    所有任务已完成。运行 `npm run dev` 即可启动。
+  </TerminalBlock>
+</Terminal>
+
+## 实用技巧
+
+<ProTips>
+  <Tip title="从小处着手">
+    别想着一口气造出一个 Facebook。先编排一个 MVP，再用 `/enhance` 迭代。
+  </Tip>
+  <Tip title="定义认证方式">
+    务必说明用户如何登录（例如"使用 NextAuth 配合 GitHub"）。这是一项关键的架构决策。
+  </Tip>
+</ProTips>
+
+## 后续步骤
+
+- 了解[系统化调试](/docs/guide/examples/debugging)，以维护你的复杂应用
+- 查看[部署](/docs/guide/examples/deployment)以发布你的 MVP

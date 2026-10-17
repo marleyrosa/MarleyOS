@@ -1,0 +1,72 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature } from '@/components/mdx'
+
+# 预览管理
+
+使用 `/preview` 工作流管理你的本地开发服务器。
+
+## 概述
+
+`/preview` 命令负责管理你的本地开发服务器。
+用简单的命令即可启动、停止、重启或查看状态。
+
+<FeatureGrid>
+  <Feature title="start" description="启动服务器" />
+  <Feature title="stop" description="关闭服务器" />
+  <Feature title="restart" description="重新加载" />
+  <Feature title="check" description="健康状况" />
+</FeatureGrid>
+
+## 流程
+
+<StepList>
+  <Step number={1} title="启动服务器">
+    ```bash
+    /preview start
+    ```
+  </Step>
+  <Step number={2} title="查看状态">
+    ```bash
+    /preview
+    ```
+  </Step>
+  <Step number={3} title="停止服务器">
+    ```bash
+    /preview stop
+    ```
+  </Step>
+</StepList>
+
+## 示例会话
+
+<Terminal>
+  <TerminalLine type="user">/preview start</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**🚀 正在启动 preview……**</TerminalLine>
+    <div className="text-xs mt-2">
+      端口: 3000<br/>
+      类型: Next.js
+    </div>
+  </TerminalBlock>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**✅ Preview 已就绪！**</TerminalLine>
+    URL: <span className="text-blue-400">http://localhost:3000</span>
+  </TerminalBlock>
+</Terminal>
+
+## 实用技巧
+
+<ProTips>
+  <Tip title="自动检测">
+    自动识别 Next.js、Vite 等。
+  </Tip>
+  <Tip title="端口冲突">
+    当 3000 端口被占用时，会建议替代端口。
+  </Tip>
+</ProTips>
+
+## 后续步骤
+
+- 运行 `/preview start` 来启动你的开发服务器
+- 查看[部署](/docs/guide/examples/deployment)以上线

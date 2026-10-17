@@ -1,0 +1,73 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, FeatureGrid, Feature } from '@/components/mdx'
+
+# プロジェクトの状態
+
+`/status` ワークフローで、プロジェクトの全体像を把握しましょう。
+
+## 概要
+
+`/status` コマンドは、プロジェクトの**完全なダッシュボードビュー**を提供します。
+プロジェクト情報、技術スタック、完了した機能、エージェントの活動、プレビューの状態を確認できます。
+
+<FeatureGrid>
+  <Feature title="プロジェクト" description="情報とスタック" />
+  <Feature title="エージェント" description="ステータスボード" />
+  <Feature title="ファイル" description="統計" />
+  <Feature title="プレビュー" description="ヘルスチェック" />
+</FeatureGrid>
+
+## プロセス
+
+<StepList>
+  <Step number={1} title="コマンドを実行する">
+    コマンドを実行するだけで、プロジェクトのダッシュボードが表示されます。
+
+    ```bash
+    /status
+    ```
+  </Step>
+</StepList>
+
+## セッション例
+
+<Terminal>
+  <TerminalLine type="user">/status</TerminalLine>
+
+  <TerminalBlock>
+    <div className="text-yellow-400 mb-2">=== Project Status ===</div>
+    <div className="space-y-1 mb-4">
+      <div>📁 プロジェクト: my-ecommerce</div>
+      <div>🏷️ タイプ: nextjs-ecommerce</div>
+      <div>📄 ファイル: 73 件作成、12 件変更</div>
+    </div>
+
+    <div className="text-yellow-400 mb-2">=== Agent Status ===</div>
+    <div className="space-y-1 mb-4">
+      <div><span className="text-green-400">✅</span> database-architect → 完了</div>
+      <div><span className="text-green-400">✅</span> backend-specialist → 完了</div>
+      <div><span className="text-blue-400">🔄</span> frontend-specialist → 60%</div>
+    </div>
+
+    <div className="text-yellow-400 mb-2">=== Preview ===</div>
+    <div className="space-y-1">
+      <div>🌐 URL: <span className="text-blue-400">http://localhost:3000</span></div>
+      <div>💚 健康状態: <span className="text-green-400">OK</span></div>
+    </div>
+  </TerminalBlock>
+</Terminal>
+
+## 実践のヒント
+
+<ProTips>
+  <Tip title="デプロイ前に">
+    状態を確認し、すべてのエージェントが完了したことを確かめましょう。
+  </Tip>
+  <Tip title="進捗を追う">
+    マルチエージェントのオーケストレーションをリアルタイムで監視しましょう。
+  </Tip>
+</ProTips>
+
+## 次のステップ
+
+- `/status` を実行してプロジェクトの状態を確認しましょう
+- 出荷の準備ができたら[デプロイ](/docs/guide/examples/deployment)を参照しましょう

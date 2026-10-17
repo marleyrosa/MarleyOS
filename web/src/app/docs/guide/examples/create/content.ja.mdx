@@ -1,0 +1,73 @@
+import { Callout, StepList, Step, Terminal, TerminalLine, TerminalBlock, ProTips, Tip, StatusList, StatusItem } from '@/components/mdx'
+
+# 新しいアプリの作成
+
+`/create` ウィザードで、完全なアプリケーションをゼロから構築しましょう。
+
+## 概要
+
+`/create` コマンドはあなたの**アプリケーション作成ウィザード**です。
+対話形式のやり取りを通じて案内し、要件を理解し、
+アーキテクチャを計画して、各専門エージェントを編成しアプリを構築します。
+
+<Callout type="info">
+  **アイデアから動くアプリへ：** 作りたいものを説明するだけで、ウィザードが技術スタック、ファイル構成、データベーススキーマ、実装まで面倒を見ます。
+</Callout>
+
+## プロセス
+
+<StepList>
+  <Step number={1} title="アプリを説明する">
+    何を作りたいかをウィザードに伝えます。必要に応じて確認の質問をします。
+
+    ```bash
+    /create e-commerce site with product listing and cart
+    ```
+  </Step>
+  <Step number={2} title="計画を確認する">
+    `project-planner` エージェントが詳細な計画を作成します。承認すると先へ進みます。
+  </Step>
+  <Step number={3} title="エージェントが構築する">
+    専門エージェントが並行して作業します：database-architect、backend、frontend。
+  </Step>
+</StepList>
+
+## セッション例
+
+<Terminal>
+  <TerminalLine type="user">/create todo app with dark mode</TerminalLine>
+
+  <TerminalBlock>
+    <TerminalLine type="agent">**リクエストを分析中……**</TerminalLine>
+    Tech Stack: Next.js + Tailwind + Zustand
+    <span className="text-yellow-300">続行しますか？(Y/N)</span>
+  </TerminalBlock>
+
+  <TerminalLine type="user">Y</TerminalLine>
+
+  <StatusList>
+    <StatusItem status="running" label="Backend">store を作成中……</StatusItem>
+    <StatusItem status="running" label="Frontend">コンポーネントを構築中……</StatusItem>
+  </StatusList>
+
+  <TerminalBlock highlight>
+    <TerminalLine type="agent">**🚀 アプリを作成しました！**</TerminalLine>
+    Preview: <span className="text-blue-400">http://localhost:3000</span>
+  </TerminalBlock>
+</Terminal>
+
+## 実践のヒント
+
+<ProTips>
+  <Tip title="具体的に">
+    「E-commerce with Stripe」は「online store」に勝ります。
+  </Tip>
+  <Tip title="シンプルに始める">
+    まず MVP を作り、`/enhance` で反復しましょう。
+  </Tip>
+</ProTips>
+
+## 次のステップ
+
+- `/create` の後にアプリのアイデアを続けて実行しましょう
+- [新機能の追加](/docs/guide/examples/new-feature)で拡張しましょう
