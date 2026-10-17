@@ -113,6 +113,14 @@ export function LandingNavbar() {
               >
                 {landing.nav.docs}
               </Link>
+              <Link
+                href="/orbital-lab"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg font-mono text-sm font-bold text-cyan-400 bg-cyan-950/40 border border-cyan-500/40"
+              >
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                🛸 Orbital Paper Lab
+              </Link>
             </nav>
 
             <SheetFooter variant="bare" className="mt-auto flex-col items-start gap-3">
@@ -159,6 +167,13 @@ export function LandingNavbar() {
           className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
           {landing.nav.docs}
+        </Link>
+        <Link
+          href="/orbital-lab"
+          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-mono font-bold text-cyan-400 bg-cyan-950/60 border border-cyan-500/40 hover:bg-cyan-900/60 transition-all shadow-[0_0_10px_rgba(6,182,212,0.2)]"
+        >
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+          🛸 ORBITAL LAB
         </Link>
       </nav>
 

@@ -28,14 +28,21 @@ export function LandingHero() {
 
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
+              href="/orbital-lab"
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg font-mono font-bold text-sm bg-gradient-to-r from-cyan-600 to-emerald-600 text-white hover:from-cyan-500 hover:to-emerald-500 shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-cyan-400/50 transition-all"
+            >
+              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+              LAUNCH ORBITAL PAPER LAB
+              <ArrowRight className="size-4" />
+            </Link>
+            <Link
               href="/docs/installation"
               className={cn(
-                buttonVariants({ size: "lg" }),
+                buttonVariants({ variant: "outline", size: "lg" }),
                 "group/arrow w-full font-semibold sm:w-auto",
               )}
             >
               {hero.getStarted}
-              <ArrowRight className="size-5 transition-transform group-hover/arrow:translate-x-1" />
             </Link>
             <GithubStarButton
               className="w-full sm:w-auto"

@@ -13,6 +13,12 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  allowedDevOrigins: [
+    "patent-lewis-enabled-dem.trycloudflare.com",
+    "*.trycloudflare.com",
+    "192.168.1.4",
+    "localhost:3000",
+  ],
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   reactCompiler: true,
   images: {
